@@ -1,0 +1,23 @@
+.chat-view-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');
+  background-color: #efeae2;
+}
+
+.chat-header-placeholder {
+  padding: 15px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.chat-messages-placeholder {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #888;
+}
