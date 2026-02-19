@@ -21,3 +21,59 @@
   align-items: center;
   color: #888;
 }
+
+.chat-view-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.chat-messages-placeholder {
+    flex: 1; /* Empuja el formulario hacia abajo */
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.mensaje-burbuja {
+    max-width: 60%;
+    padding: 10px 15px;
+    border-radius: 15px;
+}
+
+/* Estilos dinámicos basados en quién envía */
+.su-mensaje {
+    background-color: white;
+    align-self: flex-start; /* Alineado a la izquierda */
+    border: 1px solid #ddd;
+}
+
+.mi-mensaje {
+    background-color: #dcf8c6; /* Verde tipo WhatsApp */
+    align-self: flex-end; /* Alineado a la derecha */
+}
+
+.chat-input-area {
+    display: flex;
+    padding: 15px;
+    background-color: #f0f0f0;
+}
+
+.chat-input-area input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+    margin-right: 10px;
+}
+
+.chat-input-area button {
+    padding: 10px 20px;
+    background-color: #0084ff;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
