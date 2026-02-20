@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom'; // Ojo: asegúrate de usar react-router-dom
 import { ChatProvider } from './Context/ChatContext';
 import AppRouter from './Router/AppRouter';
-import IntroScreen from './Components/IntroScreen/IntroScreen'; // ✨ Importamos la intro
+import IntroScreen from './Pages/IntroScreen/IntroScreen';
 
 function App() {
   // Estado que controla si la app está "cargando"
