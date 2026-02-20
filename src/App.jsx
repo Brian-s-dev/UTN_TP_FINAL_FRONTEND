@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter } from 'react-router-dom'; // Ojo: asegúrate de usar react-router-dom
+import { BrowserRouter } from 'react-router';
 import { ChatProvider } from './Context/ChatContext';
 import AppRouter from './Router/AppRouter';
 import IntroScreen from './Pages/IntroScreen/IntroScreen';
