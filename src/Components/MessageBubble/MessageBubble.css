@@ -1,0 +1,39 @@
+.mensaje-fila {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.fila-mia {
+    justify-content: flex-end;
+}
+
+.fila-suya {
+    justify-content: flex-start;
+}
+
+.mensaje-avatar .avatar-circle {
+    width: 30px;
+    height: 30px;
+    margin-right: 0;
+    font-size: 0.8rem;
+}
+
+.mensaje-burbuja {
+    max-width: 60%;
+    padding: 10px 15px;
+    border-radius: 15px;
+    word-wrap: break-word;
+}
+
+.su-mensaje {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-bottom-left-radius: 4px;
+}
+
+.mi-mensaje {
+    background-color: #dcf8c6;
+    border-bottom-right-radius: 4px;
+}

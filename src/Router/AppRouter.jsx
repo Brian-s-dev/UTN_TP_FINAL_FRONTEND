@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { Routes, Route } from 'react-router';
 import Layout from '../Components/Layout/Layout';
 import Welcome from '../Pages/Welcome/Welcome';
@@ -12,6 +12,5 @@ export default function AppRouter() {
             <Route path="chat/:chatId" element={<ChatView />} />
         </Route>
     </Routes>
-  )
+  );
 }
-

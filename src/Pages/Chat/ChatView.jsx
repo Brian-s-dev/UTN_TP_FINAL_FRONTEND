@@ -1,56 +1,45 @@
-import React, { useState } from "react";
+import React from "react";
 import { useParams } from "react-router";
 import { useChat } from "../../Context/ChatContext";
+import { EMISOR } from "../../Utils/constants";
+import MessageBubble from "../../Components/MessageBubble/MessageBubble";
+import ChatInput from "../../Components/ChatInput/ChatInput";
+import Avatar from "../../Components/Avatar/Avatar";
 import "./ChatView.css";
 
 const ChatView = () => {
     const { chatId } = useParams();
-    
     const { chats, enviarMensaje } = useChat();
 
-    const [nuevoMensaje, setNuevoMensaje] = useState("");
+    const chatActivo = chats.find((chat) => chat.id === Number(chatId) || chat.id === chatId);
 
-    const chatActivo = chats.find((chat) => chat.id === Number(chatId));
+    if (!chatActivo) return <div className="chat-view-container centered">Chat no encontrado</div>;
 
-    if (!chatActivo) {
-        return <div className="chat-view-container">Chat no encontrado</div>;
-    }
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (nuevoMensaje.trim() === "") return;
-        enviarMensaje(chatId, nuevoMensaje);
-        setNuevoMensaje("");
-    };
+    const handleEnviar = (texto) => enviarMensaje(chatId, texto);
 
     return (
         <div className="chat-view-container">
             <div className="chat-header-placeholder">
+                <Avatar imagen={chatActivo.avatar} nombre={chatActivo.nombre} />
                 <h2>{chatActivo.nombre}</h2>
             </div>
-
+            
             <div className="chat-messages-placeholder">
                 {chatActivo.mensajes.map((mensaje) => (
-                    <div 
+                    <MessageBubble 
                         key={mensaje.id} 
-                        className={`mensaje-burbuja ${mensaje.emisor === 'usuario' ? 'mi-mensaje' : 'su-mensaje'}`}
-                    >
-                        {mensaje.texto}
-                    </div>
+                        texto={mensaje.texto} 
+                        emisor={mensaje.emisor} 
+                        avatarContacto={chatActivo.avatar}
+                        nombreContacto={chatActivo.nombre}
+                        mostrarAvatar={chatActivo.tipo === EMISOR.GRUPO}
+                    />
                 ))}
             </div>
-
-            <form className="chat-input-area" onSubmit={handleSubmit}>
-                <input 
-                    type="text" 
-                    placeholder="Escribe un mensaje aquí..." 
-                    value={nuevoMensaje}
-                    onChange={(e) => setNuevoMensaje(e.target.value)} 
-                />
-                <button type="submit">Enviar</button>
-            </form>
+            
+            <ChatInput onEnviarMensaje={handleEnviar} />
         </div>
     );
-}
+};
 
 export default ChatView;

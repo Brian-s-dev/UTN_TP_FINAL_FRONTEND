@@ -1,58 +1,36 @@
 .chat-view-container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');
-  background-color: #efeae2;
-}
-
-.chat-header-placeholder {
-  padding: 15px;
-  background-color: #ffffff;
-  border-bottom: 1px solid #ddd;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
-.chat-messages-placeholder {
-  flex: 1;
-  padding: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #888;
-}
-
-.chat-view-container {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    background-color: #efeae2;
+    font-family: sans-serif;
+}
+
+.chat-view-container.centered {
+    justify-content: center;
+    align-items: center;
+}
+
+.chat-header-placeholder {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background-color: #f0f2f5;
+    border-bottom: 1px solid #d1d7db;
+}
+
+.chat-header-placeholder h2 {
+    margin: 0;
+    font-size: 1.2rem;
 }
 
 .chat-messages-placeholder {
-    flex: 1; /* Empuja el formulario hacia abajo */
+    flex: 1;
     padding: 20px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 10px;
-}
-
-.mensaje-burbuja {
-    max-width: 60%;
-    padding: 10px 15px;
-    border-radius: 15px;
-}
-
-/* Estilos dinámicos basados en quién envía */
-.su-mensaje {
-    background-color: white;
-    align-self: flex-start; /* Alineado a la izquierda */
-    border: 1px solid #ddd;
-}
-
-.mi-mensaje {
-    background-color: #dcf8c6; /* Verde tipo WhatsApp */
-    align-self: flex-end; /* Alineado a la derecha */
 }
 
 .chat-input-area {
@@ -67,11 +45,12 @@
     border-radius: 20px;
     border: none;
     margin-right: 10px;
+    outline: none;
 }
 
 .chat-input-area button {
     padding: 10px 20px;
-    background-color: #0084ff;
+    background-color: #00a884;
     color: white;
     border: none;
     border-radius: 20px;
