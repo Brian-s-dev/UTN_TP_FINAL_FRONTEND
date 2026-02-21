@@ -24,3 +24,15 @@
     max-width: 400px;
     line-height: 1.5;
 }
+
+body.dark-mode .welcome-container {
+    background-color: #222e35;
+}
+
+body.dark-mode .welcome-title {
+    color: #e9edef;
+}
+
+body.dark-mode .welcome-text {
+    color: #8696a0;
+}

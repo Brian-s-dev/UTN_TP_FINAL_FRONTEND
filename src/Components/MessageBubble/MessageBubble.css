@@ -37,3 +37,14 @@
     background-color: #dcf8c6;
     border-bottom-right-radius: 4px;
 }
+
+body.dark-mode .su-mensaje {
+    background-color: #202c33;
+    border-color: #202c33;
+    color: #e9edef;
+}
+
+body.dark-mode .mi-mensaje {
+    background-color: #005c4b;
+    color: #e9edef;
+}

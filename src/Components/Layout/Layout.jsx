@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import { Outlet, useNavigate } from "react-router";
 import { useChat } from "../../Context/ChatContext";
+import { useTheme } from "../../Context/ThemeContext";
 import SidebarItem from "../SidebarItem/SidebarItem";
 import Avatar from "../Avatar/Avatar";
 import "./Layout.css";
 
 const Layout = () => {
     const { chats, agregarNuevoChat } = useChat();
+    const { tema, toggleTema } = useTheme();
     const navigate = useNavigate();
+    
     const [busqueda, setBusqueda] = useState("");
+    const [menuAbierto, setMenuAbierto] = useState(false);
 
     const chatsFiltrados = chats.filter(chat => 
         chat.nombre.toLowerCase().includes(busqueda.toLowerCase())
@@ -55,8 +59,30 @@ const Layout = () => {
                         <Avatar nombre="Yo" />
                         <span className="mi-nombre">Yo</span>
                     </div>
-                    <div className="config-btns">
-                        <button title="Ajustes">⚙️</button>
+                    
+                    <div className="config-container">
+                        <button 
+                            className="btn-ajustes" 
+                            title="Ajustes"
+                            onClick={() => setMenuAbierto(!menuAbierto)}
+                        >
+                            ⚙️
+                        </button>
+
+                        {menuAbierto && (
+                            <div className="menu-flotante">
+                                <button onClick={() => {
+                                    toggleTema();
+                                    setMenuAbierto(false);
+                                }}>
+                                    {
+                                        tema === "dark" 
+                                        ? "☀️ Cambiar a Modo Claro" 
+                                        : "🌙 Cambiar a Modo Oscuro"
+                                    }
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
             </aside>

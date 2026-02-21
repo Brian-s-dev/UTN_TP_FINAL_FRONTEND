@@ -1,4 +1,5 @@
-body, html {
+body,
+html {
     margin: 0;
     padding: 0;
     overflow: hidden;
@@ -150,4 +151,113 @@ body, html {
     flex: 1;
     display: flex;
     flex-direction: column;
+}
+
+.config-container {
+    position: relative;
+}
+
+.btn-ajustes {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: 0.2s;
+}
+
+.btn-ajustes:hover {
+    opacity: 1;
+}
+
+.menu-flotante {
+    position: absolute;
+    bottom: 40px;
+    right: 0;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 8px;
+    z-index: 100;
+    white-space: nowrap;
+}
+
+.menu-flotante button {
+    width: 100%;
+    padding: 10px 15px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    color: #111b21;
+}
+
+.menu-flotante button:hover {
+    background-color: #f0f2f5;
+}
+
+body.dark-mode .layout-container {
+    background-color: #0b141a;
+}
+
+body.dark-mode .sidebar-container {
+    background-color: #111b21;
+    border-color: #313d45;
+}
+
+body.dark-mode .sidebar-header,
+body.dark-mode .sidebar-footer {
+    background-color: #202c33;
+    border-color: #313d45;
+}
+
+body.dark-mode .sidebar-header-top h2,
+body.dark-mode .chat-name,
+body.dark-mode .mi-nombre {
+    color: #e9edef;
+}
+
+body.dark-mode .search-container input {
+    background-color: #202c33;
+    color: #e9edef;
+}
+
+body.dark-mode .sidebar-nav {
+    background-color: #111b21;
+}
+
+body.dark-mode .chat-item {
+    border-color: #202c33;
+}
+
+body.dark-mode .chat-item:hover {
+    background-color: #202c33;
+}
+
+body.dark-mode .chat-item.active {
+    background-color: #2a3942;
+}
+
+body.dark-mode .chat-preview {
+    color: #8696a0;
+}
+
+body.dark-mode .no-results {
+    color: #8696a0;
+}
+
+/* Menú Flotante en Dark Mode */
+body.dark-mode .menu-flotante {
+    background-color: #233138;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .menu-flotante button {
+    color: #e9edef;
+}
+
+body.dark-mode .menu-flotante button:hover {
+    background-color: #111b21;
 }
