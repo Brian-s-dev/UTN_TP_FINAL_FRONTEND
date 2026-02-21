@@ -22,6 +22,7 @@ html {
     border-right: 3px solid transparent; 
     background-clip: padding-box;
 }
+
 .layout-container {
     display: flex;
     height: 100vh;
@@ -101,16 +102,33 @@ html {
     margin-top: 20px;
 }
 
+/* ✨ AJUSTES DEL TAMAÑO DEL CHAT Y EL AIRE IZQUIERDO */
 .chat-item {
+    position: relative; /* Necesario para la línea divisora */
     display: flex;
     align-items: center;
     gap: 15px;
-    padding: 12px 15px;
+    padding: 10px 15px 10px 25px; /* Menos alto y más aire a la izquierda */
     text-decoration: none;
     color: inherit;
-    border-bottom: 1px solid #f2f2f2;
     transition: background-color 0.1s;
     cursor: pointer;
+}
+
+/* ✨ LA NUEVA LÍNEA DIVISORA (NO OCUPA TODO EL ANCHO) */
+.chat-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 15px;
+    left: 78px; /* Salta el espacio del avatar */
+    height: 1px;
+    background-color: #f2f2f2;
+}
+
+/* Ocultar la línea en el último elemento para más elegancia */
+.chat-item:last-child::after {
+    display: none;
 }
 
 .chat-item:hover {
@@ -155,124 +173,3 @@ html {
 
 .component-wrapper {
     flex: 1;
-    display: flex;
-    flex-direction: column;
-    /* ✨ Agregamos height y overflow para contener al chat */
-    height: 100vh;
-    overflow: hidden; 
-}
-
-.config-container {
-    position: relative;
-}
-
-.btn-ajustes {
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    cursor: pointer;
-    opacity: 0.6;
-    transition: 0.2s;
-}
-
-.btn-ajustes:hover {
-    opacity: 1;
-}
-
-.menu-flotante {
-    position: absolute;
-    bottom: 40px;
-    right: 0;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    padding: 8px;
-    z-index: 100;
-    white-space: nowrap;
-}
-
-.menu-flotante button {
-    width: 100%;
-    padding: 10px 15px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    text-align: left;
-    font-size: 0.9rem;
-    border-radius: 4px;
-    color: #111b21;
-}
-
-.menu-flotante button:hover {
-    background-color: #f0f2f5;
-}
-
-body.dark-mode {
-    background-color: #05080a;
-    background-image:
-        radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.04) 0%, transparent 40%),
-        url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" opacity="0.04" filter="url(%23noiseFilter)"/></svg>');
-}
-
-body.dark-mode .layout-container,
-body.dark-mode .component-wrapper,
-body.dark-mode .chat-view-container {
-    background-color: transparent;
-}
-
-body.dark-mode .sidebar-container {
-    background-color: rgba(11, 20, 26, 0.6);
-    border-color: rgba(49, 61, 69, 0.5);
-    backdrop-filter: blur(10px);
-}
-
-body.dark-mode .sidebar-header,
-body.dark-mode .sidebar-footer {
-    background-color: transparent;
-    border-color: rgba(49, 61, 69, 0.5);
-}
-
-body.dark-mode .sidebar-header-top h2,
-body.dark-mode .chat-name,
-body.dark-mode .mi-nombre {
-    color: #e9edef;
-}
-
-body.dark-mode .search-container input {
-    background-color: rgba(32, 44, 51, 0.8);
-    color: #e9edef;
-}
-
-body.dark-mode .sidebar-nav {
-    background-color: transparent;
-}
-
-body.dark-mode .chat-item {
-    border-color: rgba(32, 44, 51, 0.5);
-}
-
-body.dark-mode .chat-item:hover {
-    background-color: rgba(32, 44, 51, 0.5);
-}
-
-body.dark-mode .chat-item.active {
-    background-color: rgba(42, 57, 66, 0.6);
-}
-
-body.dark-mode .chat-preview,
-body.dark-mode .no-results {
-    color: #8696a0;
-}
-
-body.dark-mode .menu-flotante {
-    background-color: #233138;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-}
-
-body.dark-mode .menu-flotante button {
-    color: #e9edef;
-}
-
-body.dark-mode .menu-flotante button:hover {
-    background-color: #111b21;
-}
