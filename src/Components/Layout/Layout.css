@@ -102,31 +102,28 @@ html {
     margin-top: 20px;
 }
 
-/* ✨ AJUSTES DEL TAMAÑO DEL CHAT Y EL AIRE IZQUIERDO */
 .chat-item {
-    position: relative; /* Necesario para la línea divisora */
+    position: relative; 
     display: flex;
     align-items: center;
     gap: 15px;
-    padding: 10px 15px 10px 25px; /* Menos alto y más aire a la izquierda */
+    padding: 10px 15px 10px 25px; 
     text-decoration: none;
     color: inherit;
     transition: background-color 0.1s;
     cursor: pointer;
 }
 
-/* ✨ LA NUEVA LÍNEA DIVISORA (NO OCUPA TODO EL ANCHO) */
 .chat-item::after {
     content: '';
     position: absolute;
     bottom: 0;
     right: 15px;
-    left: 78px; /* Salta el espacio del avatar */
+    left: 78px; 
     height: 1px;
     background-color: #f2f2f2;
 }
 
-/* Ocultar la línea en el último elemento para más elegancia */
 .chat-item:last-child::after {
     display: none;
 }
@@ -241,15 +238,16 @@ body.dark-mode .chat-view-container {
     background-color: transparent;
 }
 
-/* ✨ FONDO CASI NEGRO PURO PARA EL SIDEBAR */
+/* Fondo negro profundo para TODO el sidebar */
 body.dark-mode .sidebar-container {
     background-color: #0b0f12; 
     border-right: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+/* ✨ Ahora son transparentes para fusionarse con el negro del sidebar */
 body.dark-mode .sidebar-header,
 body.dark-mode .sidebar-footer {
-    background-color: #111a20; /* Apenas un toque más claro para el header/footer */
+    background-color: transparent; 
     border-color: rgba(255, 255, 255, 0.05);
 }
 
@@ -259,8 +257,9 @@ body.dark-mode .mi-nombre {
     color: #e9edef;
 }
 
+/* ✨ Oscurecimos un poco el input para que no brille demasiado en el negro */
 body.dark-mode .search-container input {
-    background-color: #202c33;
+    background-color: #182229;
     color: #e9edef;
 }
 
@@ -268,7 +267,6 @@ body.dark-mode .sidebar-nav {
     background-color: transparent;
 }
 
-/* ✨ LINEA DIVISORA SUTIL EN MODO OSCURO */
 body.dark-mode .chat-item::after {
     background-color: rgba(255, 255, 255, 0.04); 
 }
