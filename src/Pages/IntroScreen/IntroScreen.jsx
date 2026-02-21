@@ -6,8 +6,6 @@ import './IntroScreen.css';
 const IntroScreen = ({ onTerminar }) => {
     const [progreso, setProgreso] = useState(0);
     const [mensaje, setMensaje] = useState("Cargando mensajes...");
-    
-    // ✨ Controla en qué posición física está el texto
     const [estadoTexto, setEstadoTexto] = useState("arriba"); 
 
     const opciones = {
@@ -17,14 +15,14 @@ const IntroScreen = ({ onTerminar }) => {
     };
     const { View } = useLottie(opciones);
 
-    // Animación del primer texto y la barra
     useEffect(() => {
-        // 1. A los 100ms, el texto "cae" al centro
+        // 1. Cae rápidamente al inicio
         const entraTexto = setTimeout(() => setEstadoTexto("centro"), 100);
         
-        // 2. A los 2 segundos, el texto se "cae" hacia abajo y desaparece
-        const saleTexto = setTimeout(() => setEstadoTexto("abajo"), 2000);
+        // 2. Se va un poco antes de que la barra llegue a 100 (a los 4 segundos)
+        const saleTexto = setTimeout(() => setEstadoTexto("abajo"), 4000);
 
+        // 3. ✨ MAGIA DE TIEMPO: 50ms * 100 = 5000ms (5 segundos exactos de carga)
         const intervaloProgreso = setInterval(() => {
             setProgreso((prev) => {
                 if (prev >= 100) {
@@ -33,7 +31,7 @@ const IntroScreen = ({ onTerminar }) => {
                 }
                 return prev + 1;
             });
-        }, 30); 
+        }, 50); 
 
         return () => {
             clearTimeout(entraTexto);
@@ -42,24 +40,19 @@ const IntroScreen = ({ onTerminar }) => {
         };
     }, []);
 
-    // Animación cuando la barra llega a 100%
     useEffect(() => {
         if (progreso === 100) {
-            // Preparamos el nuevo texto y lo volvemos a poner arriba
             setMensaje("Mensajes cargados");
             setEstadoTexto("arriba"); 
             
-            // Un instante después, lo hacemos bajar al centro
             const entraNuevoTexto = setTimeout(() => {
                 setEstadoTexto("centro");
             }, 50);
             
-            // A los 1.5 segundos, lo hacemos irse hacia abajo
             const saleNuevoTexto = setTimeout(() => {
                 setEstadoTexto("abajo");
             }, 1500);
 
-            // A los 2 segundos (cuando ya se ocultó), pasamos a la app principal
             const pasarALaApp = setTimeout(() => {
                 onTerminar();
             }, 2000);
@@ -78,10 +71,9 @@ const IntroScreen = ({ onTerminar }) => {
                 {View}
             </div>
             
-            {/* ✨ Envolvemos el texto en una "caja" de altura fija para que no salte todo */}
             <div className="texto-animado-container">
                 <h2 
-                    key={mensaje} /* ¡EL TRUCO!: Reinicia la animación cuando cambia el mensaje */
+                    key={mensaje} 
                     className={`intro-text-animated estado-${estadoTexto}`}
                 >
                     {mensaje}

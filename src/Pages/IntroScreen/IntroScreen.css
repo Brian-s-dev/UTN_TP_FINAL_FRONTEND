@@ -1,10 +1,7 @@
 .intro-container {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #efeae2;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #efeae2; 
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -13,7 +10,7 @@
 }
 
 .lottie-wrapper {
-    width: 250px;
+    width: 250px; 
     height: 250px;
     display: flex;
     justify-content: center;
@@ -21,37 +18,37 @@
 }
 
 .texto-animado-container {
-    height: 30px;
+    height: 30px; 
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 10px;
-    overflow: hidden;
+    /* Esto es lo que crea la "máscara" que corta el texto como un bloque */
+    overflow: hidden; 
 }
 
 .intro-text-animated {
     font-family: sans-serif;
-    color: #5f6368;
+    color: #5f6368; 
     font-weight: 300;
     letter-spacing: 1px;
     font-size: 1.1rem;
     margin: 0;
-    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease;
+    /* ✨ Transición más lenta (0.8s) y SOLO en el movimiento espacial */
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
+/* Solo movemos el eje Y, sin tocar la opacidad */
 .estado-arriba {
-    transform: translateY(-20px);
-    opacity: 0;
+    transform: translateY(-35px); 
 }
 
 .estado-centro {
     transform: translateY(0);
-    opacity: 1;
 }
 
 .estado-abajo {
-    transform: translateY(20px);
-    opacity: 0;
+    transform: translateY(35px);
 }
 
 .progress-container {
@@ -73,9 +70,9 @@
 
 .progress-bar-fill {
     height: 100%;
-    background-color: #00a884;
+    background-color: #00a884; 
     border-radius: 4px;
-    transition: width 0.1s linear;
+    transition: width 0.1s linear; 
 }
 
 .progress-percent {
@@ -86,7 +83,7 @@
 }
 
 body.dark-mode .intro-container {
-    background-color: transparent;
+    background-color: transparent; 
 }
 
 body.dark-mode .intro-text-animated {
