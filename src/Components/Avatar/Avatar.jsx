@@ -1,27 +1,24 @@
 import React from "react";
-import { useLottie } from "lottie-react";
+import Lottie from "lottie-react";
 import blobAnimation from "../../assets/Animations/loading-blob.json";
 import "./Avatar.css";
 
 const Avatar = ({ imagen, nombre, isIA }) => {
-    // Configuramos el Lottie para el avatar
-    const opciones = {
-        animationData: blobAnimation,
-        loop: true,
-        autoplay: true,
-    };
-    const { View } = useLottie(opciones);
+    const claseCirculo = isIA ? "avatar-circle ia-avatar" : "avatar-circle";
 
     return (
-        <div className="avatar-circle">
+        <div className={claseCirculo}>
             {isIA ? (
-                // Si es IA, mostramos el Lottie
-                <div className="avatar-lottie">{View}</div>
+                <div className="avatar-lottie">
+                    <Lottie 
+                        animationData={blobAnimation} 
+                        loop={true} 
+                        autoplay={true} 
+                    />
+                </div>
             ) : imagen ? (
-                // Si es un contacto normal con imagen
                 <img src={imagen} alt={`Avatar de ${nombre}`} className="avatar-img" />
             ) : (
-                // Si no tiene imagen, mostramos su inicial
                 nombre?.charAt(0).toUpperCase() || "?"
             )}
         </div>
