@@ -15,7 +15,7 @@ const Welcome = () => {
         // Si la animación desaparece al final, quítale las dos barras "//" a la línea de abajo.
         // Esto le dice a Lottie: "Reproduce solo desde el fotograma 0 hasta el 90 y vuelve a empezar",
         // saltándose los fotogramas vacíos que trajo el archivo JSON original.
-        initialSegment: [0, 75] 
+        initialSegment: [0, 85] 
     };
     
     const { View } = useLottie(opciones);
