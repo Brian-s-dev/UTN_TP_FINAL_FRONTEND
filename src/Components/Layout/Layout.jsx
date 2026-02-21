@@ -6,10 +6,8 @@ import SidebarItem from "../SidebarItem/SidebarItem";
 import Avatar from "../Avatar/Avatar";
 import "./Layout.css";
 
-const { chats, agregarNuevoChat, usuarioActual } = useChat(); 
-
 const Layout = () => {
-    const { chats, agregarNuevoChat } = useChat();
+    const { chats, agregarNuevoChat, usuarioActual } = useChat();
     const { tema, toggleTema } = useTheme();
     const navigate = useNavigate();
     
@@ -58,7 +56,7 @@ const Layout = () => {
 
                 <div className="sidebar-footer">
                     <div className="mi-perfil">
-                        {/* Le pasamos el nombre a tu componente Avatar */}
+                        {/* Se muestra el avatar y el nombre que el usuario puso en el Login */}
                         <Avatar nombre={usuarioActual} />
                         <span className="mi-nombre">{usuarioActual}</span>
                     </div>

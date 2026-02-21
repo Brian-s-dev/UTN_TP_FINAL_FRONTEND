@@ -1,27 +1,78 @@
-import React from 'react';
-// 1. IMPORTANTE: Ahora importamos "useLottie" entre llaves
+import React, { useState, useEffect } from 'react';
 import { useLottie } from 'lottie-react'; 
 import blobAnimation from '../../assets/Animations/loading-blob.json'; 
 import './IntroScreen.css';
 
-const IntroScreen = () => {
-    // 2. Le pasamos tus configuraciones al Lottie
+// ✨ Ahora recibe "onTerminar" para saber cuándo cambiar de pantalla
+const IntroScreen = ({ onTerminar }) => {
+    const [progreso, setProgreso] = useState(0);
+    const [mensaje, setMensaje] = useState("Cargando mensajes...");
+    const [opacidadMensaje, setOpacidadMensaje] = useState(0);
+
     const opciones = {
         animationData: blobAnimation,
         loop: true,
         autoplay: true,
     };
-
-    // 3. El Hook procesa la animación y nos devuelve un elemento visual listo para usar llamado "View"
     const { View } = useLottie(opciones);
+
+    useEffect(() => {
+        const fadeTextoIn = setTimeout(() => setOpacidadMensaje(1), 100);
+        const fadeTextoOut = setTimeout(() => setOpacidadMensaje(0), 2000);
+
+        const intervaloProgreso = setInterval(() => {
+            setProgreso((prev) => {
+                if (prev >= 100) {
+                    clearInterval(intervaloProgreso);
+                    return 100;
+                }
+                return prev + 1;
+            });
+        }, 30); 
+
+        return () => {
+            clearTimeout(fadeTextoIn);
+            clearTimeout(fadeTextoOut);
+            clearInterval(intervaloProgreso);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (progreso === 100) {
+            setMensaje("Mensajes cargados");
+            setOpacidadMensaje(1); 
+            
+            // ✨ Cuando llega a 100, espera 2 segs y ejecuta onTerminar para entrar a la app
+            const pasarALaApp = setTimeout(() => {
+                onTerminar();
+            }, 2000);
+            
+            return () => clearTimeout(pasarALaApp);
+        }
+    }, [progreso, onTerminar]);
 
     return (
         <div className="intro-container">
             <div className="lottie-wrapper">
-                {/* 4. En lugar de usar <Lottie />, inyectamos el View directamente */}
                 {View}
             </div>
-            <h2 className="intro-text">Cargando mensajes...</h2>
+            
+            <h2 
+                className="intro-text-animated" 
+                style={{ opacity: opacidadMensaje }}
+            >
+                {mensaje}
+            </h2>
+
+            <div className="progress-container">
+                <div className="progress-bar-bg">
+                    <div 
+                        className="progress-bar-fill" 
+                        style={{ width: `${progreso}%` }}
+                    ></div>
+                </div>
+                <span className="progress-percent">{progreso}%</span>
+            </div>
         </div>
     );
 };
