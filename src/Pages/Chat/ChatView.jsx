@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom"; // Asegúrate de usar -dom si corresponde a tu versión
 import { useChat } from "../../Context/ChatContext";
 import { EMISOR } from "../../Utils/constants";
 import MessageBubble from "../../Components/MessageBubble/MessageBubble";
@@ -18,7 +18,7 @@ const ChatView = () => {
     const handleEnviar = (texto) => enviarMensaje(chatId, texto);
 
     return (
-        <div className="chat-view-container">
+        <div className="chat-view-container" key={chatId}>
             <div className="chat-header-placeholder">
                 <Avatar imagen={chatActivo.avatar} nombre={chatActivo.nombre} />
                 <h2>{chatActivo.nombre}</h2>
