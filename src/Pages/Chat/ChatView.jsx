@@ -1,62 +1,112 @@
-import React from "react";
-import { useParams, useNavigate } from "react-router";
-import { useChat } from "../../Context/ChatContext";
-import { EMISOR } from "../../Utils/constants";
-import MessageBubble from "../../Components/MessageBubble/MessageBubble";
-import ChatInput from "../../Components/ChatInput/ChatInput";
-import Avatar from "../../Components/Avatar/Avatar";
-import "./ChatView.css";
+.chat-view-container { 
+    display: flex; 
+    flex-direction: column; 
+    flex: 1;
+    height: 100%;
+    width: 100%;
+    background-color: #efeae2; 
+    font-family: sans-serif;
+    animation: deslizar-derecha 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
 
-const ChatView = () => {
-    const { chatId } = useParams();
-    const navigate = useNavigate(); // ✨ Inicializamos navegación
-    const { chats, enviarMensaje } = useChat();
+.chat-view-container.centered {
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    color: #8696a0;
+}
 
-    const chatActivo = chats.find((chat) => chat.id === Number(chatId) || chat.id === chatId);
+.chat-header-placeholder {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #f0f2f5;
+    border-bottom: 1px solid #d1d7db;
+}
 
-    if (!chatActivo) return <div className="chat-view-container centered">Chat no encontrado</div>;
+.chat-header-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
 
-    const handleEnviar = (texto) => enviarMensaje(chatId, texto);
+.chat-header-info h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #111b21;
+}
 
-    return (
-        <div className="chat-view-container" key={chatId}>
-            <div className="chat-header-placeholder">
-                <div className="chat-header-info">
-                    {/* Pasamos isIA al header también */}
-                    <Avatar 
-                        imagen={chatActivo.avatar} 
-                        nombre={chatActivo.nombre} 
-                        isIA={chatActivo.tipo === EMISOR.IA} 
-                    />
-                    <h2>{chatActivo.nombre}</h2>
-                </div>
-                
-                {/* ✨ El nuevo botón para volver a la pantalla de bienvenida */}
-                <button 
-                    className="btn-volver" 
-                    onClick={() => navigate("/")} 
-                    title="Cerrar chat"
-                >
-                    ➔
-                </button>
-            </div>
-            
-            <div className="chat-messages-placeholder">
-                {chatActivo.mensajes.map((mensaje) => (
-                    <MessageBubble 
-                        key={mensaje.id} 
-                        texto={mensaje.texto} 
-                        emisor={mensaje.emisor} 
-                        avatarContacto={chatActivo.avatar}
-                        nombreContacto={chatActivo.nombre}
-                        mostrarAvatar={chatActivo.tipo === EMISOR.GRUPO || chatActivo.tipo === EMISOR.IA}
-                    />
-                ))}
-            </div>
-            
-            <ChatInput onEnviarMensaje={handleEnviar} />
-        </div>
-    );
-};
+.btn-volver {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #54656f;
+    cursor: pointer;
+    transition: color 0.2s, transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-export default ChatView;
+.btn-volver:hover {
+    color: #111b21;
+    transform: translateX(3px);
+}
+
+.chat-messages-placeholder {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+@keyframes deslizar-derecha {
+    0% {
+        opacity: 0;
+        transform: translateX(-40px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+body.dark-mode .chat-view-container { 
+    background-color: transparent; 
+}
+
+body.dark-mode .chat-header-placeholder { 
+    background-color: rgba(32, 44, 51, 0.8); 
+    border-bottom: 1px solid rgba(49, 61, 69, 0.5);
+    backdrop-filter: blur(10px);
+}
+
+body.dark-mode .chat-header-info h2 { 
+    color: #e9edef; 
+}
+
+body.dark-mode .chat-input-area { 
+    background-color: rgba(32, 44, 51, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+body.dark-mode .chat-input-area input { 
+    background-color: rgba(42, 57, 66, 0.8); 
+    color: #e9edef; 
+    border: 1px solid transparent;
+}
+
+body.dark-mode .chat-input-area input:focus {
+    border-color: #00a884;
+}
+
+body.dark-mode .btn-volver {
+    color: #8696a0;
+}
+
+body.dark-mode .btn-volver:hover {
+    color: #e9edef;
+}
