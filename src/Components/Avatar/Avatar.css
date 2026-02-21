@@ -1,5 +1,5 @@
 .avatar-circle {
-    width: 38px; 
+    width: 38px; /* ✨ 2px más chico (antes solía ser 40px) */
     height: 38px;
     border-radius: 50%;
     background-color: #00a884;
@@ -19,14 +19,11 @@
     object-fit: cover;
 }
 
+/* Hacemos que el Lottie ocupe bien el espacio del círculo */
 .avatar-lottie {
     width: 160%; 
     height: 160%;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute; 
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 }
