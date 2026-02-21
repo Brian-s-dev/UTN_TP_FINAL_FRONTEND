@@ -20,11 +20,14 @@
     font-size: 0.8rem;
 }
 
-.mensaje-burbuja {
-    max-width: 60%;
-    padding: 10px 15px;
-    border-radius: 15px;
-    word-wrap: break-word;
+.mensaje-burbuja { 
+    max-width: 65%; 
+    padding: 10px 15px; 
+    border-radius: 15px; 
+    word-wrap: break-word; 
+    overflow-wrap: break-word; 
+    word-break: break-word; 
+    width: fit-content;
 }
 
 .su-mensaje {
