@@ -1,79 +1,63 @@
-import React, { useState, useEffect } from 'react';
-import { useLottie } from 'lottie-react'; 
-import blobAnimation from '../../assets/Animations/loading-blob.json'; 
-import './IntroScreen.css';
+import React, { useState } from 'react';
+import { useChat } from '../../Context/ChatContext';
+import './LoginScreen.css';
 
-const IntroScreen = ({ onTerminar }) => {
-    const [progreso, setProgreso] = useState(0);
-    const [mensaje, setMensaje] = useState("Cargando mensajes...");
-    const [opacidadMensaje, setOpacidadMensaje] = useState(0);
+const LoginScreen = ({ onLoginExitoso }) => {
+    const [nombre, setNombre] = useState('');
+    const [password, setPassword] = useState('');
+    const { setUsuarioActual } = useChat();
 
-    const opciones = {
-        animationData: blobAnimation,
-        loop: true,
-        autoplay: true,
-    };
-    const { View } = useLottie(opciones);
-
-    useEffect(() => {
-        const fadeTextoIn = setTimeout(() => setOpacidadMensaje(1), 100);
-        
-        const fadeTextoOut = setTimeout(() => setOpacidadMensaje(0), 2000);
-
-        const intervaloProgreso = setInterval(() => {
-            setProgreso((prev) => {
-                if (prev >= 100) {
-                    clearInterval(intervaloProgreso);
-                    return 100;
-                }
-                return prev + 1;
-            });
-        }, 30);
-
-        return () => {
-            clearTimeout(fadeTextoIn);
-            clearTimeout(fadeTextoOut);
-            clearInterval(intervaloProgreso);
-        };
-    }, []);
-
-    useEffect(() => {
-        if (progreso === 100) {
-            setMensaje("Mensajes cargados");
-            setOpacidadMensaje(1);
-            
-            const pasarALaApp = setTimeout(() => {
-                onTerminar();
-            }, 2000);
-            
-            return () => clearTimeout(pasarALaApp);
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (nombre.trim() && password.trim()) {
+            setUsuarioActual(nombre);
+            onLoginExitoso();
         }
-    }, [progreso, onTerminar]);
+    };
+
+
+    const botonDeshabilitado = !nombre.trim() || !password.trim();
 
     return (
-        <div className="intro-container">
-            <div className="lottie-wrapper">
-                {View}
-            </div>
-            
-            <h2 
-                className="intro-text-animated" 
-                style={{ opacity: opacidadMensaje }}
-            >
-                {mensaje}
-            </h2>
-
-            <div className="progress-container">
-                <div className="progress-bar-bg">
-                    <div 
-                        className="progress-bar-fill" 
-                        style={{ width: `${progreso}%` }}
-                    ></div>
+        <div className="login-container">
+            <div className="login-card">
+                <div className="login-header">
+                    <h2>Bienvenido</h2>
+                    <p>Ingresa tus datos para continuar</p>
                 </div>
-                <span className="progress-percent">{progreso}%</span>
+                
+                <form onSubmit={handleSubmit} className="login-form">
+                    <div className="input-group">
+                        <label>Nombre de Usuario</label>
+                        <input 
+                            type="text" 
+                            placeholder="Ej: Facundo" 
+                            value={nombre}
+                            onChange={(e) => setNombre(e.target.value)}
+                        />
+                    </div>
+                    
+                    <div className="input-group">
+                        <label>Contraseña</label>
+                        <input 
+                            type="password" 
+                            placeholder="••••••••" 
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </div>
+
+                    <button 
+                        type="submit" 
+                        className={`btn-login ${botonDeshabilitado ? 'disabled' : ''}`}
+                        disabled={botonDeshabilitado}
+                    >
+                        Entrar
+                    </button>
+                </form>
             </div>
         </div>
     );
 };
 
-export default IntroScreen;
+export default LoginScreen;
