@@ -1,8 +1,8 @@
 .modal-overlay {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-color: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(4px);
+    background-color: rgba(0, 0, 0, 0.5); /* Un poco más oscuro para mayor contraste */
+    backdrop-filter: blur(5px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,14 +13,20 @@
 .modal-content {
     background-color: #ffffff;
     padding: 30px;
-    border-radius: 16px;
+    border-radius: 18px; /* Un poquito más redondeado */
     width: 90%;
     max-width: 350px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
     gap: 15px;
     text-align: center;
+    
+    /* ✨ EFECTO DE RELIEVE 3D (Modo Claro) */
+    /* Reemplazamos la sombra plana anterior por esta doble: */
+    box-shadow: 
+        inset 0 3px 8px rgba(255, 255, 255, 0.95), /* Luz superior interna intensa */
+        0 20px 45px rgba(0, 0, 0, 0.25);          /* Sombra inferior profunda para que "flote" */
+    border: 1px solid rgba(255, 255, 255, 0.5); /* Un borde sutil para definirlo mejor */
 }
 
 .modal-content h3 {
@@ -44,10 +50,15 @@
     outline: none;
     box-sizing: border-box;
     transition: 0.2s;
+    /* ✨ Un toque sutil al input también */
+    background-color: #f8f9fa;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
 }
 
 .modal-content input:focus {
     border-color: #00a884;
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(0, 168, 132, 0.15);
 }
 
 .modal-buttons {
@@ -81,27 +92,38 @@
     font-weight: bold;
     cursor: pointer;
     transition: background 0.2s;
+    box-shadow: 0 4px 10px rgba(0, 168, 132, 0.3);
 }
 
 .btn-crear:hover {
     background-color: #008f6f;
+    box-shadow: 0 6px 15px rgba(0, 168, 132, 0.4);
 }
 
 .btn-crear:disabled {
     background-color: #8696a0;
     cursor: not-allowed;
     opacity: 0.6;
+    box-shadow: none;
 }
 
 @keyframes fadeInModal {
-    from { opacity: 0; transform: scale(0.95); }
+    from { opacity: 0; transform: scale(0.92); }
     to { opacity: 1; transform: scale(1); }
 }
 
+/* =========================================
+   🌙 MODO OSCURO
+   ========================================= */
+
 body.dark-mode .modal-content {
-    background-color: #111a20;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background-color: #161f26; /* Un tono apenas más claro que el fondo profundo */
+    border: none; /* Quitamos el borde, la luz hará el trabajo */
+    
+    /* ✨ EFECTO DE RELIEVE 3D (Modo Oscuro) */
+    box-shadow: 
+        inset 0 1px 3px rgba(255, 255, 255, 0.15), /* Luz de borde sutil */
+        0 25px 50px rgba(0, 0, 0, 0.6);           /* Sombra exterior muy profunda */
 }
 
 body.dark-mode .modal-content h3 {
@@ -113,13 +135,15 @@ body.dark-mode .modal-content p {
 }
 
 body.dark-mode .modal-content input {
-    background-color: #182229;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: #1e2931;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     color: #e9edef;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
 }
 
 body.dark-mode .modal-content input:focus {
     border-color: #00a884;
+    box-shadow: 0 0 0 3px rgba(0, 168, 132, 0.2);
 }
 
 body.dark-mode .btn-cancelar {
@@ -127,6 +151,6 @@ body.dark-mode .btn-cancelar {
 }
 
 body.dark-mode .btn-cancelar:hover {
-    background-color: #202c33;
+    background-color: #233138;
     color: #e9edef;
 }
