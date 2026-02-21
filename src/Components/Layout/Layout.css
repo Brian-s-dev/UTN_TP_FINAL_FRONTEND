@@ -23,18 +23,19 @@ html {
     background-clip: padding-box;
 }
 
+/* ✨ FONDO UNIFICADO PARA MODO CLARO */
 .layout-container {
     display: flex;
     height: 100vh;
     width: 100%;
     overflow: hidden;
-    background-color: #f0f2f5; /* Color unificado */
+    background-color: #f0f2f5; 
     font-family: sans-serif;
 }
 
 .sidebar-container {
     width: 350px;
-    background-color: #f0f2f5; /* Mismo color */
+    background-color: #f0f2f5;
     border-right: none;
     display: flex;
     flex-direction: column;
@@ -46,7 +47,7 @@ html {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    border-bottom: 1px solid #d1d7db;
+    /* ✨ LÍNEA INFERIOR ELIMINADA */
 }
 
 .sidebar-header-top {
@@ -93,7 +94,7 @@ html {
 .sidebar-nav {
     flex: 1;
     overflow-y: auto;
-    background-color: #f0f2f5; /* Mismo color */
+    background-color: #f0f2f5; /* Mismo color que el resto del sidebar */
 }
 
 .no-results {
@@ -129,11 +130,11 @@ html {
 }
 
 .chat-item:hover {
-    background-color: #f5f6f6;
+    background-color: #e4e6e9; /* Un hover sutilmente más oscuro para el nuevo fondo */
 }
 
 .chat-item.active {
-    background-color: #f0f2f5;
+    background-color: #e4e6e9;
 }
 
 .chat-info h4 {
@@ -151,7 +152,7 @@ html {
 .sidebar-footer {
     padding: 15px;
     background-color: #f0f2f5;
-    border-top: 1px solid #d1d7db;
+    /* ✨ LÍNEA SUPERIOR ELIMINADA */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -185,16 +186,16 @@ html {
         0 15px 35px rgba(0, 0, 0, 0.2);
 }
 
-/* ✨ EL RECTÁNGULO BORROSO (MODO CLARO) - AJUSTADO */
+/* ✨ EL RECTÁNGULO BORROSO (MODO CLARO) */
 .component-wrapper::before {
     content: '';
     position: absolute;
-    top: -100px; /* Más arriba */
-    right: -100px; /* Más a la derecha */
-    width: 500px; /* Mucho más grande */
+    top: -100px; 
+    right: -100px; 
+    width: 500px; 
     height: 400px;
     background: rgba(255, 120, 80, 0.25); 
-    filter: blur(100px); /* Desenfoque extremo para suavidad total */
+    filter: blur(100px); 
     transform: rotate(-25deg);
     z-index: -1;
     pointer-events: none; 
@@ -256,8 +257,12 @@ body.dark-mode {
         url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" opacity="0.04" filter="url(%23noiseFilter)"/></svg>');
 }
 
+/* ✨ AHORA SÍ, TODO EL SIDEBAR ES TRANSPARENTE EN MODO OSCURO PARA HEREDAR EL FONDO */
 body.dark-mode .layout-container,
-body.dark-mode .sidebar-container {
+body.dark-mode .sidebar-container,
+body.dark-mode .sidebar-header,
+body.dark-mode .sidebar-nav,
+body.dark-mode .sidebar-footer {
     background-color: transparent; 
 }
 
@@ -269,16 +274,10 @@ body.dark-mode .component-wrapper {
         0 15px 40px rgba(0, 0, 0, 0.7);
 }
 
-/* ✨ EL RECTÁNGULO BORROSO (MODO OSCURO) - AJUSTADO */
+/* ✨ EL RECTÁNGULO BORROSO (MODO OSCURO) */
 body.dark-mode .component-wrapper::before {
     background: rgba(0, 200, 255, 0.12); 
-    filter: blur(120px); /* Aún más borroso en modo oscuro */
-}
-
-body.dark-mode .sidebar-header,
-body.dark-mode .sidebar-footer {
-    background-color: transparent; 
-    border-color: rgba(255, 255, 255, 0.05);
+    filter: blur(120px); 
 }
 
 body.dark-mode .sidebar-header-top h2,
