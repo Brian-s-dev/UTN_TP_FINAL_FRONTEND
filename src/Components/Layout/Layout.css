@@ -23,19 +23,20 @@ html {
     background-clip: padding-box;
 }
 
+/* ✨ MODO CLARO: El fondo principal ahora es blanco para igualar al Sidebar */
 .layout-container {
     display: flex;
     height: 100vh;
     width: 100%;
     overflow: hidden;
-    background-color: #efeae2;
+    background-color: #ffffff; 
     font-family: sans-serif;
 }
 
 .sidebar-container {
     width: 350px;
-    background-color: #ffffff;
-    border-right: 1px solid #d1d7db;
+    background-color: transparent;
+    border-right: none; /* ✨ Eliminamos la línea divisora, ya no se necesita */
     display: flex;
     flex-direction: column;
 }
@@ -93,7 +94,7 @@ html {
 .sidebar-nav {
     flex: 1;
     overflow-y: auto;
-    background-color: #ffffff;
+    background-color: transparent;
 }
 
 .no-results {
@@ -168,12 +169,17 @@ html {
     color: #111b21;
 }
 
+/* ✨ LA MAGIA OCURRE AQUÍ: El marco derecho flotante */
 .component-wrapper {
     flex: 1;
     display: flex;
     flex-direction: column;
-    height: 100vh;
-    overflow: hidden; 
+    margin: 15px; /* Crea el hueco alrededor */
+    height: calc(100vh - 30px); /* Ajusta la altura restando los márgenes */
+    border-radius: 20px; /* Redondea las puntas */
+    overflow: hidden; /* Evita que el chat se desborde de las curvas */
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08); /* La sombra flotante */
+    background-color: #efeae2; /* El color de la vista de chat */
 }
 
 .config-container {
@@ -226,25 +232,24 @@ html {
    ========================================= */
 
 body.dark-mode {
-    background-color: #05080a;
+    background-color: #0b0f12; /* ✨ El body ahora es del mismo color negro que queríamos para el sidebar */
     background-image:
         radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.04) 0%, transparent 40%),
         url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" opacity="0.04" filter="url(%23noiseFilter)"/></svg>');
 }
 
+/* Hacemos transparentes los fondos para que se vea la textura del body */
 body.dark-mode .layout-container,
-body.dark-mode .component-wrapper,
-body.dark-mode .chat-view-container {
-    background-color: transparent;
-}
-
-/* Fondo negro profundo para TODO el sidebar */
 body.dark-mode .sidebar-container {
-    background-color: #0b0f12; 
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: transparent; 
 }
 
-/* ✨ Ahora son transparentes para fusionarse con el negro del sidebar */
+/* ✨ CAJA FLOTANTE EN MODO OSCURO: un poco más clara para resaltar sobre el fondo negro */
+body.dark-mode .component-wrapper {
+    background-color: #111a20; 
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4); /* Sombra más potente */
+}
+
 body.dark-mode .sidebar-header,
 body.dark-mode .sidebar-footer {
     background-color: transparent; 
@@ -257,14 +262,9 @@ body.dark-mode .mi-nombre {
     color: #e9edef;
 }
 
-/* ✨ Oscurecimos un poco el input para que no brille demasiado en el negro */
 body.dark-mode .search-container input {
     background-color: #182229;
     color: #e9edef;
-}
-
-body.dark-mode .sidebar-nav {
-    background-color: transparent;
 }
 
 body.dark-mode .chat-item::after {
@@ -272,11 +272,11 @@ body.dark-mode .chat-item::after {
 }
 
 body.dark-mode .chat-item:hover {
-    background-color: #182229;
+    background-color: rgba(255, 255, 255, 0.03); /* Hover sutil transparente */
 }
 
 body.dark-mode .chat-item.active {
-    background-color: #202c33;
+    background-color: rgba(255, 255, 255, 0.06);
 }
 
 body.dark-mode .chat-preview,
