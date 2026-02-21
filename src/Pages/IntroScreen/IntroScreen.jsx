@@ -3,11 +3,12 @@ import { useLottie } from 'lottie-react';
 import blobAnimation from '../../assets/Animations/loading-blob.json'; 
 import './IntroScreen.css';
 
-// ✨ Ahora recibe "onTerminar" para saber cuándo cambiar de pantalla
 const IntroScreen = ({ onTerminar }) => {
     const [progreso, setProgreso] = useState(0);
     const [mensaje, setMensaje] = useState("Cargando mensajes...");
-    const [opacidadMensaje, setOpacidadMensaje] = useState(0);
+    
+    // ✨ Controla en qué posición física está el texto
+    const [estadoTexto, setEstadoTexto] = useState("arriba"); 
 
     const opciones = {
         animationData: blobAnimation,
@@ -16,9 +17,13 @@ const IntroScreen = ({ onTerminar }) => {
     };
     const { View } = useLottie(opciones);
 
+    // Animación del primer texto y la barra
     useEffect(() => {
-        const fadeTextoIn = setTimeout(() => setOpacidadMensaje(1), 100);
-        const fadeTextoOut = setTimeout(() => setOpacidadMensaje(0), 2000);
+        // 1. A los 100ms, el texto "cae" al centro
+        const entraTexto = setTimeout(() => setEstadoTexto("centro"), 100);
+        
+        // 2. A los 2 segundos, el texto se "cae" hacia abajo y desaparece
+        const saleTexto = setTimeout(() => setEstadoTexto("abajo"), 2000);
 
         const intervaloProgreso = setInterval(() => {
             setProgreso((prev) => {
@@ -31,23 +36,39 @@ const IntroScreen = ({ onTerminar }) => {
         }, 30); 
 
         return () => {
-            clearTimeout(fadeTextoIn);
-            clearTimeout(fadeTextoOut);
+            clearTimeout(entraTexto);
+            clearTimeout(saleTexto);
             clearInterval(intervaloProgreso);
         };
     }, []);
 
+    // Animación cuando la barra llega a 100%
     useEffect(() => {
         if (progreso === 100) {
+            // Preparamos el nuevo texto y lo volvemos a poner arriba
             setMensaje("Mensajes cargados");
-            setOpacidadMensaje(1); 
+            setEstadoTexto("arriba"); 
             
-            // ✨ Cuando llega a 100, espera 2 segs y ejecuta onTerminar para entrar a la app
+            // Un instante después, lo hacemos bajar al centro
+            const entraNuevoTexto = setTimeout(() => {
+                setEstadoTexto("centro");
+            }, 50);
+            
+            // A los 1.5 segundos, lo hacemos irse hacia abajo
+            const saleNuevoTexto = setTimeout(() => {
+                setEstadoTexto("abajo");
+            }, 1500);
+
+            // A los 2 segundos (cuando ya se ocultó), pasamos a la app principal
             const pasarALaApp = setTimeout(() => {
                 onTerminar();
             }, 2000);
             
-            return () => clearTimeout(pasarALaApp);
+            return () => {
+                clearTimeout(entraNuevoTexto);
+                clearTimeout(saleNuevoTexto);
+                clearTimeout(pasarALaApp);
+            };
         }
     }, [progreso, onTerminar]);
 
@@ -57,12 +78,15 @@ const IntroScreen = ({ onTerminar }) => {
                 {View}
             </div>
             
-            <h2 
-                className="intro-text-animated" 
-                style={{ opacity: opacidadMensaje }}
-            >
-                {mensaje}
-            </h2>
+            {/* ✨ Envolvemos el texto en una "caja" de altura fija para que no salte todo */}
+            <div className="texto-animado-container">
+                <h2 
+                    key={mensaje} /* ¡EL TRUCO!: Reinicia la animación cuando cambia el mensaje */
+                    className={`intro-text-animated estado-${estadoTexto}`}
+                >
+                    {mensaje}
+                </h2>
+            </div>
 
             <div className="progress-container">
                 <div className="progress-bar-bg">
