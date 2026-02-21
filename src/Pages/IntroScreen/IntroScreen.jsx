@@ -12,6 +12,8 @@ const IntroScreen = ({ onTerminar }) => {
         animationData: blobAnimation,
         loop: true,
         autoplay: true,
+        // ✨ LA MISMA MAGIA: Cortamos los frames vacíos del final para un loop perfecto
+        initialSegment: [0, 120] 
     };
     const { View } = useLottie(opciones);
 
