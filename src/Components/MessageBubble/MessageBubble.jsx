@@ -4,7 +4,7 @@ import Avatar from "../Avatar/Avatar";
 import "./MessageBubble.css";
 
 const MessageBubble = ({ texto, emisor, avatarContacto, nombreContacto, mostrarAvatar, hora }) => {
-    const esMio = emisor === EMISOR.YO;
+    const esMio = emisor === EMISOR.USUARIO;
 
     return (
         <div className={`message-wrapper ${esMio ? "is-mine" : "is-other"}`}>
