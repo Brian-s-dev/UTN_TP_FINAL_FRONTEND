@@ -5,11 +5,19 @@
     align-items: center;
     height: 100%;
     width: 100%;
-    background-color: transparent;
+    /* ✨ LA CLAVE 1: Transparente y forzado para que no lo pise nadie */
+    background-color: transparent !important;
     text-align: center;
     padding: 20px;
     box-sizing: border-box;
     font-family: sans-serif;
+    /* ✨ LA CLAVE 2: Aseguramos que la animación de bienvenida se vea fluida */
+    animation: fade-in-welcome 0.8s ease-in-out forwards;
+}
+
+@keyframes fade-in-welcome {
+    0% { opacity: 0; transform: scale(0.95); }
+    100% { opacity: 1; transform: scale(1); }
 }
 
 .welcome-title {
@@ -25,8 +33,13 @@
     line-height: 1.5;
 }
 
+/* =========================================
+   🌙 MODO OSCURO
+   ========================================= */
+
 body.dark-mode .welcome-container {
-    background-color: #222e35;
+    /* ✨ ELIMINADO EL COLOR SÓLIDO (#222e35) QUE TAPABA TODO */
+    background-color: transparent !important;
 }
 
 body.dark-mode .welcome-title {
