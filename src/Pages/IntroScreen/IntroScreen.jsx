@@ -1,5 +1,6 @@
 import React from 'react';
 import Lottie from 'lottie-react'; 
+// ✨ CORRECCIÓN DE RUTA: Apuntando a la carpeta "Animations" con mayúscula
 import blobAnimation from '../../assets/Animations/loading-blob.json'; 
 import './IntroScreen.css';
 
@@ -7,7 +8,6 @@ const IntroScreen = () => {
     return (
         <div className="intro-container">
             <div className="lottie-wrapper">
-                {/* Reproductor profesional de Lottie */}
                 <Lottie 
                     animationData={blobAnimation} 
                     loop={true} 
