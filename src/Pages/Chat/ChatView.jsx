@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom"; // Asegúrate de usar -dom si corresponde a tu versión
+import { useParams } from "react-router";
 import { useChat } from "../../Context/ChatContext";
 import { EMISOR } from "../../Utils/constants";
 import MessageBubble from "../../Components/MessageBubble/MessageBubble";
