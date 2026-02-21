@@ -33,7 +33,7 @@
     letter-spacing: 1px;
     font-size: 1.1rem;
     margin: 0;
-    transition: transform 0.2s ease-in-out;
+    transition: transform 10ms ease-in-out;
 }
 
 .estado-arriba {
