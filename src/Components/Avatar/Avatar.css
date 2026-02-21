@@ -1,21 +1,28 @@
 .avatar-circle {
-    width: 45px;
-    height: 45px;
+    width: 38px; 
+    height: 38px;
     border-radius: 50%;
-    background-color: #dfe1e5;
+    background-color: #00a884;
+    color: white;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-right: 15px;
     font-weight: bold;
-    color: #5f6368;
-    flex-shrink: 0;
+    font-size: 1.2rem;
     overflow: hidden;
+    flex-shrink: 0;
 }
 
 .avatar-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 50%;
+}
+
+.avatar-lottie {
+    width: 160%; 
+    height: 160%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

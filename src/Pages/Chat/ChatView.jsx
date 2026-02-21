@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router-dom"; // ✨ Agregamos useNavigate
 import { useChat } from "../../Context/ChatContext";
 import { EMISOR } from "../../Utils/constants";
 import MessageBubble from "../../Components/MessageBubble/MessageBubble";
@@ -9,6 +9,7 @@ import "./ChatView.css";
 
 const ChatView = () => {
     const { chatId } = useParams();
+    const navigate = useNavigate(); // ✨ Inicializamos navegación
     const { chats, enviarMensaje } = useChat();
 
     const chatActivo = chats.find((chat) => chat.id === Number(chatId) || chat.id === chatId);
@@ -20,8 +21,24 @@ const ChatView = () => {
     return (
         <div className="chat-view-container" key={chatId}>
             <div className="chat-header-placeholder">
-                <Avatar imagen={chatActivo.avatar} nombre={chatActivo.nombre} />
-                <h2>{chatActivo.nombre}</h2>
+                <div className="chat-header-info">
+                    {/* Pasamos isIA al header también */}
+                    <Avatar 
+                        imagen={chatActivo.avatar} 
+                        nombre={chatActivo.nombre} 
+                        isIA={chatActivo.tipo === EMISOR.IA} 
+                    />
+                    <h2>{chatActivo.nombre}</h2>
+                </div>
+                
+                {/* ✨ El nuevo botón para volver a la pantalla de bienvenida */}
+                <button 
+                    className="btn-volver" 
+                    onClick={() => navigate("/")} 
+                    title="Cerrar chat"
+                >
+                    ➔
+                </button>
             </div>
             
             <div className="chat-messages-placeholder">
@@ -32,7 +49,7 @@ const ChatView = () => {
                         emisor={mensaje.emisor} 
                         avatarContacto={chatActivo.avatar}
                         nombreContacto={chatActivo.nombre}
-                        mostrarAvatar={chatActivo.tipo === EMISOR.GRUPO}
+                        mostrarAvatar={chatActivo.tipo === EMISOR.GRUPO || chatActivo.tipo === EMISOR.IA}
                     />
                 ))}
             </div>
