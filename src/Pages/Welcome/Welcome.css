@@ -5,13 +5,12 @@
     align-items: center;
     height: 100%;
     width: 100%;
-    /* ✨ LA CLAVE 1: Transparente y forzado para que no lo pise nadie */
+    /* Transparente y forzado para que no lo pise nadie y herede el fondo de Layout */
     background-color: transparent !important;
     text-align: center;
     padding: 20px;
     box-sizing: border-box;
     font-family: sans-serif;
-    /* ✨ LA CLAVE 2: Aseguramos que la animación de bienvenida se vea fluida */
     animation: fade-in-welcome 0.8s ease-in-out forwards;
 }
 
@@ -20,17 +19,60 @@
     100% { opacity: 1; transform: scale(1); }
 }
 
-.welcome-title {
-    color: #333;
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
+/* ✨ ESTILOS DEL BLOB */
+.welcome-blob-wrapper {
+    width: 220px; 
+    height: 220px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: -30px; /* Lo acercamos un poco al texto inferior */
 }
 
-.welcome-text {
-    color: #666;
-    font-size: 1.2rem;
-    max-width: 400px;
-    line-height: 1.5;
+/* ✨ ESTILOS DEL ENCABEZADO */
+.welcome-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    font-size: 2.8rem; /* Texto un poco más grande e imponente */
+    color: #333;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap; 
+}
+
+.welcome-greeting {
+    font-weight: 300; /* Saludo más delgado para dar jerarquía al nombre */
+}
+
+/* ✨ EL EFECTO DE CAÍDA EN BLOQUE (MÁSCARA) */
+.welcome-name-container {
+    display: inline-flex;
+    overflow: hidden; /* Esto hace que el texto sea invisible hasta que baje */
+    padding-bottom: 5px; /* Previene cortes en las letras bajas (como la g, p, y) */
+}
+
+.welcome-name {
+    font-weight: bold;
+    color: #00a884; /* Verde principal para modo claro */
+    /* Empieza fuera de la vista hacia arriba (-100%) */
+    transform: translateY(-100%); 
+    animation: block-drop 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    animation-delay: 0.4s; /* Espera un instante antes de caer */
+}
+
+@keyframes block-drop {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(0); }
+}
+
+/* ✨ SUBTÍTULO */
+.welcome-subtitle {
+    color: #667781;
+    font-size: 1.3rem;
+    font-weight: 300;
+    margin: 0;
+    margin-top: 5px;
 }
 
 /* =========================================
@@ -38,14 +80,17 @@
    ========================================= */
 
 body.dark-mode .welcome-container {
-    /* ✨ ELIMINADO EL COLOR SÓLIDO (#222e35) QUE TAPABA TODO */
     background-color: transparent !important;
 }
 
-body.dark-mode .welcome-title {
+body.dark-mode .welcome-header {
     color: #e9edef;
 }
 
-body.dark-mode .welcome-text {
+body.dark-mode .welcome-name {
+    color: #53bdeb; /* Celeste vibrante en modo oscuro para contrastar genial */
+}
+
+body.dark-mode .welcome-subtitle {
     color: #8696a0;
 }
