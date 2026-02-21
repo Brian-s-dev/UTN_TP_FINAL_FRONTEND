@@ -4,27 +4,31 @@ import Avatar from "../Avatar/Avatar";
 import "./MessageBubble.css";
 
 const MessageBubble = ({ texto, emisor, avatarContacto, nombreContacto, mostrarAvatar, hora }) => {
+    // ✨ Usamos EMISOR.USUARIO como definimos en tus constantes
     const esMio = emisor === EMISOR.USUARIO;
 
     return (
-        <div className={`message-wrapper ${esMio ? "is-mine" : "is-other"}`}>
-            {/* Si no es mío y debe mostrar avatar (grupos/IA), lo mostramos */}
+        // ✨ Clases en español coincidiendo con MessageBubble.css
+        <div className={`mensaje-fila ${esMio ? "fila-mia" : "fila-suya"}`}>
+            
+            {/* Avatar del contacto/IA */}
             {!esMio && mostrarAvatar && (
-                <div className="message-avatar-container">
+                <div className="mensaje-avatar">
                     <Avatar imagen={avatarContacto} nombre={nombreContacto} isIA={emisor === EMISOR.IA} />
                 </div>
             )}
 
-            <div className="message-bubble">
-                <span className="message-text">{texto}</span>
+            {/* Burbuja de chat con su respectivo color */}
+            <div className={`mensaje-burbuja ${esMio ? "mi-mensaje" : "su-mensaje"}`}>
+                <span>{texto}</span>
                 
-                {/* ✨ Contenedor del horario y las tildes */}
-                <div className="message-meta">
-                    <span className="message-time">{hora || "12:00"}</span>
+                {/* Contenedor del horario y las tildes */}
+                <div className="mensaje-meta">
+                    <span className="mensaje-hora">{hora || "12:00"}</span>
                     
-                    {/* Solo si el mensaje es mío, mostramos la doble tilde azul */}
+                    {/* Solo si es mío, mostramos la doble tilde azul */}
                     {esMio && (
-                        <span className="material-symbols-outlined icon-read">
+                        <span className="material-symbols-outlined icono-leido">
                             done_all
                         </span>
                     )}
