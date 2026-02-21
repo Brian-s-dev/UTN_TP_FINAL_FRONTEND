@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams, useNavigate } from "react-router-dom"; // ✨ Agregamos useNavigate
+import { useParams, useNavigate } from "react-router";
 import { useChat } from "../../Context/ChatContext";
 import { EMISOR } from "../../Utils/constants";
 import MessageBubble from "../../Components/MessageBubble/MessageBubble";
