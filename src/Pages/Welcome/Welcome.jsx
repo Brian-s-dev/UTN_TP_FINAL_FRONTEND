@@ -1,26 +1,29 @@
 import React from "react";
 import { useChat } from "../../Context/ChatContext";
-import Lottie from "lottie-react"; // ✨ Importamos el componente directo en lugar del hook
+import { useLottie } from "lottie-react"; // ✨ Volvemos al hook seguro
 import blobAnimation from "../../assets/Animations/loading-blob.json";
 import "./Welcome.css";
 
 const Welcome = () => {
     const { usuarioActual } = useChat();
 
+    const opciones = {
+        animationData: blobAnimation,
+        loop: true,
+        autoplay: true,
+        // ✨ LA SOLUCIÓN AL PARPADEO:
+        // Si la animación desaparece al final, quítale las dos barras "//" a la línea de abajo.
+        // Esto le dice a Lottie: "Reproduce solo desde el fotograma 0 hasta el 90 y vuelve a empezar",
+        // saltándose los fotogramas vacíos que trajo el archivo JSON original.
+        // initialSegment: [0, 90] 
+    };
+    
+    const { View } = useLottie(opciones);
+
     return (
         <div className="welcome-container">
             <div className="welcome-blob-wrapper">
-                {/* ✨ El componente directo suele manejar los loops de forma mucho más fluida */}
-                <Lottie 
-                    animationData={blobAnimation} 
-                    loop={true} 
-                    autoplay={true} 
-                    /* 💡 TRUCO PRO: Si el blob sigue desapareciendo, es porque el JSON tiene frames 
-                       vacíos al final. Descomenta la línea de abajo y ajusta el segundo número 
-                       (ej: si la animación dura 120 frames, pon 90 o 100) para cortarla antes 
-                       de que desaparezca y forzar el loop perfecto. */
-                    // initialSegment={[0, 90]} 
-                />
+                {View}
             </div>
             
             <div className="welcome-header">
