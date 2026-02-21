@@ -33,9 +33,11 @@
     letter-spacing: 1px;
     font-size: 1.1rem;
     margin: 0;
-    transition: transform 10ms ease-in-out;
+    /* ✨ CORRECCIÓN: Cambiamos 10ms por 0.4s para que se vea el viaje */
+    transition: transform 0.4s ease-in-out;
 }
 
+/* Las posiciones siguen igual para crear el efecto de ascensor */
 .estado-arriba {
     transform: translateY(-35px); 
 }
