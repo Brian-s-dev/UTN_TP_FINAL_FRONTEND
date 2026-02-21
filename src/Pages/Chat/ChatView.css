@@ -1,11 +1,13 @@
 .chat-view-container { 
     display: flex; 
     flex-direction: column; 
+    /* ✨ Eliminamos height: 100% y dejamos solo flex: 1 */
     flex: 1;
-    height: 100%;
     width: 100%;
     background-color: #efeae2; 
     font-family: sans-serif;
+    /* ✨ Evitamos que la animación cree scrolls fantasmas */
+    overflow: hidden; 
     animation: deslizar-derecha 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 

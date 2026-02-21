@@ -156,6 +156,9 @@ html {
     flex: 1;
     display: flex;
     flex-direction: column;
+    /* ✨ Agregamos height y overflow para contener al chat */
+    height: 100vh;
+    overflow: hidden; 
 }
 
 .config-container {
