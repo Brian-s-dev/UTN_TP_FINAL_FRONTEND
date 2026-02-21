@@ -6,7 +6,7 @@ import './IntroScreen.css';
 const IntroScreen = ({ onTerminar }) => {
     const [progreso, setProgreso] = useState(0);
     const [mensaje, setMensaje] = useState("Cargando mensajes...");
-    const [estadoTexto, setEstadoTexto] = useState("arriba"); 
+    const [estadoTexto, setEstadoTexto] = useState("entrando"); 
 
     const opciones = {
         animationData: blobAnimation,
@@ -16,10 +16,10 @@ const IntroScreen = ({ onTerminar }) => {
     const { View } = useLottie(opciones);
 
     useEffect(() => {
-        const entraTexto = setTimeout(() => setEstadoTexto("centro"), 100);
-        
-        const saleTexto = setTimeout(() => setEstadoTexto("abajo"), 3700);
+        // A los 3.6s el primer texto se va para abajo
+        const saleTexto = setTimeout(() => setEstadoTexto("saliendo"), 3600);
 
+        // La barra se llena en exactamente 4 segundos (40ms * 100)
         const intervaloProgreso = setInterval(() => {
             setProgreso((prev) => {
                 if (prev >= 100) {
@@ -31,7 +31,6 @@ const IntroScreen = ({ onTerminar }) => {
         }, 40); 
 
         return () => {
-            clearTimeout(entraTexto);
             clearTimeout(saleTexto);
             clearInterval(intervaloProgreso);
         };
@@ -39,19 +38,23 @@ const IntroScreen = ({ onTerminar }) => {
 
     useEffect(() => {
         if (progreso === 100) {
+            // La magia de React: Al cambiar el mensaje, la "key" reinicia 
+            // la animación de CSS automáticamente desde arriba.
             setMensaje("Mensajes cargados");
-            setEstadoTexto("arriba"); 
+            setEstadoTexto("entrando"); 
             
-            const entraNuevoTexto = setTimeout(() => {
-                setEstadoTexto("centro");
-            }, 50);
+            // A los 600ms (4.6s en total) mandamos el texto hacia abajo
+            const saleNuevoTexto = setTimeout(() => {
+                setEstadoTexto("saliendo");
+            }, 600);
             
+            // A los 1000ms (5s exactos en total) pasamos a la App
             const pasarALaApp = setTimeout(() => {
                 onTerminar();
             }, 1000);
             
             return () => {
-                clearTimeout(entraNuevoTexto);
+                clearTimeout(saleNuevoTexto);
                 clearTimeout(pasarALaApp);
             };
         }
@@ -66,7 +69,7 @@ const IntroScreen = ({ onTerminar }) => {
             <div className="texto-animado-container">
                 <h2 
                     key={mensaje} 
-                    className={`intro-text-animated estado-${estadoTexto}`}
+                    className={`intro-text-animated ${estadoTexto}`}
                 >
                     {mensaje}
                 </h2>

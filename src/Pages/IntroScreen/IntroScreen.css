@@ -33,21 +33,26 @@
     letter-spacing: 1px;
     font-size: 1.1rem;
     margin: 0;
-    /* ✨ CORRECCIÓN: Cambiamos 10ms por 0.4s para que se vea el viaje */
-    transition: transform 0.4s ease-in-out;
+    /* Eliminamos transition, ahora usamos clases de animación directa */
 }
 
-/* Las posiciones siguen igual para crear el efecto de ascensor */
-.estado-arriba {
-    transform: translateY(-35px); 
+/* Clases que disparan la animación del ascensor */
+.entrando {
+    animation: deslizar-adentro 0.4s forwards cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.estado-centro {
-    transform: translateY(0);
+.saliendo {
+    animation: deslizar-afuera 0.4s forwards cubic-bezier(0.5, 0, 0.75, 0);
 }
 
-.estado-abajo {
-    transform: translateY(35px);
+@keyframes deslizar-adentro {
+    0% { transform: translateY(-35px); }
+    100% { transform: translateY(0); }
+}
+
+@keyframes deslizar-afuera {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(35px); }
 }
 
 .progress-container {
