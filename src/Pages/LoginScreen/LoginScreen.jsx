@@ -15,7 +15,6 @@ const LoginScreen = ({ onLoginExitoso }) => {
         }
     };
 
-
     const botonDeshabilitado = !nombre.trim() || !password.trim();
 
     return (
