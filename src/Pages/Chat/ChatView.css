@@ -38,6 +38,32 @@
     color: #111b21;
 }
 
+/* ✨ Estilos para agrupar nombre y estado */
+.chat-header-texto {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.chat-header-texto h2 {
+    margin: 0;
+    font-size: 1.1rem; /* Un pelín más chico para que entre bien el subtítulo */
+    color: #111b21;
+    line-height: 1.2;
+}
+
+/* ✨ Estilo del texto de "última conexión" */
+.chat-status {
+    font-size: 0.8rem;
+    color: #667781;
+    margin-top: 2px;
+}
+
+/* ✨ Ajuste para el estado en Modo Oscuro */
+body.dark-mode .chat-status {
+    color: #8696a0;
+}
+
 .btn-volver {
     background: none;
     border: none;

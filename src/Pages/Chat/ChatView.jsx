@@ -7,6 +7,23 @@ import ChatInput from "../../Components/ChatInput/ChatInput";
 import Avatar from "../../Components/Avatar/Avatar";
 import "./ChatView.css";
 
+// ✨ Función para simular un estado de conexión realista y fijo por contacto
+const generarEstadoConexion = (id, tipo) => {
+    // La IA no tiene estado de "última vez"
+    if (tipo === EMISOR.IA) return null;
+    // Los grupos suelen mostrar los participantes, aquí ponemos un texto genérico
+    if (tipo === EMISOR.GRUPO) return "Haz clic aquí para info. del grupo";
+
+    // Usamos el ID para generar un número y asignar un estado fijo a cada persona
+    const numeroAleatorioFijo = String(id).charCodeAt(0) || 1;
+    
+    if (numeroAleatorioFijo % 3 === 0) return "En línea";
+    if (numeroAleatorioFijo % 2 === 0) return `última conexión hoy a las ${numeroAleatorioFijo % 12 + 8}:30`;
+    
+    const dias = (numeroAleatorioFijo % 5) + 1;
+    return `última conexión hace ${dias} día${dias > 1 ? 's' : ''}`;
+};
+
 const ChatView = () => {
     const { chatId } = useParams();
     const navigate = useNavigate(); 
@@ -17,6 +34,9 @@ const ChatView = () => {
     if (!chatActivo) return <div className="chat-view-container centered">Chat no encontrado</div>;
 
     const handleEnviar = (texto) => enviarMensaje(chatId, texto);
+    
+    // ✨ Calculamos el estado de conexión del chat actual
+    const estadoConexion = generarEstadoConexion(chatActivo.id, chatActivo.tipo);
 
     return (
         <div className="chat-view-container" key={chatId}>
@@ -27,7 +47,11 @@ const ChatView = () => {
                         nombre={chatActivo.nombre}
                         isIA={chatActivo.tipo === EMISOR.IA}
                     />
-                    <h2>{chatActivo.nombre}</h2>
+                    {/* ✨ Agrupamos nombre y estado en una columna */}
+                    <div className="chat-header-texto">
+                        <h2>{chatActivo.nombre}</h2>
+                        {estadoConexion && <span className="chat-status">{estadoConexion}</span>}
+                    </div>
                 </div>
 
                 <button className="btn-volver" onClick={() => navigate("/")} title="Cerrar chat">
@@ -41,7 +65,7 @@ const ChatView = () => {
                         key={mensaje.id}
                         texto={mensaje.texto}
                         emisor={mensaje.emisor}
-                        hora={mensaje.hora} /* ✨ Le pasamos el horario al componente de la burbuja */
+                        hora={mensaje.hora}
                         avatarContacto={chatActivo.avatar}
                         nombreContacto={chatActivo.nombre}
                         mostrarAvatar={chatActivo.tipo === EMISOR.GRUPO || chatActivo.tipo === EMISOR.IA}

@@ -320,3 +320,13 @@ body.dark-mode .menu-flotante button {
 body.dark-mode .menu-flotante button:hover {
     background-color: #111b21;
 }
+
+/* ✨ Ajuste del tamaño del ícono '+' (Nuevo Chat) */
+.btn-nuevo-chat .material-symbols-outlined {
+    font-size: 1.2rem; /* Achicamos el ícono para que respire dentro del círculo de 35px */
+}
+
+/* ✨ Color claro para la tuerca de ajustes en Modo Oscuro */
+body.dark-mode .btn-ajustes {
+    color: #e9edef;
+}
