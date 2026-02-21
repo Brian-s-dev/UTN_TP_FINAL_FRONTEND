@@ -3,19 +3,32 @@ import { EMISOR } from "../../Utils/constants";
 import Avatar from "../Avatar/Avatar";
 import "./MessageBubble.css";
 
-const MessageBubble = ({ texto, emisor, avatarContacto, nombreContacto, mostrarAvatar }) => {
-    const esMio = emisor === EMISOR.USUARIO;
-    const claseBurbuja = esMio ? 'mi-mensaje' : 'su-mensaje';
+const MessageBubble = ({ texto, emisor, avatarContacto, nombreContacto, mostrarAvatar, hora }) => {
+    const esMio = emisor === EMISOR.YO;
 
     return (
-        <div className={`mensaje-fila ${esMio ? 'fila-mia' : 'fila-suya'}`}>
+        <div className={`message-wrapper ${esMio ? "is-mine" : "is-other"}`}>
+            {/* Si no es mío y debe mostrar avatar (grupos/IA), lo mostramos */}
             {!esMio && mostrarAvatar && (
-                <div className="mensaje-avatar">
-                    <Avatar imagen={avatarContacto} nombre={nombreContacto} />
+                <div className="message-avatar-container">
+                    <Avatar imagen={avatarContacto} nombre={nombreContacto} isIA={emisor === EMISOR.IA} />
                 </div>
             )}
-            <div className={`mensaje-burbuja ${claseBurbuja}`}>
-                {texto}
+
+            <div className="message-bubble">
+                <span className="message-text">{texto}</span>
+                
+                {/* ✨ Contenedor del horario y las tildes */}
+                <div className="message-meta">
+                    <span className="message-time">{hora || "12:00"}</span>
+                    
+                    {/* Solo si el mensaje es mío, mostramos la doble tilde azul */}
+                    {esMio && (
+                        <span className="material-symbols-outlined icon-read">
+                            done_all
+                        </span>
+                    )}
+                </div>
             </div>
         </div>
     );

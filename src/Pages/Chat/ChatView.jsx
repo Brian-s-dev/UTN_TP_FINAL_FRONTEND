@@ -23,37 +23,32 @@ const ChatView = () => {
             <div className="chat-header-placeholder">
                 <div className="chat-header-info">
                     {/* Pasamos isIA al header también */}
-                    <Avatar 
-                        imagen={chatActivo.avatar} 
-                        nombre={chatActivo.nombre} 
-                        isIA={chatActivo.tipo === EMISOR.IA} 
+                    <Avatar
+                        imagen={chatActivo.avatar}
+                        nombre={chatActivo.nombre}
+                        isIA={chatActivo.tipo === EMISOR.IA}
                     />
                     <h2>{chatActivo.nombre}</h2>
                 </div>
-                
-                {/* ✨ El nuevo botón para volver a la pantalla de bienvenida */}
-                <button 
-                    className="btn-volver" 
-                    onClick={() => navigate("/")} 
-                    title="Cerrar chat"
-                >
-                    ➔
+
+                <button className="btn-volver" onClick={() => navigate("/")} title="Cerrar chat">
+                    <span className="material-symbols-outlined">arrow_back</span>
                 </button>
             </div>
-            
+
             <div className="chat-messages-placeholder">
                 {chatActivo.mensajes.map((mensaje) => (
-                    <MessageBubble 
-                        key={mensaje.id} 
-                        texto={mensaje.texto} 
-                        emisor={mensaje.emisor} 
+                    <MessageBubble
+                        key={mensaje.id}
+                        texto={mensaje.texto}
+                        emisor={mensaje.emisor}
                         avatarContacto={chatActivo.avatar}
                         nombreContacto={chatActivo.nombre}
                         mostrarAvatar={chatActivo.tipo === EMISOR.GRUPO || chatActivo.tipo === EMISOR.IA}
                     />
                 ))}
             </div>
-            
+
             <ChatInput onEnviarMensaje={handleEnviar} />
         </div>
     );
