@@ -1,6 +1,6 @@
 import React from 'react';
 import Lottie from 'lottie-react'; 
-import blobAnimation from '../../assets/animations/loading-blob.json'; 
+import blobAnimation from '../../assets/Animations/loading-blob.json'; 
 import './IntroScreen.css';
 
 const IntroScreen = () => {
