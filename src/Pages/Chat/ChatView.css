@@ -4,8 +4,8 @@
     flex: 1;
     height: 100%;
     width: 100%;
-    /* ✨ LA CLAVE: Fondo transparente para ver el relieve y el blur */
-    background-color: transparent; 
+    /* ✨ RESTAURADO: Color sólido para el chat activo */
+    background-color: #efeae2; 
     font-family: sans-serif;
     animation: deslizar-derecha 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
@@ -111,8 +111,9 @@
     }
 }
 
+/* ✨ FONDO SÓLIDO EN MODO OSCURO TAMBIÉN */
 body.dark-mode .chat-view-container { 
-    background-color: transparent; 
+    background-color: #0e161c; /* Mismo color sólido que el wrapper */
 }
 
 body.dark-mode .chat-header-placeholder { 
