@@ -6,6 +6,7 @@ const ChatContext = createContext();
 
 export const ChatProvider = ({ children }) => {
     const [chats, setChats] = useState(chatsIniciales);
+    const [usuarioActual, setUsuarioActual] = useState("Yo"); 
 
     const enviarMensaje = (chatId, texto) => {
         setChats(prevChats => prevChats.map(chat => {
@@ -32,7 +33,8 @@ export const ChatProvider = ({ children }) => {
     };
 
     return (
-        <ChatContext.Provider value={{ chats, enviarMensaje, agregarNuevoChat }}>
+        // ✨ Exportamos usuarioActual y setUsuarioActual
+        <ChatContext.Provider value={{ chats, enviarMensaje, agregarNuevoChat, usuarioActual, setUsuarioActual }}>
             {children}
         </ChatContext.Provider> 
     );

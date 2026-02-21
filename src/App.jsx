@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter } from 'react-router';
 import { ChatProvider } from './Context/ChatContext';
-import { ThemeProvider, useTheme } from './Context/ThemeContext';
+import { ThemeProvider } from './Context/ThemeContext';
 import AppRouter from './Router/AppRouter';
 import IntroScreen from './Pages/IntroScreen/IntroScreen';
+import LoginScreen from './Pages/LoginScreen/LoginScreen';
 
 const AppContent = () => {
-  const [cargando, setCargando] = useState(true);
+  // Etapas: 'login' -> 'intro' -> 'app'
+  const [etapa, setEtapa] = useState('login');
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setCargando(false);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
+  if (etapa === 'login') {
+    return <LoginScreen onLoginExitoso={() => setEtapa('intro')} />;
+  }
 
-  if (cargando) return <IntroScreen />;
+  if (etapa === 'intro') {
+    // Cuando la intro termine (100% + 2 seg), pasa a 'app'
+    return <IntroScreen onTerminar={() => setEtapa('app')} />;
+  }
 
   return (
-    <ChatProvider>
-      <AppRouter />
-    </ChatProvider>
+    <AppRouter />
   );
 };
 
@@ -28,7 +28,10 @@ function App() {
   return (
     <BrowserRouter>
       <ThemeProvider>
-        <AppContent />
+        {/* ChatProvider envuelve desde el Login para guardar el usuario */}
+        <ChatProvider> 
+          <AppContent />
+        </ChatProvider>
       </ThemeProvider>
     </BrowserRouter>
   );

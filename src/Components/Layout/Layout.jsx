@@ -6,6 +6,8 @@ import SidebarItem from "../SidebarItem/SidebarItem";
 import Avatar from "../Avatar/Avatar";
 import "./Layout.css";
 
+const { chats, agregarNuevoChat, usuarioActual } = useChat(); 
+
 const Layout = () => {
     const { chats, agregarNuevoChat } = useChat();
     const { tema, toggleTema } = useTheme();
@@ -56,8 +58,9 @@ const Layout = () => {
 
                 <div className="sidebar-footer">
                     <div className="mi-perfil">
-                        <Avatar nombre="Yo" />
-                        <span className="mi-nombre">Yo</span>
+                        {/* Le pasamos el nombre a tu componente Avatar */}
+                        <Avatar nombre={usuarioActual} />
+                        <span className="mi-nombre">{usuarioActual}</span>
                     </div>
                     
                     <div className="config-container">
@@ -75,11 +78,7 @@ const Layout = () => {
                                     toggleTema();
                                     setMenuAbierto(false);
                                 }}>
-                                    {
-                                        tema === "dark" 
-                                        ? "☀️ Cambiar a Modo Claro" 
-                                        : "🌙 Cambiar a Modo Oscuro"
-                                    }
+                                    {tema === "dark" ? "☀️ Cambiar a Modo Claro" : "🌙 Cambiar a Modo Oscuro"}
                                 </button>
                             </div>
                         )}
