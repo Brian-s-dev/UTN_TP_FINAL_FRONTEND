@@ -169,19 +169,17 @@ html {
     color: #111b21;
 }
 
-/* ✨ LA MAGIA OCURRE AQUÍ: El marco derecho flotante */
 .component-wrapper {
     flex: 1;
     display: flex;
     flex-direction: column;
-    margin: 15px; /* Crea el hueco alrededor */
-    height: calc(100vh - 30px); /* Ajusta la altura restando los márgenes */
-    border-radius: 20px; /* Redondea las puntas */
-    overflow: hidden; /* Evita que el chat se desborde de las curvas */
-    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08); /* La sombra flotante */
-    background-color: #efeae2; /* El color de la vista de chat */
+    margin: 8px; /* Bajamos de 15px a un sutil 8px */
+    height: calc(100vh - 16px); /* 100vh menos 8px de arriba y 8px de abajo */
+    border-radius: 16px; /* Suavizamos un pelín la curva para que acompañe el nuevo margen */
+    overflow: hidden; 
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08); 
+    background-color: #efeae2; 
 }
-
 .config-container {
     position: relative;
 }
