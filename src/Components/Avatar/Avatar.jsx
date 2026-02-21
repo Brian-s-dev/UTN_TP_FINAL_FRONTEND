@@ -4,6 +4,8 @@ import blobAnimation from "../../assets/Animations/loading-blob.json";
 import "./Avatar.css";
 
 const Avatar = ({ imagen, nombre, isIA }) => {
+    // ✨ Calculamos la clase dinámicamente
+    // Si es IA, agregamos una clase extra para poder darle estilos únicos
     const claseCirculo = isIA ? "avatar-circle ia-avatar" : "avatar-circle";
 
     return (
