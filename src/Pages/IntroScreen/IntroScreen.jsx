@@ -16,13 +16,10 @@ const IntroScreen = ({ onTerminar }) => {
     const { View } = useLottie(opciones);
 
     useEffect(() => {
-        // 1. Cae rápidamente al inicio
         const entraTexto = setTimeout(() => setEstadoTexto("centro"), 100);
         
-        // 2. Se va un poco antes de que la barra llegue a 100 (a los 4 segundos)
-        const saleTexto = setTimeout(() => setEstadoTexto("abajo"), 4000);
+        const saleTexto = setTimeout(() => setEstadoTexto("abajo"), 3700);
 
-        // 3. ✨ MAGIA DE TIEMPO: 50ms * 100 = 5000ms (5 segundos exactos de carga)
         const intervaloProgreso = setInterval(() => {
             setProgreso((prev) => {
                 if (prev >= 100) {
@@ -31,7 +28,7 @@ const IntroScreen = ({ onTerminar }) => {
                 }
                 return prev + 1;
             });
-        }, 50); 
+        }, 40); 
 
         return () => {
             clearTimeout(entraTexto);
@@ -49,17 +46,12 @@ const IntroScreen = ({ onTerminar }) => {
                 setEstadoTexto("centro");
             }, 50);
             
-            const saleNuevoTexto = setTimeout(() => {
-                setEstadoTexto("abajo");
-            }, 1500);
-
             const pasarALaApp = setTimeout(() => {
                 onTerminar();
-            }, 2000);
+            }, 1000);
             
             return () => {
                 clearTimeout(entraNuevoTexto);
-                clearTimeout(saleNuevoTexto);
                 clearTimeout(pasarALaApp);
             };
         }

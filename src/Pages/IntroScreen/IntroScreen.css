@@ -23,7 +23,6 @@
     justify-content: center;
     align-items: center;
     margin-top: 10px;
-    /* Esto es lo que crea la "máscara" que corta el texto como un bloque */
     overflow: hidden; 
 }
 
@@ -34,11 +33,9 @@
     letter-spacing: 1px;
     font-size: 1.1rem;
     margin: 0;
-    /* ✨ Transición más lenta (0.8s) y SOLO en el movimiento espacial */
-    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    transition: transform 0.2s ease-in-out;
 }
 
-/* Solo movemos el eje Y, sin tocar la opacidad */
 .estado-arriba {
     transform: translateY(-35px); 
 }
