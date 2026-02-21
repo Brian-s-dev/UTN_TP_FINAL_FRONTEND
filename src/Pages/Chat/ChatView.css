@@ -11,6 +11,45 @@
     animation: deslizar-derecha 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
+/* =========================================
+   ESTILOS DE LA BARRA DE ESCRIBIR MENSAJES
+   ========================================= */
+.chat-input-area {
+    display: flex;
+    padding: 15px 20px;
+    background-color: #f0f2f5;
+    gap: 15px;
+    align-items: center;
+    border-top: 1px solid #d1d7db;
+}
+
+.chat-input-area input {
+    flex: 1;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    background-color: #ffffff;
+    transition: 0.2s;
+}
+
+.chat-input-area button {
+    background-color: #00a884;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.chat-input-area button:hover {
+    background-color: #008f6f;
+}
+
 .chat-view-container.centered {
     justify-content: center;
     align-items: center;

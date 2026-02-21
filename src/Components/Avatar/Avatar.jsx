@@ -1,22 +1,21 @@
 import React from "react";
-import { useLottie } from "lottie-react";
+import Lottie from "lottie-react"; // ✨ Volvemos a usar el componente
 import blobAnimation from "../../assets/Animations/loading-blob.json";
 import "./Avatar.css";
 
 const Avatar = ({ imagen, nombre, isIA }) => {
-    const opciones = {
-        animationData: blobAnimation,
-        loop: true,
-        autoplay: true,
-    };
-    const { View } = useLottie(opciones);
-
     return (
         <div className="avatar-circle">
             {isIA ? (
-                <div className="avatar-lottie">{View}</div>
+                // ✨ El componente Lottie SOLO se ejecuta si es IA
+                <div className="avatar-lottie">
+                    <Lottie 
+                        animationData={blobAnimation} 
+                        loop={true} 
+                        autoplay={true} 
+                    />
+                </div>
             ) : imagen ? (
-
                 <img src={imagen} alt={`Avatar de ${nombre}`} className="avatar-img" />
             ) : (
                 nombre?.charAt(0).toUpperCase() || "?"
