@@ -4,6 +4,7 @@ import { useChat } from "../../Context/ChatContext";
 import { useTheme } from "../../Context/ThemeContext";
 import SidebarItem from "../SidebarItem/SidebarItem";
 import Avatar from "../Avatar/Avatar";
+import NewChatModal from "../NewChatModal/NewChatModal"; // ✨ Importamos el Modal
 import "./Layout.css";
 
 const Layout = () => {
@@ -13,17 +14,22 @@ const Layout = () => {
     
     const [busqueda, setBusqueda] = useState("");
     const [menuAbierto, setMenuAbierto] = useState(false);
+    const [modalAbierto, setModalAbierto] = useState(false);
 
     const chatsFiltrados = chats.filter(chat => 
         chat.nombre.toLowerCase().includes(busqueda.toLowerCase())
     );
 
-    const handleCrearChat = () => {
-        const nombre = prompt("Ingresa el nombre del nuevo contacto:");
-        if (nombre && nombre.trim() !== "") {
-            const nuevoId = agregarNuevoChat(nombre);
-            navigate(`/chat/${nuevoId}`);
-        }
+    const handleAbrirModal = () => {
+        setModalAbierto(true);
+        setMenuAbierto(false); 
+    };
+
+    // ✨ Ahora esta función recibe el nombre directamente desde el Modal
+    const confirmarCrearChat = (nombreNuevoChat) => {
+        const nuevoId = agregarNuevoChat(nombreNuevoChat);
+        setModalAbierto(false);
+        navigate(`/chat/${nuevoId}`);
     };
 
     return (
@@ -32,8 +38,7 @@ const Layout = () => {
                 <div className="sidebar-header">
                     <div className="sidebar-header-top">
                         <h2>Mensajes</h2>
-                        {/* ✨ Cambiamos el "+" por el icono de nuevo chat */}
-                        <button className="btn-nuevo-chat" onClick={handleCrearChat} title="Nuevo Chat">
+                        <button className="btn-nuevo-chat" onClick={handleAbrirModal} title="Nuevo Chat">
                             <span className="material-symbols-outlined">chat</span>
                         </button>
                     </div>
@@ -64,7 +69,6 @@ const Layout = () => {
                     </div>
                     
                     <div className="config-container">
-                        {/* ✨ Cambiamos el "⚙️" por el icono de ajustes */}
                         <button 
                             className="btn-ajustes" 
                             title="Ajustes"
@@ -75,7 +79,6 @@ const Layout = () => {
 
                         {menuAbierto && (
                             <div className="menu-flotante">
-                                {/* ✨ Cambiamos los emojis por iconos y los alineamos */}
                                 <button 
                                     onClick={() => {
                                         toggleTema();
@@ -96,6 +99,13 @@ const Layout = () => {
             <main className="component-wrapper">
                 <Outlet />
             </main>
+
+            {/* ✨ Llamamos al componente limpio */}
+            <NewChatModal 
+                isOpen={modalAbierto} 
+                onClose={() => setModalAbierto(false)} 
+                onCrear={confirmarCrearChat} 
+            />
         </div >
     );
 };
