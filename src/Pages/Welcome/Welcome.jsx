@@ -1,38 +1,35 @@
 import React from "react";
 import { useChat } from "../../Context/ChatContext";
-import { useLottie } from "lottie-react";
+import Lottie from "lottie-react"; // ✨ Importamos el componente directo en lugar del hook
 import blobAnimation from "../../assets/Animations/loading-blob.json";
 import "./Welcome.css";
 
 const Welcome = () => {
-    // Obtenemos el nombre del usuario logueado
     const { usuarioActual } = useChat();
-
-    // Configuramos la animación de Lottie
-    const opciones = {
-        animationData: blobAnimation,
-        loop: true,
-        autoplay: true,
-    };
-    const { View } = useLottie(opciones);
 
     return (
         <div className="welcome-container">
-            {/* 1. El Blob Animado */}
             <div className="welcome-blob-wrapper">
-                {View}
+                {/* ✨ El componente directo suele manejar los loops de forma mucho más fluida */}
+                <Lottie 
+                    animationData={blobAnimation} 
+                    loop={true} 
+                    autoplay={true} 
+                    /* 💡 TRUCO PRO: Si el blob sigue desapareciendo, es porque el JSON tiene frames 
+                       vacíos al final. Descomenta la línea de abajo y ajusta el segundo número 
+                       (ej: si la animación dura 120 frames, pon 90 o 100) para cortarla antes 
+                       de que desaparezca y forzar el loop perfecto. */
+                    // initialSegment={[0, 90]} 
+                />
             </div>
             
-            {/* 2. El Saludo y el Nombre Animado */}
             <div className="welcome-header">
                 <span className="welcome-greeting">Bienvenido</span>
-                {/* Contenedor con overflow hidden para la animación de caída */}
                 <div className="welcome-name-container">
                     <span className="welcome-name">{usuarioActual}</span>
                 </div>
             </div>
 
-            {/* 3. El Subtítulo */}
             <p className="welcome-subtitle">¿Qué vamos a hacer hoy?</p>
         </div>
     );
