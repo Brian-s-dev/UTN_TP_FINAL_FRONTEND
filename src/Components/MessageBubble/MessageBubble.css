@@ -21,13 +21,36 @@
 }
 
 .mensaje-burbuja { 
+    /* ✨ Agregamos position relative y min-width para acomodar la hora */
+    position: relative; 
     max-width: 65%; 
-    padding: 10px 15px; 
+    padding: 10px 15px 22px 15px; /* ✨ padding inferior de 22px para que el texto no pise la hora */
     border-radius: 15px; 
     word-wrap: break-word; 
     overflow-wrap: break-word; 
     word-break: break-word; 
     width: fit-content;
+    min-width: 85px; /* Evita que los mensajes muy cortitos como "Ok" se rompan */
+}
+
+/* ✨ ESTILOS NUEVOS PARA HORA Y TILDES */
+.mensaje-meta {
+    position: absolute;
+    bottom: 4px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.mensaje-hora {
+    font-size: 0.65rem;
+    color: #667781;
+}
+
+.icono-leido {
+    font-size: 16px !important; /* Achicamos el ícono de Google Fonts */
+    color: #53bdeb; /* ✨ El clásico celeste de WhatsApp */
 }
 
 .su-mensaje {
@@ -50,4 +73,9 @@ body.dark-mode .su-mensaje {
 body.dark-mode .mi-mensaje {
     background-color: #005c4b;
     color: #e9edef;
+}
+
+/* ✨ Ajuste del color de la hora para el modo oscuro */
+body.dark-mode .mensaje-hora {
+    color: rgba(255, 255, 255, 0.6);
 }

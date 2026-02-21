@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams, useNavigate } from "react-router"; // ✨ Agregamos useNavigate
+import { useParams, useNavigate } from "react-router"; 
 import { useChat } from "../../Context/ChatContext";
 import { EMISOR } from "../../Utils/constants";
 import MessageBubble from "../../Components/MessageBubble/MessageBubble";
@@ -9,7 +9,7 @@ import "./ChatView.css";
 
 const ChatView = () => {
     const { chatId } = useParams();
-    const navigate = useNavigate(); // ✨ Inicializamos navegación
+    const navigate = useNavigate(); 
     const { chats, enviarMensaje } = useChat();
 
     const chatActivo = chats.find((chat) => chat.id === Number(chatId) || chat.id === chatId);
@@ -22,7 +22,6 @@ const ChatView = () => {
         <div className="chat-view-container" key={chatId}>
             <div className="chat-header-placeholder">
                 <div className="chat-header-info">
-                    {/* Pasamos isIA al header también */}
                     <Avatar
                         imagen={chatActivo.avatar}
                         nombre={chatActivo.nombre}
@@ -42,6 +41,7 @@ const ChatView = () => {
                         key={mensaje.id}
                         texto={mensaje.texto}
                         emisor={mensaje.emisor}
+                        hora={mensaje.hora} /* ✨ Le pasamos el horario al componente de la burbuja */
                         avatarContacto={chatActivo.avatar}
                         nombreContacto={chatActivo.nombre}
                         mostrarAvatar={chatActivo.tipo === EMISOR.GRUPO || chatActivo.tipo === EMISOR.IA}

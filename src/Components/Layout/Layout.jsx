@@ -32,7 +32,10 @@ const Layout = () => {
                 <div className="sidebar-header">
                     <div className="sidebar-header-top">
                         <h2>Mensajes</h2>
-                        <button className="btn-nuevo-chat" onClick={handleCrearChat} title="Nuevo Chat">+</button>
+                        {/* ✨ Cambiamos el "+" por el icono de nuevo chat */}
+                        <button className="btn-nuevo-chat" onClick={handleCrearChat} title="Nuevo Chat">
+                            <span className="material-symbols-outlined">chat</span>
+                        </button>
                     </div>
                     <div className="search-container">
                         <input 
@@ -56,27 +59,34 @@ const Layout = () => {
 
                 <div className="sidebar-footer">
                     <div className="mi-perfil">
-                        {/* Se muestra el avatar y el nombre que el usuario puso en el Login */}
                         <Avatar nombre={usuarioActual} />
                         <span className="mi-nombre">{usuarioActual}</span>
                     </div>
                     
                     <div className="config-container">
+                        {/* ✨ Cambiamos el "⚙️" por el icono de ajustes */}
                         <button 
                             className="btn-ajustes" 
                             title="Ajustes"
                             onClick={() => setMenuAbierto(!menuAbierto)}
                         >
-                            ⚙️
+                            <span className="material-symbols-outlined">settings</span>
                         </button>
 
                         {menuAbierto && (
                             <div className="menu-flotante">
-                                <button onClick={() => {
-                                    toggleTema();
-                                    setMenuAbierto(false);
-                                }}>
-                                    {tema === "dark" ? "☀️ Cambiar a Modo Claro" : "🌙 Cambiar a Modo Oscuro"}
+                                {/* ✨ Cambiamos los emojis por iconos y los alineamos */}
+                                <button 
+                                    onClick={() => {
+                                        toggleTema();
+                                        setMenuAbierto(false);
+                                    }}
+                                    style={{ display: "flex", alignItems: "center", gap: "8px" }}
+                                >
+                                    <span className="material-symbols-outlined">
+                                        {tema === "dark" ? "light_mode" : "dark_mode"}
+                                    </span>
+                                    {tema === "dark" ? "Cambiar a Modo Claro" : "Cambiar a Modo Oscuro"}
                                 </button>
                             </div>
                         )}
