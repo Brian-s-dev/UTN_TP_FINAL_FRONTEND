@@ -23,7 +23,6 @@ html {
     background-clip: padding-box;
 }
 
-/* ✨ MODO CLARO: El fondo principal ahora es blanco para igualar al Sidebar */
 .layout-container {
     display: flex;
     height: 100vh;
@@ -36,7 +35,7 @@ html {
 .sidebar-container {
     width: 350px;
     background-color: transparent;
-    border-right: none; /* ✨ Eliminamos la línea divisora, ya no se necesita */
+    border-right: none;
     display: flex;
     flex-direction: column;
 }
@@ -169,17 +168,38 @@ html {
     color: #111b21;
 }
 
+/* ✨ LA CAJA FLOTANTE PRINCIPAL (MODO CLARO) */
 .component-wrapper {
     flex: 1;
     display: flex;
     flex-direction: column;
-    margin: 8px; /* Bajamos de 15px a un sutil 8px */
-    height: calc(100vh - 16px); /* 100vh menos 8px de arriba y 8px de abajo */
-    border-radius: 16px; /* Suavizamos un pelín la curva para que acompañe el nuevo margen */
+    margin: 8px; 
+    height: calc(100vh - 16px); 
+    border-radius: 16px;
     overflow: hidden; 
-    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08); 
-    background-color: #efeae2; 
+    background-color: #e4ddd6; 
+    position: relative; 
+    z-index: 1; 
+    box-shadow: 
+        inset 0 2px 5px rgba(255, 255, 255, 0.8), /* Luz superior */
+        0 10px 25px rgba(0, 0, 0, 0.12);          /* Sombra inferior */
 }
+
+/* ✨ EL RECTÁNGULO BORROSO (MODO CLARO) */
+.component-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -50px; 
+    right: -50px; 
+    width: 300px; 
+    height: 200px;
+    background: rgba(255, 160, 122, 0.15); 
+    filter: blur(60px); 
+    transform: rotate(-15deg);
+    z-index: -1;
+    pointer-events: none; 
+}
+
 .config-container {
     position: relative;
 }
@@ -230,22 +250,28 @@ html {
    ========================================= */
 
 body.dark-mode {
-    background-color: #0b0f12; /* ✨ El body ahora es del mismo color negro que queríamos para el sidebar */
+    background-color: #0b0f12; 
     background-image:
         radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.04) 0%, transparent 40%),
         url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" opacity="0.04" filter="url(%23noiseFilter)"/></svg>');
 }
 
-/* Hacemos transparentes los fondos para que se vea la textura del body */
 body.dark-mode .layout-container,
 body.dark-mode .sidebar-container {
     background-color: transparent; 
 }
 
-/* ✨ CAJA FLOTANTE EN MODO OSCURO: un poco más clara para resaltar sobre el fondo negro */
+/* ✨ CAJA FLOTANTE Y RELIEVE (MODO OSCURO) */
 body.dark-mode .component-wrapper {
-    background-color: #111a20; 
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4); /* Sombra más potente */
+    background-color: #0d1419; 
+    box-shadow: 
+        inset 0 1px 3px rgba(255, 255, 255, 0.08),
+        0 12px 35px rgba(0, 0, 0, 0.5);
+}
+
+/* ✨ EL RECTÁNGULO BORROSO (MODO OSCURO) */
+body.dark-mode .component-wrapper::before {
+    background: rgba(0, 200, 255, 0.06); 
 }
 
 body.dark-mode .sidebar-header,
@@ -270,7 +296,7 @@ body.dark-mode .chat-item::after {
 }
 
 body.dark-mode .chat-item:hover {
-    background-color: rgba(255, 255, 255, 0.03); /* Hover sutil transparente */
+    background-color: rgba(255, 255, 255, 0.03); 
 }
 
 body.dark-mode .chat-item.active {
