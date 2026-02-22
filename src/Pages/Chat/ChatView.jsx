@@ -60,9 +60,12 @@ const ChatView = () => {
                         texto={mensaje.texto}
                         emisor={mensaje.emisor}
                         hora={mensaje.hora}
-                        avatarContacto={chatActivo.avatar}
-                        nombreContacto={chatActivo.nombre}
+                        /* ✨ Magia aquí: Si el mensaje tiene remitente, lo usamos. Si no, usamos el del chat */
+                        avatarContacto={mensaje.remitenteAvatar || chatActivo.avatar}
+                        nombreContacto={mensaje.remitenteNombre || chatActivo.nombre}
                         mostrarAvatar={chatActivo.tipo === EMISOR.GRUPO}
+                        /* ✨ Le avisamos a la burbuja que estamos en un grupo */
+                        esGrupo={chatActivo.tipo === EMISOR.GRUPO} 
                     />
                 ))}
             </div>

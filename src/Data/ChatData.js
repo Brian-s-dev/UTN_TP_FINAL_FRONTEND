@@ -13,14 +13,15 @@ export const chatsIniciales = [
         ]
     },
     {
-        id: 2,
-        nombre: "Chat UTN Front-End",
-        tipo: EMISOR.GRUPO,
-        avatar: "https://ui-avatars.com/api/?name=UTN+Front&background=00a884&color=fff",
+        id: 2, 
+        nombre: "Chat UTN Front-End", 
+        tipo: EMISOR.GRUPO, 
+        avatar: "https://ui-avatars.com/api/?name=UTN+Front&background=00a884&color=fff", 
         mensajes: [
-            { id: "msg-2-1", texto: "Hoy cené empanadas de nuevo...", emisor: EMISOR.CONTACTO, hora: "21:30" },
+            { id: "msg-2-1", texto: "Hoy cené empanadas de nuevo...", emisor: EMISOR.CONTACTO, hora: "21:30", remitenteNombre: "Matias", remitenteAvatar: "https://i.pravatar.cc/150?u=matias" },
             { id: "msg-2-2", texto: "Jajaja yo pedí una pizza, no tenía ganas de cocinar.", emisor: EMISOR.USUARIO, hora: "21:32" },
-            { id: "msg-2-3", texto: "¡Qué rico! Guarden un poco para el grupo.", emisor: EMISOR.CONTACTO, hora: "21:35" }
+            { id: "msg-2-3", texto: "¡Qué rico! Guarden un poco para el grupo.", emisor: EMISOR.CONTACTO, hora: "21:35", remitenteNombre: "Sofía", remitenteAvatar: "https://i.pravatar.cc/150?u=sofia" },
+            { id: "msg-2-4", texto: "Mañana a primera hora subo las notas del TP.", emisor: EMISOR.CONTACTO, hora: "21:40", remitenteNombre: "Profe Carlos", remitenteAvatar: "https://i.pravatar.cc/150?u=profe" }
         ]
     },
     {
@@ -47,14 +48,14 @@ export const chatsIniciales = [
         ]
     },
     {
-        id: 5,
-        nombre: "Equipo de Diseño",
-        tipo: EMISOR.GRUPO,
-        avatar: "https://ui-avatars.com/api/?name=Equipo+Diseño&background=6a1b9a&color=fff",
+        id: 5, 
+        nombre: "Equipo de Diseño", 
+        tipo: EMISOR.GRUPO, 
+        avatar: "https://ui-avatars.com/api/?name=Equipo+Diseño&background=6a1b9a&color=fff", 
         mensajes: [
-            { id: "msg-5-1", texto: "Chicos, la reunión semanal se pasa a las 15hs.", emisor: EMISOR.CONTACTO, hora: "14:00" },
+            { id: "msg-5-1", texto: "Chicos, la reunión semanal se pasa a las 15hs.", emisor: EMISOR.CONTACTO, hora: "14:00", remitenteNombre: "Valeria", remitenteAvatar: "https://i.pravatar.cc/150?u=valeria" },
             { id: "msg-5-2", texto: "Dale, agendado. Nos vemos ahí.", emisor: EMISOR.USUARIO, hora: "14:05" },
-            { id: "msg-5-3", texto: "Yo me conecto 5 minutitos tarde, ¡espérenme!", emisor: EMISOR.CONTACTO, hora: "14:10" }
+            { id: "msg-5-3", texto: "Yo me conecto 5 minutitos tarde, ¡espérenme!", emisor: EMISOR.CONTACTO, hora: "14:10", remitenteNombre: "Lucas", remitenteAvatar: "https://i.pravatar.cc/150?u=lucas" }
         ]
     },
     {

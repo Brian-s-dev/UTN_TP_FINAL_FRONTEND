@@ -79,3 +79,17 @@ body.dark-mode .mi-mensaje {
 body.dark-mode .mensaje-hora {
     color: rgba(255, 255, 255, 0.6);
 }
+
+/* ✨ Estilo del nombre del remitente en grupos */
+.mensaje-nombre-autor {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #e55375; /* Un color bonito (como WhatsApp asigna colores al azar) */
+    margin-bottom: 3px;
+    line-height: 1;
+}
+
+body.dark-mode .mensaje-nombre-autor {
+    color: #ff7a9f; /* Color más claro para que resalte en la burbuja oscura */
+}
