@@ -105,3 +105,151 @@ body, html {
 
 .search-container input {
     width: 100%;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    background-color: #ffffff;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.sidebar-nav {
+    flex: 1;
+    overflow-y: auto;
+    background-color: #f0f2f5;
+}
+
+.no-results { text-align: center; color: #888; margin-top: 20px; }
+
+.chat-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 15px 10px 25px;
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 0.1s;
+    cursor: pointer;
+}
+
+.chat-item::after {
+    content: ''; position: absolute; bottom: 0; right: 15px; left: 78px;
+    height: 1px; background-color: #f2f2f2;
+}
+
+.chat-item:last-child::after { display: none; }
+.chat-item:hover { background-color: #e4e6e9; }
+.chat-item.active { background-color: #e4e6e9; }
+
+.chat-info h4 { margin: 0; font-size: 1rem; color: #111b21; white-space: nowrap; }
+.chat-info p { margin: 3px 0 0; font-size: 0.85rem; color: #667781; white-space: nowrap; }
+
+.sidebar-footer {
+    padding: 15px; background-color: #f0f2f5; display: flex;
+    justify-content: space-between; align-items: center; transition: all 0.3s ease;
+}
+
+.mi-perfil { display: flex; align-items: center; gap: 10px; }
+.mi-nombre { font-weight: bold; color: #111b21; white-space: nowrap; }
+
+.component-wrapper {
+    flex: 1; display: flex; flex-direction: column; margin: 8px;
+    height: calc(100vh - 16px); border-radius: 16px; overflow: hidden;
+    background-color: #ded6cc; position: relative; z-index: 1;
+    flex-shrink: 0; /* ✨ FIX: Evita que el chat se aplaste */
+    box-shadow: inset 0 3px 8px rgba(255, 255, 255, 0.9), 0 15px 35px rgba(0, 0, 0, 0.2);
+    transition: min-width 0.3s ease;
+}
+
+.component-wrapper::before {
+    content: ''; position: absolute; top: -100px; right: -100px;
+    width: 500px; height: 400px; background: rgba(255, 120, 80, 0.25);
+    filter: blur(100px); transform: rotate(-25deg); z-index: -1; pointer-events: none;
+}
+
+.config-container { position: relative; }
+.btn-ajustes { background: none; border: none; font-size: 1.2rem; cursor: pointer; opacity: 0.6; transition: 0.2s; color: #54656f; }
+.btn-ajustes:hover { opacity: 1; color: #111b21; }
+
+.menu-flotante {
+    position: absolute; bottom: 40px; right: 0; background-color: white;
+    border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); padding: 8px; z-index: 100; white-space: nowrap;
+}
+.menu-flotante button { width: 100%; padding: 10px 15px; background: none; border: none; cursor: pointer; text-align: left; font-size: 0.9rem; border-radius: 4px; color: #111b21; }
+.menu-flotante button:hover { background-color: #f0f2f5; }
+
+/* =========================================
+   ESTILOS DEL SIDEBAR COLAPSADO 
+   ========================================= */
+.sidebar-container.colapsado {
+    width: 85px !important;
+    min-width: 85px !important;
+    max-width: 85px !important;
+}
+
+.contacts-sidebar-container {
+    width: 350px !important;
+}
+
+.sidebar-container.colapsado .sidebar-header { padding: 15px 10px; }
+.sidebar-container.colapsado .sidebar-header-top { flex-direction: column; gap: 15px; align-items: center; justify-content: center; width: 100%; }
+.sidebar-container.colapsado .sidebar-header-top h2 { display: none !important; width: 0 !important; height: 0 !important; opacity: 0 !important; margin: 0 !important; padding: 0 !important; overflow: hidden !important; }
+.sidebar-container.colapsado .header-buttons { flex-direction: column-reverse; gap: 15px; width: 100%; justify-content: center; }
+.sidebar-container.colapsado .search-container { display: none !important; }
+.sidebar-container.colapsado .chat-info { display: none !important; }
+.sidebar-container.colapsado .chat-item { padding: 15px 0; justify-content: center; }
+.sidebar-container.colapsado .chat-item::after { display: none !important; }
+.sidebar-container.colapsado .sidebar-footer { flex-direction: column; padding: 20px 0; gap: 25px; }
+.sidebar-container.colapsado .mi-perfil { margin: 0; }
+.sidebar-container.colapsado .mi-nombre { display: none !important; }
+.sidebar-container.colapsado .menu-flotante { left: 60px; bottom: 0; right: auto; }
+
+/* =========================================
+   📱 RESPONSIVE DESIGN (Móviles)
+   ========================================= */
+@media (max-width: 900px) {
+    .sidebar-container {
+        /* ✨ Si no está colapsado, fuerza a ocupar el 100% real de la pantalla */
+        width: 100vw !important; 
+        max-width: 100vw !important;
+    }
+
+    .contacts-sidebar-container {
+        width: 100vw !important; /* Para que la lista de contactos no se rompa */
+    }
+
+    .component-wrapper {
+        margin: 0;
+        border-radius: 0;
+        height: 100vh;
+        /* ✨ El chat medirá exactamente el ancho de la pantalla menos los 85px de la barra colapsada */
+        width: calc(100vw - 85px);
+        min-width: calc(100vw - 85px); 
+    }
+
+    .component-wrapper::before {
+        display: none;
+    }
+}
+
+/* =========================================
+   🌙 MODO OSCURO
+   ========================================= */
+body.dark-mode { background-color: #0b0f12; background-image: radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.04) 0%, transparent 40%), url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" opacity="0.04" filter="url(%23noiseFilter)"/></svg>'); }
+body.dark-mode .layout-container, body.dark-mode .sidebar-container, body.dark-mode .sidebar-header, body.dark-mode .sidebar-nav, body.dark-mode .sidebar-footer { background-color: transparent; }
+body.dark-mode .component-wrapper { background-color: #0e161c; box-shadow: inset 0 2px 5px rgba(255, 255, 255, 0.12), 0 15px 40px rgba(0, 0, 0, 0.7); }
+body.dark-mode .component-wrapper::before { background: rgba(0, 200, 255, 0.12); filter: blur(120px); }
+body.dark-mode .sidebar-header-top h2, body.dark-mode .chat-name, body.dark-mode .mi-nombre { color: #e9edef; }
+body.dark-mode .search-container input { background-color: #182229; color: #e9edef; }
+body.dark-mode .chat-item::after { background-color: rgba(255, 255, 255, 0.04); }
+body.dark-mode .chat-item:hover { background-color: rgba(255, 255, 255, 0.03); }
+body.dark-mode .chat-item.active { background-color: rgba(255, 255, 255, 0.06); }
+body.dark-mode .chat-preview, body.dark-mode .no-results { color: #8696a0; }
+body.dark-mode .menu-flotante { background-color: #233138; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); }
+body.dark-mode .menu-flotante button { color: #e9edef; }
+body.dark-mode .menu-flotante button:hover { background-color: #111b21; }
+body.dark-mode .btn-colapsar { color: #8696a0; }
+body.dark-mode .btn-colapsar:hover { background-color: #202c33; color: #e9edef; }
+body.dark-mode .btn-ajustes { color: #e9edef; opacity: 1; }
+body.dark-mode .btn-ajustes:hover { color: #ffffff; }
