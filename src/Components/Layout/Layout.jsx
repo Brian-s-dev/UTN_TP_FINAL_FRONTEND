@@ -1,21 +1,25 @@
 import React, { useState } from "react";
-import { Outlet } from "react-router";
+import { Outlet, useNavigate, useLocation } from "react-router"; // ✨ Añadimos useLocation
 import { useChat } from "../../Context/ChatContext";
 import { useTheme } from "../../Context/ThemeContext";
 import SidebarItem from "../SidebarItem/SidebarItem";
 import Avatar from "../Avatar/Avatar";
-import ContactsSidebar from "../ContactsSidebar/ContactsSidebar"; // ✨ Importamos
+import ContactsSidebar from "../ContactsSidebar/ContactsSidebar";
+import NewChatModal from "../NewChatModal/NewChatModal"; 
 import "./Layout.css";
 
 const Layout = () => {
     const { chats, usuarioActual } = useChat();
     const { tema, toggleTema } = useTheme();
+    const navigate = useNavigate();
+    const location = useLocation(); // ✨ Obtenemos la ruta actual
     
     const [busqueda, setBusqueda] = useState("");
     const [menuAbierto, setMenuAbierto] = useState(false);
-    
-    // ✨ Estado para abrir el nuevo Sidebar deslizante
     const [sidebarContactosAbierto, setSidebarContactosAbierto] = useState(false);
+
+    // ✨ LÓGICA RESPONSIVE: Si la ruta incluye "/chat/", significa que estamos dentro de una conversación
+    const isChatActivo = location.pathname.includes("/chat/");
 
     const chatsFiltrados = chats.filter(chat => 
         chat.nombre.toLowerCase().includes(busqueda.toLowerCase())
@@ -23,13 +27,13 @@ const Layout = () => {
 
     return (
         <div className="layout-container">
-            <aside className="sidebar-container">
+            {/* ✨ En mobile, ocultamos el sidebar si hay un chat abierto */}
+            <aside className={`sidebar-container ${isChatActivo ? 'oculto-en-mobile' : ''}`}>
                 <div className="sidebar-header">
                     <div className="sidebar-header-top">
                         <h2>Mensajes</h2>
                         <button 
                             className="btn-nuevo-chat" 
-                            /* ✨ Al hacer clic, abrimos el panel lateral en vez del modal */
                             onClick={() => setSidebarContactosAbierto(true)} 
                             title="Nuevo Chat"
                         >
@@ -90,14 +94,14 @@ const Layout = () => {
                     </div>
                 </div>
 
-                {/* ✨ Aquí entra el nuevo panel. Se deslizará sobre el contenido anterior */}
                 <ContactsSidebar 
                     isOpen={sidebarContactosAbierto} 
                     onClose={() => setSidebarContactosAbierto(false)} 
                 />
-
             </aside>
-            <main className="component-wrapper">
+            
+            {/* ✨ En mobile, ocultamos el contenedor derecho (Welcome) si NO hay un chat abierto */}
+            <main className={`component-wrapper ${!isChatActivo ? 'oculto-en-mobile' : ''}`}>
                 <Outlet />
             </main>
         </div >

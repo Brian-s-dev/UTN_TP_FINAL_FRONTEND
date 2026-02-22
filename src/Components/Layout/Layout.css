@@ -332,3 +332,36 @@ body.dark-mode .menu-flotante button:hover {
 body.dark-mode .btn-ajustes {
     color: #e9edef;
 }
+
+/* ✨ LÍMITE PARA PANTALLAS GIGANTES (Ultra Wide) */
+.layout-container {
+    max-width: 2000px;
+    margin: 0 auto; /* Lo centra si la pantalla es mayor a 2000px */
+}
+
+/* =========================================
+   📱 RESPONSIVE DESIGN (Media Queries)
+   ========================================= */
+
+@media (max-width: 900px) {
+    /* El sidebar ahora ocupa el 100% de la pantalla cuando es visible */
+    .sidebar-container {
+        width: 100%;
+    }
+
+    /* Le quitamos los márgenes y bordes redondeados al chat para que sea pantalla completa nativa */
+    .component-wrapper {
+        margin: 0;
+        border-radius: 0;
+        height: 100vh;
+    }
+
+    .component-wrapper::before {
+        display: none; /* Quitamos el brillo de fondo grande para mejorar rendimiento en mobile */
+    }
+
+    /* Clase mágica que alterna la vista usando la lógica de React */
+    .oculto-en-mobile {
+        display: none !important;
+    }
+}

@@ -93,3 +93,14 @@ body.dark-mode .mensaje-hora {
 body.dark-mode .mensaje-nombre-autor {
     color: #ff7a9f; /* Color más claro para que resalte en la burbuja oscura */
 }
+
+/* Ajustes Mobile para las burbujas */
+@media (max-width: 900px) {
+    .mensaje-burbuja {
+        max-width: 85%; /* En celular, permitimos que las burbujas ocupen más ancho de la pantalla */
+    }
+    
+    .mensaje-fila {
+        margin-bottom: 12px;
+    }
+}

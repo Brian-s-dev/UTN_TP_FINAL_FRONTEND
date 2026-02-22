@@ -363,3 +363,23 @@ body.dark-mode .menu-adjuntos button {
 body.dark-mode .menu-adjuntos button:hover {
     background-color: #111b21;
 }
+
+/* Ajustes Mobile para la vista del chat */
+@media (max-width: 900px) {
+    .chat-view-container {
+        border-radius: 0; /* Pantalla completa, sin bordes */
+    }
+    
+    .chat-view-container::after {
+        border-radius: 0;
+    }
+
+    /* Achicamos los márgenes de la caja flotante para aprovechar la pantalla */
+    .chat-input-area {
+        padding: 0 10px 15px 10px;
+    }
+    
+    .input-pill-container {
+        padding: 4px 6px;
+    }
+}
