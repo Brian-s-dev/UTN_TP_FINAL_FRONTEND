@@ -638,3 +638,42 @@ body.dark-mode .action-btn {
 body.dark-mode .action-btn .material-symbols-outlined {
     color: #8696a0;
 }
+
+/* =========================================
+   ✨ MENSAJE DE SISTEMA Y ESTADOS DESHABILITADOS
+   ========================================= */
+
+.mensaje-sistema-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.mensaje-sistema-burbuja {
+    background-color: rgba(0, 0, 0, 0.08); /* Gris sutil */
+    color: #54656f;
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.input-deshabilitado {
+    opacity: 0.6;
+    pointer-events: none; /* Previene que hagan clic si algo se escapa */
+}
+
+.input-deshabilitado .input-pill-container {
+    background-color: #f0f2f5; /* Más oscuro para parecer "apagado" */
+}
+
+/* Modo oscuro para estos nuevos elementos */
+body.dark-mode .mensaje-sistema-burbuja {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #8696a0;
+}
+
+body.dark-mode .input-deshabilitado .input-pill-container {
+    background-color: rgba(32, 44, 51, 0.5);
+}

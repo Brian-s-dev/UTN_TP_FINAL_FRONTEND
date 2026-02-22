@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 
-const ChatInput = ({ onEnviarMensaje }) => {
+// ✨ Recibimos la prop deshabilitado
+const ChatInput = ({ onEnviarMensaje, deshabilitado }) => { 
     const [texto, setTexto] = useState("");
     const [mostrarMenu, setMostrarMenu] = useState(false);
     const menuRef = useRef(null);
@@ -17,49 +18,45 @@ const ChatInput = ({ onEnviarMensaje }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (texto.trim() === "") return;
+        if (texto.trim() === "" || deshabilitado) return; // Protegemos el envío
         onEnviarMensaje(texto);
         setTexto(""); 
         setMostrarMenu(false); 
     };
 
     return (
-        <form className="chat-input-area" onSubmit={handleSubmit}>
+        // Añadimos una clase si está deshabilitado para opacarlo
+        <form className={`chat-input-area ${deshabilitado ? 'input-deshabilitado' : ''}`} onSubmit={handleSubmit}>
             
-            {/* ✨ Todo lo visual ahora vive dentro de esta "píldora" flotante */}
             <div className="input-pill-container">
-                
                 <div className="adjuntos-container" ref={menuRef}>
                     <button 
                         type="button" 
                         className="btn-icon btn-adjuntar"
-                        onClick={() => setMostrarMenu(!mostrarMenu)}
+                        onClick={() => !deshabilitado && setMostrarMenu(!mostrarMenu)}
                         title="Adjuntar"
+                        disabled={deshabilitado} // ✨ Apagamos botón
                     >
                         <span className="material-symbols-outlined">add</span>
                     </button>
 
                     {mostrarMenu && (
+                        /* ... menú de adjuntos (sin cambios) ... */
                         <div className="menu-adjuntos">
                             <button type="button" onClick={() => setMostrarMenu(false)}>
-                                <span className="material-symbols-outlined color-doc">description</span>
-                                Documento
+                                <span className="material-symbols-outlined color-doc">description</span> Documento
                             </button>
                             <button type="button" onClick={() => setMostrarMenu(false)}>
-                                <span className="material-symbols-outlined color-foto">image</span>
-                                Fotos y videos
+                                <span className="material-symbols-outlined color-foto">image</span> Fotos y videos
                             </button>
                             <button type="button" onClick={() => setMostrarMenu(false)}>
-                                <span className="material-symbols-outlined color-camara">photo_camera</span>
-                                Cámara
+                                <span className="material-symbols-outlined color-camara">photo_camera</span> Cámara
                             </button>
                             <button type="button" onClick={() => setMostrarMenu(false)}>
-                                <span className="material-symbols-outlined color-contacto">person</span>
-                                Contacto
+                                <span className="material-symbols-outlined color-contacto">person</span> Contacto
                             </button>
                             <button type="button" onClick={() => setMostrarMenu(false)}>
-                                <span className="material-symbols-outlined color-encuesta">poll</span>
-                                Encuesta
+                                <span className="material-symbols-outlined color-encuesta">poll</span> Encuesta
                             </button>
                         </div>
                     )}
@@ -67,17 +64,17 @@ const ChatInput = ({ onEnviarMensaje }) => {
 
                 <input 
                     type="text" 
-                    placeholder="Escribe un mensaje aquí..." 
+                    placeholder={deshabilitado ? "No puedes enviar mensajes a un contacto bloqueado" : "Escribe un mensaje aquí..."} 
                     value={texto}
                     onChange={(e) => setTexto(e.target.value)}
                     onClick={() => setMostrarMenu(false)} 
+                    disabled={deshabilitado} // ✨ Apagamos input
                 />
                 
-                <button type="submit" className="btn-icon btn-enviar" title="Enviar">
+                <button type="submit" className="btn-icon btn-enviar" title="Enviar" disabled={deshabilitado}>
                     <span className="material-symbols-outlined">send</span>
                 </button>
             </div>
-
         </form>
     );
 };

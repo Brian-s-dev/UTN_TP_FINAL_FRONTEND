@@ -12,7 +12,6 @@ const generarEstadoConexion = (id, tipo) => {
     if (tipo === EMISOR.GRUPO) return "Haz clic aquí para info. del grupo";
 
     const numeroAleatorioFijo = String(id).charCodeAt(0) || 1;
-    
     if (numeroAleatorioFijo % 3 === 0) return "En línea";
     if (numeroAleatorioFijo % 2 === 0) return `última conexión hoy a las ${numeroAleatorioFijo % 12 + 8}:30`;
     
@@ -23,16 +22,15 @@ const generarEstadoConexion = (id, tipo) => {
 const ChatView = () => {
     const { chatId } = useParams();
     const navigate = useNavigate(); 
-    const { chats, enviarMensaje } = useChat();
+    // ✨ Extraemos nuestras nuevas funciones
+    const { chats, enviarMensaje, bloquearContacto, eliminarChat } = useChat();
 
-    // ✨ Nuevos estados para el panel derecho
     const [infoAbierta, setInfoAbierta] = useState(false);
     const [menuEditarAbierto, setMenuEditarAbierto] = useState(false);
     const menuEditarRef = useRef(null);
 
     const chatActivo = chats.find((chat) => chat.id === Number(chatId) || chat.id === chatId);
 
-    // Cerrar menú de edición al hacer clic fuera
     useEffect(() => {
         const handleClickFuera = (event) => {
             if (menuEditarRef.current && !menuEditarRef.current.contains(event.target)) {
@@ -43,7 +41,6 @@ const ChatView = () => {
         return () => document.removeEventListener("mousedown", handleClickFuera);
     }, []);
 
-    // Cerramos el panel derecho si cambiamos de chat
     useEffect(() => {
         setInfoAbierta(false);
     }, [chatId]);
@@ -53,21 +50,26 @@ const ChatView = () => {
     const handleEnviar = (texto) => enviarMensaje(chatId, texto);
     const estadoConexion = generarEstadoConexion(chatActivo.id, chatActivo.tipo);
 
+    // ✨ Funciones manejadoras de los botones
+    const handleBloquear = () => {
+        bloquearContacto(chatId);
+        setInfoAbierta(false); // Cerramos el panel para que vea el mensaje de bloqueado
+    };
+
+    const handleEliminar = () => {
+        eliminarChat(chatId);
+        navigate("/"); // Lo mandamos a la pantalla de bienvenida porque el chat ya no existe
+    };
+
     return (
         <div className="chat-view-container" key={chatId}>
             <div className="chat-header-placeholder">
-                
-                {/* ✨ Hicimos clickeable esta zona para abrir el panel derecho */}
                 <div 
                     className="chat-header-info clickable" 
                     onClick={() => setInfoAbierta(true)}
                     title="Ver información del contacto"
                 >
-                    <Avatar
-                        imagen={chatActivo.avatar}
-                        nombre={chatActivo.nombre}
-                        isIA={chatActivo.tipo === EMISOR.IA}
-                    />
+                    <Avatar imagen={chatActivo.avatar} nombre={chatActivo.nombre} isIA={chatActivo.tipo === EMISOR.IA} />
                     <div className="chat-header-texto">
                         <h2>{chatActivo.nombre}</h2>
                         {estadoConexion && <span className="chat-status">{estadoConexion}</span>}
@@ -80,25 +82,30 @@ const ChatView = () => {
             </div>
 
             <div className="chat-messages-placeholder">
-                {chatActivo.mensajes.map((mensaje) => (
-                    <MessageBubble
-                        key={mensaje.id}
-                        texto={mensaje.texto}
-                        emisor={mensaje.emisor}
-                        hora={mensaje.hora}
-                        avatarContacto={mensaje.remitenteAvatar || chatActivo.avatar}
-                        nombreContacto={mensaje.remitenteNombre || chatActivo.nombre}
-                        mostrarAvatar={chatActivo.tipo === EMISOR.GRUPO}
-                        esGrupo={chatActivo.tipo === EMISOR.GRUPO}
-                    />
-                ))}
+                {/* ✨ Lógica condicional: Si está bloqueado muestra el mensaje, sino muestra los chats */}
+                {chatActivo.bloqueado ? (
+                    <div className="mensaje-sistema-wrapper">
+                        <span className="mensaje-sistema-burbuja">Se bloqueó el contacto</span>
+                    </div>
+                ) : (
+                    chatActivo.mensajes.map((mensaje) => (
+                        <MessageBubble
+                            key={mensaje.id}
+                            texto={mensaje.texto}
+                            emisor={mensaje.emisor}
+                            hora={mensaje.hora}
+                            avatarContacto={mensaje.remitenteAvatar || chatActivo.avatar}
+                            nombreContacto={mensaje.remitenteNombre || chatActivo.nombre}
+                            mostrarAvatar={chatActivo.tipo === EMISOR.GRUPO}
+                            esGrupo={chatActivo.tipo === EMISOR.GRUPO}
+                        />
+                    ))
+                )}
             </div>
 
-            <ChatInput onEnviarMensaje={handleEnviar} />
+            {/* ✨ Le pasamos la propiedad deshabilitado al input si está bloqueado */}
+            <ChatInput onEnviarMensaje={handleEnviar} deshabilitado={chatActivo.bloqueado} />
 
-            {/* =========================================
-                ✨ NUEVO SIDEBAR DERECHO DE INFO
-                ========================================= */}
             <div className={`contact-info-sidebar ${infoAbierta ? 'abierto' : ''}`}>
                 <div className="contact-info-header">
                     <button className="btn-icon" onClick={() => setInfoAbierta(false)} title="Cerrar info">
@@ -107,11 +114,7 @@ const ChatView = () => {
                     <h3>Info. del contacto</h3>
                     
                     <div className="edit-menu-wrapper" ref={menuEditarRef}>
-                        <button 
-                            className="btn-icon" 
-                            onClick={() => setMenuEditarAbierto(!menuEditarAbierto)} 
-                            title="Editar"
-                        >
+                        <button className="btn-icon" onClick={() => setMenuEditarAbierto(!menuEditarAbierto)} title="Editar">
                             <span className="material-symbols-outlined">edit</span>
                         </button>
                         
@@ -141,19 +144,18 @@ const ChatView = () => {
                     </div>
 
                     <div className="contact-actions-card danger-zone">
-                        <button className="action-btn text-danger">
+                        {/* ✨ Conectamos los botones a sus funciones */}
+                        <button className="action-btn text-danger" onClick={handleBloquear}>
                             <span className="material-symbols-outlined">block</span>
-                            <span>Bloquear contacto</span>
+                            <span>{chatActivo.bloqueado ? "Contacto bloqueado" : "Bloquear contacto"}</span>
                         </button>
-                        <button className="action-btn text-danger">
+                        <button className="action-btn text-danger" onClick={handleEliminar}>
                             <span className="material-symbols-outlined">delete</span>
                             <span>Eliminar chat</span>
                         </button>
                     </div>
                 </div>
             </div>
-            {/* FIN SIDEBAR DERECHO */}
-
         </div>
     );
 };
