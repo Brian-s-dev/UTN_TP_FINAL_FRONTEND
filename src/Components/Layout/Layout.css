@@ -1,317 +1,50 @@
-body,
-html {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-}
-
-::-webkit-scrollbar {
-    width: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: rgba(134, 150, 160, 0.2);
-    border-radius: 10px;
-    border-right: 3px solid transparent;
-    background-clip: padding-box;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(134, 150, 160, 0.4);
-    border-right: 3px solid transparent;
-    background-clip: padding-box;
-}
-
-.layout-container {
-    display: flex;
-    height: 100vh;
-    width: 100%;
-    overflow: hidden;
-    background-color: #f0f2f5;
-    font-family: sans-serif;
-    max-width: 2000px;
-    margin: 0 auto;
-}
-
-/* Transición fluida para el ancho del Sidebar */
-.sidebar-container {
-    width: 350px;
-    background-color: #f0f2f5;
-    border-right: none;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    overflow-x: hidden;
-    transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-.sidebar-header {
-    background-color: #f0f2f5;
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.sidebar-header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.sidebar-header-top h2 {
-    margin: 0;
-    font-size: 1.2rem;
-    color: #111b21;
-}
-
-/* Agrupador de botones en el header */
-.header-buttons {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-}
-
-.btn-nuevo-chat {
-    background-color: #00a884;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 35px;
-    height: 35px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: background 0.2s;
-}
-
-.btn-nuevo-chat .material-symbols-outlined {
-    font-size: 1.2rem;
-}
-
-.btn-nuevo-chat:hover {
-    background-color: #008f6f;
-}
-
-/* Botón de colapsar barra */
-.btn-colapsar {
-    background: transparent;
-    color: #54656f;
-    border: none;
-    border-radius: 50%;
-    width: 35px;
-    height: 35px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s;
-}
-
-.btn-colapsar:hover {
-    background-color: #e4e6e9;
-    color: #111b21;
-}
-
-.search-container input {
-    width: 100%;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 8px;
-    background-color: #ffffff;
-    outline: none;
-    box-sizing: border-box;
-}
-
-.sidebar-nav {
-    flex: 1;
-    overflow-y: auto;
-    background-color: #f0f2f5;
-}
-
-.no-results {
-    text-align: center;
-    color: #888;
-    margin-top: 20px;
-}
-
-.chat-item {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 10px 15px 10px 25px;
-    text-decoration: none;
-    color: inherit;
-    transition: background-color 0.1s;
-    cursor: pointer;
-}
-
-.chat-item::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    right: 15px;
-    left: 78px;
-    height: 1px;
-    background-color: #f2f2f2;
-}
-
-.chat-item:last-child::after {
-    display: none;
-}
-
-.chat-item:hover {
-    background-color: #e4e6e9;
-}
-
-.chat-item.active {
-    background-color: #e4e6e9;
-}
-
-.chat-info h4 {
-    margin: 0;
-    font-size: 1rem;
-    color: #111b21;
-    white-space: nowrap;
-}
-
-.chat-info p {
-    margin: 3px 0 0;
-    font-size: 0.85rem;
-    color: #667781;
-    white-space: nowrap;
-}
-
-.sidebar-footer {
-    padding: 15px;
-    background-color: #f0f2f5;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: all 0.3s ease;
-}
-
-.mi-perfil {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.mi-nombre {
-    font-weight: bold;
-    color: #111b21;
-    white-space: nowrap;
-}
-
-.component-wrapper {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    margin: 8px;
-    height: calc(100vh - 16px);
-    border-radius: 16px;
-    overflow: hidden;
-    background-color: #ded6cc;
-    position: relative;
-    z-index: 1;
-    box-shadow: inset 0 3px 8px rgba(255, 255, 255, 0.9), 0 15px 35px rgba(0, 0, 0, 0.2);
-}
-
-.component-wrapper::before {
-    content: '';
-    position: absolute;
-    top: -100px;
-    right: -100px;
-    width: 500px;
-    height: 400px;
-    background: rgba(255, 120, 80, 0.25);
-    filter: blur(100px);
-    transform: rotate(-25deg);
-    z-index: -1;
-    pointer-events: none;
-}
-
-.config-container {
-    position: relative;
-}
-
-.btn-ajustes {
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    cursor: pointer;
-    opacity: 0.6;
-    transition: 0.2s;
-    color: #54656f;
-    /* Color base para modo claro */
-}
-
-.btn-ajustes:hover {
-    opacity: 1;
-    color: #111b21;
-}
-
-.menu-flotante {
-    position: absolute;
-    bottom: 40px;
-    right: 0;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    padding: 8px;
-    z-index: 100;
-    white-space: nowrap;
-}
-
-.menu-flotante button {
-    width: 100%;
-    padding: 10px 15px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    text-align: left;
-    font-size: 0.9rem;
-    border-radius: 4px;
-    color: #111b21;
-}
-
-.menu-flotante button:hover {
-    background-color: #f0f2f5;
-}
-
-
 /* =========================================
    ESTILOS DEL SIDEBAR COLAPSADO (Solo en PC)
    ========================================= */
 @media (min-width: 901px) {
     .sidebar-container.colapsado {
         width: 85px; 
+        /* ✨ Forzamos que nada pueda desbordar el ancho de 85px */
+        max-width: 85px; 
+        overflow: hidden !important;
+    }
+
+    .sidebar-container.colapsado .sidebar-header {
+        padding: 15px 10px; /* Reducimos el padding lateral para que entren centrados */
     }
 
     .sidebar-container.colapsado .sidebar-header-top {
         flex-direction: column;
         gap: 15px;
         align-items: center;
+        justify-content: center;
+        width: 100%; /* Aseguramos que ocupe todo el espacio disponible para centrar bien */
     }
 
-    /* ✨ AQUÍ ESTÁ EL FIX: Forzamos la desaparición del texto */
+    /* ✨ Ocultamiento mucho más agresivo para el H2 "Mensajes" */
     .sidebar-container.colapsado .sidebar-header-top h2 {
         display: none !important; 
+        width: 0 !important;
+        height: 0 !important;
+        opacity: 0 !important;
+        margin: 0 !important;
+        overflow: hidden !important;
     }
 
     .sidebar-container.colapsado .header-buttons {
         flex-direction: column-reverse; 
         gap: 15px;
+        width: 100%;
+        justify-content: center;
     }
 
+    /* ✨ Ocultamiento más agresivo para el contenedor de búsqueda */
     .sidebar-container.colapsado .search-container {
         display: none !important; 
+        width: 0 !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
 
     .sidebar-container.colapsado .chat-info {
@@ -346,122 +79,4 @@ html {
         bottom: 0;
         right: auto;
     }
-}
-
-/* =========================================
-   📱 RESPONSIVE DESIGN (Móviles)
-   ========================================= */
-
-@media (max-width: 900px) {
-    .sidebar-container {
-        width: 100%;
-    }
-
-    .component-wrapper {
-        margin: 0;
-        border-radius: 0;
-        height: 100vh;
-    }
-
-    .component-wrapper::before {
-        display: none;
-    }
-
-    .oculto-en-mobile {
-        display: none !important;
-    }
-
-    .btn-colapsar {
-        display: none !important;
-    }
-}
-
-
-/* =========================================
-   🌙 MODO OSCURO
-   ========================================= */
-
-body.dark-mode {
-    background-color: #0b0f12;
-    background-image:
-        radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.04) 0%, transparent 40%),
-        url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" opacity="0.04" filter="url(%23noiseFilter)"/></svg>');
-}
-
-body.dark-mode .layout-container,
-body.dark-mode .sidebar-container,
-body.dark-mode .sidebar-header,
-body.dark-mode .sidebar-nav,
-body.dark-mode .sidebar-footer {
-    background-color: transparent;
-}
-
-body.dark-mode .component-wrapper {
-    background-color: #0e161c;
-    box-shadow: inset 0 2px 5px rgba(255, 255, 255, 0.12), 0 15px 40px rgba(0, 0, 0, 0.7);
-}
-
-body.dark-mode .component-wrapper::before {
-    background: rgba(0, 200, 255, 0.12);
-    filter: blur(120px);
-}
-
-body.dark-mode .sidebar-header-top h2,
-body.dark-mode .chat-name,
-body.dark-mode .mi-nombre {
-    color: #e9edef;
-}
-
-body.dark-mode .search-container input {
-    background-color: #182229;
-    color: #e9edef;
-}
-
-body.dark-mode .chat-item::after {
-    background-color: rgba(255, 255, 255, 0.04);
-}
-
-body.dark-mode .chat-item:hover {
-    background-color: rgba(255, 255, 255, 0.03);
-}
-
-body.dark-mode .chat-item.active {
-    background-color: rgba(255, 255, 255, 0.06);
-}
-
-body.dark-mode .chat-preview,
-body.dark-mode .no-results {
-    color: #8696a0;
-}
-
-body.dark-mode .menu-flotante {
-    background-color: #233138;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-}
-
-body.dark-mode .menu-flotante button {
-    color: #e9edef;
-}
-
-body.dark-mode .menu-flotante button:hover {
-    background-color: #111b21;
-}
-
-body.dark-mode .btn-colapsar {
-    color: #8696a0;
-}
-
-body.dark-mode .btn-colapsar:hover {
-    background-color: #202c33;
-    color: #e9edef;
-}
-
-/* ✨ REGLA CORREGIDA PARA LA TUERCA EN MODO OSCURO */
-body.dark-mode .btn-ajustes {
-    color: #e9edef;
-    opacity: 1;
-}
-
-body.dark-mode .btn-ajustes:hover {
-    color: #ffffff;
 }
