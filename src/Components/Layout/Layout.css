@@ -275,4 +275,126 @@ body, html {
         gap: 15px;
     }
 
-    .sidebar-container.
+    .sidebar-container.colapsado .search-container {
+        display: none; /* Oculta el buscador */
+    }
+
+    .sidebar-container.colapsado .chat-info {
+        display: none; /* Oculta el nombre y mensaje del contacto */
+    }
+
+    .sidebar-container.colapsado .chat-item {
+        padding: 15px 0; 
+        justify-content: center; /* Centra el avatar */
+    }
+
+    .sidebar-container.colapsado .chat-item::after {
+        display: none; /* Quita las líneas divisorias para un look más limpio */
+    }
+
+    /* Transformamos el footer a Vertical */
+    .sidebar-container.colapsado .sidebar-footer {
+        flex-direction: column;
+        padding: 20px 0;
+        gap: 25px;
+    }
+
+    .sidebar-container.colapsado .mi-perfil {
+        margin: 0; 
+    }
+
+    .sidebar-container.colapsado .mi-nombre {
+        display: none; /* Oculta tu nombre */
+    }
+
+    /* Movemos el menú flotante de ajustes a la derecha para que no se corte */
+    .sidebar-container.colapsado .menu-flotante {
+        left: 60px;
+        bottom: 0;
+        right: auto;
+    }
+}
+
+
+/* =========================================
+   📱 RESPONSIVE DESIGN (Móviles)
+   ========================================= */
+
+@media (max-width: 900px) {
+    .sidebar-container { width: 100%; }
+    
+    .component-wrapper {
+        margin: 0;
+        border-radius: 0;
+        height: 100vh;
+    }
+
+    .component-wrapper::before { display: none; }
+
+    .oculto-en-mobile { display: none !important; }
+
+    /* En celulares, ocultamos el botón de colapsar barra */
+    .btn-colapsar {
+        display: none !important;
+    }
+}
+
+
+/* =========================================
+   🌙 MODO OSCURO
+   ========================================= */
+
+body.dark-mode {
+    background-color: #0b0f12; 
+    background-image:
+        radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.04) 0%, transparent 40%),
+        url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" opacity="0.04" filter="url(%23noiseFilter)"/></svg>');
+}
+
+body.dark-mode .layout-container,
+body.dark-mode .sidebar-container,
+body.dark-mode .sidebar-header,
+body.dark-mode .sidebar-nav,
+body.dark-mode .sidebar-footer {
+    background-color: transparent; 
+}
+
+body.dark-mode .component-wrapper {
+    background-color: #0e161c; 
+    box-shadow: inset 0 2px 5px rgba(255, 255, 255, 0.12), 0 15px 40px rgba(0, 0, 0, 0.7);
+}
+
+body.dark-mode .component-wrapper::before {
+    background: rgba(0, 200, 255, 0.12); 
+    filter: blur(120px); 
+}
+
+body.dark-mode .sidebar-header-top h2,
+body.dark-mode .chat-name,
+body.dark-mode .mi-nombre {
+    color: #e9edef;
+}
+
+body.dark-mode .search-container input {
+    background-color: #182229;
+    color: #e9edef;
+}
+
+body.dark-mode .chat-item::after { background-color: rgba(255, 255, 255, 0.04); }
+body.dark-mode .chat-item:hover { background-color: rgba(255, 255, 255, 0.03); }
+body.dark-mode .chat-item.active { background-color: rgba(255, 255, 255, 0.06); }
+body.dark-mode .chat-preview, body.dark-mode .no-results { color: #8696a0; }
+
+body.dark-mode .menu-flotante {
+    background-color: #233138;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .menu-flotante button { color: #e9edef; }
+body.dark-mode .menu-flotante button:hover { background-color: #111b21; }
+
+body.dark-mode .btn-colapsar { color: #8696a0; }
+body.dark-mode .btn-colapsar:hover {
+    background-color: #202c33;
+    color: #e9edef;
+}
