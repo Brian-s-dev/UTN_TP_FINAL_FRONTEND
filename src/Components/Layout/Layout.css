@@ -45,7 +45,9 @@ html {
     display: flex;
     flex-direction: column;
     position: relative;
-    overflow-x: hidden;
+    /* ✨ FIX 1: Quitamos overflow-x: hidden para dejar salir al menú de ajustes */
+    /* ✨ FIX 2: Añadimos z-index para que el menú flote sobre el chat */
+    z-index: 10; 
     transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
@@ -292,12 +294,17 @@ html {
     .sidebar-container.colapsado {
         width: 85px !important;
         min-width: 85px !important;
-        max-width: 85px !important; /* Bloqueamos totalmente el ancho */
-        overflow: hidden !important;
+        max-width: 85px !important; 
+        /* ✨ FIX 3: Eliminamos el overflow:hidden de aquí también */
+    }
+
+    /* ✨ FIX 4: Forzamos que el sidebar de contactos no se aplaste, así su texto no desborda */
+    .contacts-sidebar-container {
+        width: 350px !important;
     }
 
     .sidebar-container.colapsado .sidebar-header {
-        padding: 15px 10px; /* Reducimos el padding para que entren los iconos centrados */
+        padding: 15px 10px; 
     }
 
     .sidebar-container.colapsado .sidebar-header-top {
@@ -308,7 +315,6 @@ html {
         width: 100%;
     }
 
-    /* ✨ LA MAGIA: Ocultamiento agresivo y absoluto para el H2 */
     .sidebar-container.colapsado .sidebar-header-top h2 {
         display: none !important;
         width: 0 !important;
