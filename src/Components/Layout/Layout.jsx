@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router";
 import { useChat } from "../../Context/ChatContext";
 import { useTheme } from "../../Context/ThemeContext";
@@ -17,16 +17,24 @@ const Layout = () => {
     const [menuAbierto, setMenuAbierto] = useState(false);
     const [sidebarContactosAbierto, setSidebarContactosAbierto] = useState(false);
     
-    // Estado para controlar si la barra está reducida o expandida
-    const [sidebarColapsado, setSidebarColapsado] = useState(false); 
-
-    const isChatActivo = location.pathname.includes("/chat/");
+    // ✨ Inicializamos el estado dependiendo del tamaño de pantalla
+    const [sidebarColapsado, setSidebarColapsado] = useState(window.innerWidth <= 900); 
 
     const chatsFiltrados = chats.filter(chat => 
         chat.nombre.toLowerCase().includes(busqueda.toLowerCase())
     );
 
-    // Si queremos abrir contactos y el menú está colapsado, lo expandimos primero
+    // ✨ UX MÁGICA PARA MÓVILES: Auto-colapsar o expandir según dónde estemos
+    useEffect(() => {
+        if (window.innerWidth <= 900) {
+            if (location.pathname === "/") {
+                setSidebarColapsado(false); // Si vamos al inicio, expandimos la lista
+            } else if (location.pathname.includes("/chat/")) {
+                setSidebarColapsado(true); // Si entramos a un chat, colapsamos la lista a 85px
+            }
+        }
+    }, [location.pathname]);
+
     const handleAbrirContactos = () => {
         setSidebarColapsado(false); 
         setSidebarContactosAbierto(true);
@@ -34,20 +42,20 @@ const Layout = () => {
 
     return (
         <div className="layout-container">
-            <aside className={`sidebar-container ${isChatActivo ? 'oculto-en-mobile' : ''} ${sidebarColapsado ? 'colapsado' : ''}`}>
+            {/* ✨ Quitamos la lógica destructiva de ocultar, ahora todo depende de "colapsado" */}
+            <aside className={`sidebar-container ${sidebarColapsado ? 'colapsado' : ''}`}>
                 <div className="sidebar-header">
                     <div className="sidebar-header-top">
                         <h2>Mensajes</h2>
                         
                         <div className="header-buttons">
-                            {/* ✨ BOTÓN DE COLAPSAR/EXPANDIR ACTUALIZADO */}
+                            {/* EL BOTÓN AHORA ES VISIBLE SIEMPRE */}
                             <button 
                                 className="btn-colapsar" 
                                 onClick={() => setSidebarColapsado(!sidebarColapsado)} 
                                 title={sidebarColapsado ? "Expandir panel" : "Colapsar panel"}
                             >
                                 <span className="material-symbols-outlined">
-                                    {/* Si está colapsado, mostramos menú para abrir. Si está abierto, mostramos flechas para cerrar a la izquierda */}
                                     {sidebarColapsado ? 'menu' : 'keyboard_double_arrow_left'}
                                 </span>
                             </button>
@@ -122,7 +130,8 @@ const Layout = () => {
                 />
             </aside>
             
-            <main className={`component-wrapper ${!isChatActivo ? 'oculto-en-mobile' : ''}`}>
+            {/* ✨ El chat ahora está siempre renderizado, ocupando el espacio que la barra le deja */}
+            <main className="component-wrapper">
                 <Outlet />
             </main>
         </div >
