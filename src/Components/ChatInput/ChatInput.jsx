@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 
-// ✨ Recibimos la prop deshabilitado
-const ChatInput = ({ onEnviarMensaje, deshabilitado }) => { 
+// ✨ Recibimos la prop mensajeDeshabilitado
+const ChatInput = ({ onEnviarMensaje, deshabilitado, mensajeDeshabilitado }) => { 
     const [texto, setTexto] = useState("");
     const [mostrarMenu, setMostrarMenu] = useState(false);
     const menuRef = useRef(null);
@@ -18,16 +18,14 @@ const ChatInput = ({ onEnviarMensaje, deshabilitado }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (texto.trim() === "" || deshabilitado) return; // Protegemos el envío
+        if (texto.trim() === "" || deshabilitado) return; 
         onEnviarMensaje(texto);
         setTexto(""); 
         setMostrarMenu(false); 
     };
 
     return (
-        // Añadimos una clase si está deshabilitado para opacarlo
         <form className={`chat-input-area ${deshabilitado ? 'input-deshabilitado' : ''}`} onSubmit={handleSubmit}>
-            
             <div className="input-pill-container">
                 <div className="adjuntos-container" ref={menuRef}>
                     <button 
@@ -35,13 +33,12 @@ const ChatInput = ({ onEnviarMensaje, deshabilitado }) => {
                         className="btn-icon btn-adjuntar"
                         onClick={() => !deshabilitado && setMostrarMenu(!mostrarMenu)}
                         title="Adjuntar"
-                        disabled={deshabilitado} // ✨ Apagamos botón
+                        disabled={deshabilitado}
                     >
                         <span className="material-symbols-outlined">add</span>
                     </button>
 
                     {mostrarMenu && (
-                        /* ... menú de adjuntos (sin cambios) ... */
                         <div className="menu-adjuntos">
                             <button type="button" onClick={() => setMostrarMenu(false)}>
                                 <span className="material-symbols-outlined color-doc">description</span> Documento
@@ -64,11 +61,12 @@ const ChatInput = ({ onEnviarMensaje, deshabilitado }) => {
 
                 <input 
                     type="text" 
-                    placeholder={deshabilitado ? "No puedes enviar mensajes a un contacto bloqueado" : "Escribe un mensaje aquí..."} 
+                    /* ✨ Usamos el mensaje personalizado que viene de ChatView */
+                    placeholder={deshabilitado ? mensajeDeshabilitado : "Escribe un mensaje aquí..."} 
                     value={texto}
                     onChange={(e) => setTexto(e.target.value)}
                     onClick={() => setMostrarMenu(false)} 
-                    disabled={deshabilitado} // ✨ Apagamos input
+                    disabled={deshabilitado}
                 />
                 
                 <button type="submit" className="btn-icon btn-enviar" title="Enviar" disabled={deshabilitado}>

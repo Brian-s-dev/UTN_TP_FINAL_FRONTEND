@@ -22,8 +22,8 @@ const generarEstadoConexion = (id, tipo) => {
 const ChatView = () => {
     const { chatId } = useParams();
     const navigate = useNavigate(); 
-    // ✨ Extraemos nuestras nuevas funciones
-    const { chats, enviarMensaje, bloquearContacto, eliminarChat } = useChat();
+    // ✨ Traemos desbloquearContacto y contactos
+    const { chats, contactos, usuarioActual, enviarMensaje, bloquearContacto, desbloquearContacto, eliminarChat } = useChat();
 
     const [infoAbierta, setInfoAbierta] = useState(false);
     const [menuEditarAbierto, setMenuEditarAbierto] = useState(false);
@@ -47,19 +47,30 @@ const ChatView = () => {
 
     if (!chatActivo) return <div className="chat-view-container centered">Chat no encontrado</div>;
 
-    const handleEnviar = (texto) => enviarMensaje(chatId, texto);
+    const esGrupo = chatActivo.tipo === EMISOR.GRUPO;
     const estadoConexion = generarEstadoConexion(chatActivo.id, chatActivo.tipo);
 
-    // ✨ Funciones manejadoras de los botones
-    const handleBloquear = () => {
-        bloquearContacto(chatId);
-        setInfoAbierta(false); // Cerramos el panel para que vea el mensaje de bloqueado
+    // ✨ Alternamos entre bloquear y desbloquear
+    const handleBloquearToggle = () => {
+        if (chatActivo.bloqueado) {
+            desbloquearContacto(chatId);
+        } else {
+            bloquearContacto(chatId);
+        }
+        setInfoAbierta(false);
     };
 
     const handleEliminar = () => {
         eliminarChat(chatId);
-        navigate("/"); // Lo mandamos a la pantalla de bienvenida porque el chat ya no existe
+        navigate("/"); 
     };
+
+    // Textos dinámicos
+    const txtMensajeSistema = esGrupo ? "Saliste del grupo" : "Se bloqueó el contacto";
+    const txtInputApagado = esGrupo ? "Ya no eres participante de este grupo" : "No puedes enviar mensajes a un contacto bloqueado";
+    const txtBotonBloquear = esGrupo 
+        ? (chatActivo.bloqueado ? "Volver al grupo (Solo Admins)" : "Salir del grupo") 
+        : (chatActivo.bloqueado ? "Desbloquear contacto" : "Bloquear contacto");
 
     return (
         <div className="chat-view-container" key={chatId}>
@@ -67,7 +78,7 @@ const ChatView = () => {
                 <div 
                     className="chat-header-info clickable" 
                     onClick={() => setInfoAbierta(true)}
-                    title="Ver información del contacto"
+                    title="Ver información"
                 >
                     <Avatar imagen={chatActivo.avatar} nombre={chatActivo.nombre} isIA={chatActivo.tipo === EMISOR.IA} />
                     <div className="chat-header-texto">
@@ -82,10 +93,9 @@ const ChatView = () => {
             </div>
 
             <div className="chat-messages-placeholder">
-                {/* ✨ Lógica condicional: Si está bloqueado muestra el mensaje, sino muestra los chats */}
                 {chatActivo.bloqueado ? (
                     <div className="mensaje-sistema-wrapper">
-                        <span className="mensaje-sistema-burbuja">Se bloqueó el contacto</span>
+                        <span className="mensaje-sistema-burbuja">{txtMensajeSistema}</span>
                     </div>
                 ) : (
                     chatActivo.mensajes.map((mensaje) => (
@@ -96,22 +106,26 @@ const ChatView = () => {
                             hora={mensaje.hora}
                             avatarContacto={mensaje.remitenteAvatar || chatActivo.avatar}
                             nombreContacto={mensaje.remitenteNombre || chatActivo.nombre}
-                            mostrarAvatar={chatActivo.tipo === EMISOR.GRUPO}
-                            esGrupo={chatActivo.tipo === EMISOR.GRUPO}
+                            mostrarAvatar={esGrupo}
+                            esGrupo={esGrupo}
                         />
                     ))
                 )}
             </div>
 
-            {/* ✨ Le pasamos la propiedad deshabilitado al input si está bloqueado */}
-            <ChatInput onEnviarMensaje={handleEnviar} deshabilitado={chatActivo.bloqueado} />
+            {/* ✨ Pasamos los textos dinámicos al input */}
+            <ChatInput 
+                onEnviarMensaje={(texto) => enviarMensaje(chatId, texto)} 
+                deshabilitado={chatActivo.bloqueado} 
+                mensajeDeshabilitado={txtInputApagado}
+            />
 
             <div className={`contact-info-sidebar ${infoAbierta ? 'abierto' : ''}`}>
                 <div className="contact-info-header">
                     <button className="btn-icon" onClick={() => setInfoAbierta(false)} title="Cerrar info">
                         <span className="material-symbols-outlined">close</span>
                     </button>
-                    <h3>Info. del contacto</h3>
+                    <h3>{esGrupo ? 'Info. del grupo' : 'Info. del contacto'}</h3>
                     
                     <div className="edit-menu-wrapper" ref={menuEditarRef}>
                         <button className="btn-icon" onClick={() => setMenuEditarAbierto(!menuEditarAbierto)} title="Editar">
@@ -120,8 +134,8 @@ const ChatView = () => {
                         
                         {menuEditarAbierto && (
                             <div className="menu-flotante-editar">
-                                <button onClick={() => setMenuEditarAbierto(false)}>Editar contacto</button>
-                                <button onClick={() => setMenuEditarAbierto(false)}>Compartir contacto</button>
+                                <button onClick={() => setMenuEditarAbierto(false)}>Editar {esGrupo ? 'grupo' : 'contacto'}</button>
+                                <button onClick={() => setMenuEditarAbierto(false)}>Compartir enlace</button>
                             </div>
                         )}
                     </div>
@@ -133,21 +147,49 @@ const ChatView = () => {
                             <Avatar imagen={chatActivo.avatar} nombre={chatActivo.nombre} isIA={chatActivo.tipo === EMISOR.IA} />
                         </div>
                         <h2>{chatActivo.nombre}</h2>
-                        <p>{chatActivo.tipo === EMISOR.GRUPO ? 'Grupo' : estadoConexion}</p>
+                        <p>{esGrupo ? `Grupo · ${contactos.slice(0, 4).length + 1} participantes` : estadoConexion}</p>
                     </div>
 
-                    <div className="contact-actions-card">
-                        <button className="action-btn">
-                            <span className="material-symbols-outlined">star</span>
-                            <span>Añadir a favoritos</span>
-                        </button>
-                    </div>
+                    {!esGrupo && (
+                        <div className="contact-actions-card">
+                            <button className="action-btn">
+                                <span className="material-symbols-outlined">star</span>
+                                <span>Añadir a favoritos</span>
+                            </button>
+                        </div>
+                    )}
+
+                    {/* ✨ LISTA DE PARTICIPANTES (Solo si es Grupo) */}
+                    {esGrupo && (
+                        <div className="contact-actions-card">
+                            <h4 className="card-subtitle">{contactos.slice(0, 4).length + 1} participantes</h4>
+                            <div className="participant-list">
+                                <div className="participant-item">
+                                    <Avatar nombre={usuarioActual} />
+                                    <div className="participant-info">
+                                        <span className="participant-name">Tú</span>
+                                        <span className="participant-role">Admin del grupo</span>
+                                    </div>
+                                </div>
+                                {/* Tomamos los primeros 4 contactos de la agenda para rellenar el grupo */}
+                                {contactos.slice(0, 4).map(c => (
+                                    <div key={c.id} className="participant-item">
+                                        <Avatar imagen={c.avatar} nombre={c.nombre} />
+                                        <div className="participant-info">
+                                            <span className="participant-name">{c.nombre}</span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
 
                     <div className="contact-actions-card danger-zone">
-                        {/* ✨ Conectamos los botones a sus funciones */}
-                        <button className="action-btn text-danger" onClick={handleBloquear}>
-                            <span className="material-symbols-outlined">block</span>
-                            <span>{chatActivo.bloqueado ? "Contacto bloqueado" : "Bloquear contacto"}</span>
+                        <button className="action-btn text-danger" onClick={handleBloquearToggle}>
+                            <span className="material-symbols-outlined">
+                                {esGrupo ? "logout" : "block"}
+                            </span>
+                            <span>{txtBotonBloquear}</span>
                         </button>
                         <button className="action-btn text-danger" onClick={handleEliminar}>
                             <span className="material-symbols-outlined">delete</span>

@@ -31,7 +31,7 @@ export const ChatProvider = ({ children }) => {
             tipo: contacto.tipo,
             avatar: contacto.avatar,
             mensajes: [],
-            bloqueado: false // ✨ Por defecto no está bloqueado
+            bloqueado: false 
         };
         setChats([nuevoChat, ...chats]);
         return nuevoChat.id;
@@ -48,7 +48,6 @@ export const ChatProvider = ({ children }) => {
         return nuevoContacto;
     };
 
-    // ✨ NUEVA FUNCIÓN: Vacía los mensajes y marca el chat como bloqueado
     const bloquearContacto = (chatId) => {
         setChats(prevChats => prevChats.map(chat => {
             if (chat.id === Number(chatId) || chat.id === chatId) {
@@ -58,7 +57,16 @@ export const ChatProvider = ({ children }) => {
         }));
     };
 
-    // ✨ NUEVA FUNCIÓN: Filtra el chat para eliminarlo de la lista
+    // ✨ NUEVA FUNCIÓN: Reactiva el chat
+    const desbloquearContacto = (chatId) => {
+        setChats(prevChats => prevChats.map(chat => {
+            if (chat.id === Number(chatId) || chat.id === chatId) {
+                return { ...chat, bloqueado: false };
+            }
+            return chat;
+        }));
+    };
+
     const eliminarChat = (chatId) => {
         setChats(prevChats => prevChats.filter(chat => chat.id !== Number(chatId) && chat.id !== chatId));
     };
@@ -71,6 +79,7 @@ export const ChatProvider = ({ children }) => {
             iniciarChatConContacto, 
             agregarNuevoContacto, 
             bloquearContacto, 
+            desbloquearContacto, // ✨ La exportamos
             eliminarChat, 
             usuarioActual, 
             setUsuarioActual 
