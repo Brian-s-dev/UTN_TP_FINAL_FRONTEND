@@ -1,16 +1,11 @@
-body,
-html {
+body, html {
     margin: 0;
     padding: 0;
     overflow: hidden;
 }
 
-::-webkit-scrollbar {
-    width: 8px; 
-}
-::-webkit-scrollbar-track {
-    background: transparent; 
-}
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
     background-color: rgba(134, 150, 160, 0.2); 
     border-radius: 10px; 
@@ -23,7 +18,6 @@ html {
     background-clip: padding-box;
 }
 
-/* ✨ FONDO UNIFICADO PARA MODO CLARO */
 .layout-container {
     display: flex;
     height: 100vh;
@@ -31,8 +25,11 @@ html {
     overflow: hidden;
     background-color: #f0f2f5; 
     font-family: sans-serif;
+    max-width: 2000px;
+    margin: 0 auto;
 }
 
+/* ✨ Agregamos transición fluida para el ancho del Sidebar */
 .sidebar-container {
     width: 350px;
     background-color: #f0f2f5;
@@ -40,7 +37,8 @@ html {
     display: flex;
     flex-direction: column;
     position: relative; 
-    overflow: hidden; 
+    overflow-x: hidden; /* Evita que los textos asomen al colapsar */
+    transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .sidebar-header {
@@ -49,7 +47,6 @@ html {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    /* ✨ LÍNEA INFERIOR ELIMINADA */
 }
 
 .sidebar-header-top {
@@ -64,6 +61,13 @@ html {
     color: #111b21;
 }
 
+/* ✨ Agrupador de botones en el header */
+.header-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
 .btn-nuevo-chat {
     background-color: #00a884;
     color: white;
@@ -71,7 +75,6 @@ html {
     border-radius: 50%;
     width: 35px;
     height: 35px;
-    font-size: 1.5rem;
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -79,8 +82,27 @@ html {
     transition: background 0.2s;
 }
 
-.btn-nuevo-chat:hover {
-    background-color: #008f6f;
+.btn-nuevo-chat .material-symbols-outlined { font-size: 1.2rem; }
+.btn-nuevo-chat:hover { background-color: #008f6f; }
+
+/* ✨ Botón de colapsar barra */
+.btn-colapsar {
+    background: transparent;
+    color: #54656f;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.btn-colapsar:hover {
+    background-color: #e4e6e9;
+    color: #111b21;
 }
 
 .search-container input {
@@ -96,7 +118,7 @@ html {
 .sidebar-nav {
     flex: 1;
     overflow-y: auto;
-    background-color: #f0f2f5; /* Mismo color que el resto del sidebar */
+    background-color: #f0f2f5; 
 }
 
 .no-results {
@@ -120,44 +142,36 @@ html {
 .chat-item::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    right: 15px;
-    left: 78px; 
+    bottom: 0; right: 15px; left: 78px; 
     height: 1px;
     background-color: #f2f2f2;
 }
 
-.chat-item:last-child::after {
-    display: none;
-}
-
-.chat-item:hover {
-    background-color: #e4e6e9; /* Un hover sutilmente más oscuro para el nuevo fondo */
-}
-
-.chat-item.active {
-    background-color: #e4e6e9;
-}
+.chat-item:last-child::after { display: none; }
+.chat-item:hover { background-color: #e4e6e9; }
+.chat-item.active { background-color: #e4e6e9; }
 
 .chat-info h4 {
     margin: 0;
     font-size: 1rem;
     color: #111b21;
+    white-space: nowrap;
 }
 
 .chat-info p {
     margin: 3px 0 0;
     font-size: 0.85rem;
     color: #667781;
+    white-space: nowrap;
 }
 
 .sidebar-footer {
     padding: 15px;
     background-color: #f0f2f5;
-    /* ✨ LÍNEA SUPERIOR ELIMINADA */
     display: flex;
     justify-content: space-between;
     align-items: center;
+    transition: all 0.3s ease;
 }
 
 .mi-perfil {
@@ -169,9 +183,9 @@ html {
 .mi-nombre {
     font-weight: bold;
     color: #111b21;
+    white-space: nowrap;
 }
 
-/* ✨ LA CAJA FLOTANTE PRINCIPAL (MODO CLARO) */
 .component-wrapper {
     flex: 1;
     display: flex;
@@ -183,19 +197,14 @@ html {
     background-color: #ded6cc; 
     position: relative; 
     z-index: 1; 
-    box-shadow: 
-        inset 0 3px 8px rgba(255, 255, 255, 0.9),
-        0 15px 35px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 3px 8px rgba(255, 255, 255, 0.9), 0 15px 35px rgba(0, 0, 0, 0.2);
 }
 
-/* ✨ EL RECTÁNGULO BORROSO (MODO CLARO) */
 .component-wrapper::before {
     content: '';
     position: absolute;
-    top: -100px; 
-    right: -100px; 
-    width: 500px; 
-    height: 400px;
+    top: -100px; right: -100px; 
+    width: 500px; height: 400px;
     background: rgba(255, 120, 80, 0.25); 
     filter: blur(100px); 
     transform: rotate(-25deg);
@@ -203,9 +212,7 @@ html {
     pointer-events: none; 
 }
 
-.config-container {
-    position: relative;
-}
+.config-container { position: relative; }
 
 .btn-ajustes {
     background: none;
@@ -216,9 +223,7 @@ html {
     transition: 0.2s;
 }
 
-.btn-ajustes:hover {
-    opacity: 1;
-}
+.btn-ajustes:hover { opacity: 1; }
 
 .menu-flotante {
     position: absolute;
@@ -244,124 +249,30 @@ html {
     color: #111b21;
 }
 
-.menu-flotante button:hover {
-    background-color: #f0f2f5;
-}
+.menu-flotante button:hover { background-color: #f0f2f5; }
+
 
 /* =========================================
-   🌙 MODO OSCURO GLOBAL Y SIDEBAR
+   ✨ ESTILOS DEL SIDEBAR COLAPSADO (Solo en PC)
    ========================================= */
-
-body.dark-mode {
-    background-color: #0b0f12; 
-    background-image:
-        radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.04) 0%, transparent 40%),
-        url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" opacity="0.04" filter="url(%23noiseFilter)"/></svg>');
-}
-
-/* ✨ AHORA SÍ, TODO EL SIDEBAR ES TRANSPARENTE EN MODO OSCURO PARA HEREDAR EL FONDO */
-body.dark-mode .layout-container,
-body.dark-mode .sidebar-container,
-body.dark-mode .sidebar-header,
-body.dark-mode .sidebar-nav,
-body.dark-mode .sidebar-footer {
-    background-color: transparent; 
-}
-
-/* ✨ CAJA FLOTANTE Y RELIEVE (MODO OSCURO) */
-body.dark-mode .component-wrapper {
-    background-color: #0e161c; 
-    box-shadow: 
-        inset 0 2px 5px rgba(255, 255, 255, 0.12),
-        0 15px 40px rgba(0, 0, 0, 0.7);
-}
-
-/* ✨ EL RECTÁNGULO BORROSO (MODO OSCURO) */
-body.dark-mode .component-wrapper::before {
-    background: rgba(0, 200, 255, 0.12); 
-    filter: blur(120px); 
-}
-
-body.dark-mode .sidebar-header-top h2,
-body.dark-mode .chat-name,
-body.dark-mode .mi-nombre {
-    color: #e9edef;
-}
-
-body.dark-mode .search-container input {
-    background-color: #182229;
-    color: #e9edef;
-}
-
-body.dark-mode .chat-item::after {
-    background-color: rgba(255, 255, 255, 0.04); 
-}
-
-body.dark-mode .chat-item:hover {
-    background-color: rgba(255, 255, 255, 0.03); 
-}
-
-body.dark-mode .chat-item.active {
-    background-color: rgba(255, 255, 255, 0.06);
-}
-
-body.dark-mode .chat-preview,
-body.dark-mode .no-results {
-    color: #8696a0;
-}
-
-body.dark-mode .menu-flotante {
-    background-color: #233138;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-}
-
-body.dark-mode .menu-flotante button {
-    color: #e9edef;
-}
-
-body.dark-mode .menu-flotante button:hover {
-    background-color: #111b21;
-}
-
-/* ✨ Ajuste del tamaño del ícono '+' (Nuevo Chat) */
-.btn-nuevo-chat .material-symbols-outlined {
-    font-size: 1.2rem; /* Achicamos el ícono para que respire dentro del círculo de 35px */
-}
-
-/* ✨ Color claro para la tuerca de ajustes en Modo Oscuro */
-body.dark-mode .btn-ajustes {
-    color: #e9edef;
-}
-
-/* ✨ LÍMITE PARA PANTALLAS GIGANTES (Ultra Wide) */
-.layout-container {
-    max-width: 2000px;
-    margin: 0 auto; /* Lo centra si la pantalla es mayor a 2000px */
-}
-
-/* =========================================
-   📱 RESPONSIVE DESIGN (Media Queries)
-   ========================================= */
-
-@media (max-width: 900px) {
-    /* El sidebar ahora ocupa el 100% de la pantalla cuando es visible */
-    .sidebar-container {
-        width: 100%;
+@media (min-width: 901px) {
+    .sidebar-container.colapsado {
+        width: 85px; /* Ancho justo para que entre el Avatar */
     }
 
-    /* Le quitamos los márgenes y bordes redondeados al chat para que sea pantalla completa nativa */
-    .component-wrapper {
-        margin: 0;
-        border-radius: 0;
-        height: 100vh;
+    .sidebar-container.colapsado .sidebar-header-top {
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
     }
 
-    .component-wrapper::before {
-        display: none; /* Quitamos el brillo de fondo grande para mejorar rendimiento en mobile */
+    .sidebar-container.colapsado .sidebar-header-top h2 {
+        display: none; /* Oculta el título "Mensajes" */
     }
 
-    /* Clase mágica que alterna la vista usando la lógica de React */
-    .oculto-en-mobile {
-        display: none !important;
+    .sidebar-container.colapsado .header-buttons {
+        flex-direction: column-reverse; /* Pone el botón "+" arriba y el de menú abajo */
+        gap: 15px;
     }
-}
+
+    .sidebar-container.

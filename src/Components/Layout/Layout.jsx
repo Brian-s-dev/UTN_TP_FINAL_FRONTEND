@@ -1,45 +1,68 @@
 import React, { useState } from "react";
-import { Outlet, useNavigate, useLocation } from "react-router"; // ✨ Añadimos useLocation
+import { Outlet, useNavigate, useLocation } from "react-router";
 import { useChat } from "../../Context/ChatContext";
 import { useTheme } from "../../Context/ThemeContext";
 import SidebarItem from "../SidebarItem/SidebarItem";
 import Avatar from "../Avatar/Avatar";
 import ContactsSidebar from "../ContactsSidebar/ContactsSidebar";
-import NewChatModal from "../NewChatModal/NewChatModal"; 
 import "./Layout.css";
 
 const Layout = () => {
     const { chats, usuarioActual } = useChat();
     const { tema, toggleTema } = useTheme();
     const navigate = useNavigate();
-    const location = useLocation(); // ✨ Obtenemos la ruta actual
+    const location = useLocation(); 
     
     const [busqueda, setBusqueda] = useState("");
     const [menuAbierto, setMenuAbierto] = useState(false);
     const [sidebarContactosAbierto, setSidebarContactosAbierto] = useState(false);
+    
+    // ✨ NUEVO ESTADO: Controla si la barra está reducida o expandida
+    const [sidebarColapsado, setSidebarColapsado] = useState(false); 
 
-    // ✨ LÓGICA RESPONSIVE: Si la ruta incluye "/chat/", significa que estamos dentro de una conversación
     const isChatActivo = location.pathname.includes("/chat/");
 
     const chatsFiltrados = chats.filter(chat => 
         chat.nombre.toLowerCase().includes(busqueda.toLowerCase())
     );
 
+    // Si queremos abrir contactos y el menú está colapsado, lo expandimos primero
+    const handleAbrirContactos = () => {
+        setSidebarColapsado(false); 
+        setSidebarContactosAbierto(true);
+    };
+
     return (
         <div className="layout-container">
-            {/* ✨ En mobile, ocultamos el sidebar si hay un chat abierto */}
-            <aside className={`sidebar-container ${isChatActivo ? 'oculto-en-mobile' : ''}`}>
+            {/* ✨ Le pasamos la clase "colapsado" dinámicamente al sidebar */}
+            <aside className={`sidebar-container ${isChatActivo ? 'oculto-en-mobile' : ''} ${sidebarColapsado ? 'colapsado' : ''}`}>
                 <div className="sidebar-header">
                     <div className="sidebar-header-top">
                         <h2>Mensajes</h2>
-                        <button 
-                            className="btn-nuevo-chat" 
-                            onClick={() => setSidebarContactosAbierto(true)} 
-                            title="Nuevo Chat"
-                        >
-                            <span className="material-symbols-outlined">chat</span>
-                        </button>
+                        
+                        {/* Agrupamos los botones superiores */}
+                        <div className="header-buttons">
+                            {/* ✨ BOTÓN DE COLAPSAR/EXPANDIR */}
+                            <button 
+                                className="btn-colapsar" 
+                                onClick={() => setSidebarColapsado(!sidebarColapsado)} 
+                                title={sidebarColapsado ? "Expandir panel" : "Colapsar panel"}
+                            >
+                                <span className="material-symbols-outlined">
+                                    {sidebarColapsado ? 'menu_open' : 'menu'}
+                                </span>
+                            </button>
+                            
+                            <button 
+                                className="btn-nuevo-chat" 
+                                onClick={handleAbrirContactos} 
+                                title="Nuevo Chat"
+                            >
+                                <span className="material-symbols-outlined">chat</span>
+                            </button>
+                        </div>
                     </div>
+                    
                     <div className="search-container">
                         <input 
                             type="text" 
@@ -100,7 +123,6 @@ const Layout = () => {
                 />
             </aside>
             
-            {/* ✨ En mobile, ocultamos el contenedor derecho (Welcome) si NO hay un chat abierto */}
             <main className={`component-wrapper ${!isChatActivo ? 'oculto-en-mobile' : ''}`}>
                 <Outlet />
             </main>
