@@ -100,29 +100,48 @@
 }
 
 /* =========================================
-   NUEVA ÁREA DE INPUT Y ADJUNTOS
+   ✨ ÁREA DE INPUT FLOTANTE
    ========================================= */
 
+/* El contenedor exterior ahora es transparente y da los márgenes para "flotar" */
 .chat-input-area {
     display: flex;
-    padding: 15px 20px;
-    background-color: #f0f2f5;
-    gap: 12px;
-    align-items: center;
-    border-top: 1px solid #d1d7db;
-    border-bottom-left-radius: 16px;
-    border-bottom-right-radius: 16px;
+    padding: 0 20px 20px 20px;
+    /* Separación de 20px de los bordes laterales e inferior */
+    background-color: transparent;
+    /* Antes era sólido */
+    border-top: none;
+    /* Quitamos la línea de arriba */
     z-index: 60;
 }
 
-.chat-input-area input {
+/* LA PÍLDORA: El contenedor visual que agrupa los botones y el input */
+.input-pill-container {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    background-color: #ffffff;
+    /* El color de fondo de la píldora */
+    border-radius: 30px;
+    /* Bordes muy redondeados */
+    padding: 6px 8px;
+    /* Espacio interno para que los botones respiren */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    /* Sombra para que flote sobre los mensajes */
+    gap: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    /* Un borde súper sutil */
+}
+
+/* El input dentro de la píldora ya no necesita bordes ni fondo propio */
+.input-pill-container input {
     flex: 1;
-    padding: 12px 15px;
+    padding: 10px 5px;
     border: none;
-    border-radius: 8px;
+    border-radius: 0;
     font-size: 1rem;
     outline: none;
-    background-color: #ffffff;
+    background-color: transparent;
     transition: 0.2s;
 }
 
@@ -145,12 +164,12 @@
 .btn-adjuntar {
     background: transparent;
     color: #54656f;
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
 }
 
 .btn-adjuntar:hover {
-    background-color: #e4e6e9;
+    background-color: #f0f2f5;
 }
 
 .btn-adjuntar .material-symbols-outlined {
@@ -161,8 +180,8 @@
 .btn-enviar {
     background-color: #00a884;
     color: white;
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
 }
 
 .btn-enviar:hover {
@@ -172,11 +191,10 @@
 .btn-enviar .material-symbols-outlined {
     font-size: 20px;
     margin-left: 2px;
-    /* Centra visualmente el avioncito */
 }
 
 /* =========================================
-   MENÚ FLOTANTE DE ADJUNTOS
+   ✨ MENÚ FLOTANTE DE ADJUNTOS
    ========================================= */
 
 .adjuntos-container {
@@ -187,8 +205,8 @@
 
 .menu-adjuntos {
     position: absolute;
-    bottom: 60px;
-    /* Sube por encima de la barra */
+    bottom: 55px;
+    /* Ajustado para la nueva posición de la píldora */
     left: 0;
     background-color: white;
     border-radius: 16px;
@@ -298,22 +316,6 @@ body.dark-mode .chat-status {
     color: #8696a0;
 }
 
-body.dark-mode .chat-input-area {
-    background-color: rgba(32, 44, 51, 0.8);
-    backdrop-filter: blur(10px);
-    border-top: 1px solid rgba(49, 61, 69, 0.5);
-}
-
-body.dark-mode .chat-input-area input {
-    background-color: rgba(42, 57, 66, 0.8);
-    color: #e9edef;
-    border: 1px solid transparent;
-}
-
-body.dark-mode .chat-input-area input:focus {
-    border-color: #00a884;
-}
-
 body.dark-mode .btn-volver {
     color: #8696a0;
 }
@@ -322,13 +324,31 @@ body.dark-mode .btn-volver:hover {
     color: #e9edef;
 }
 
-/* Ajustes del Modo Oscuro para Input y Adjuntos */
+/* ✨ Modo Oscuro: El contenedor exterior transparente, la píldora tiene color */
+body.dark-mode .chat-input-area {
+    background-color: transparent;
+    backdrop-filter: none;
+    border-top: none;
+}
+
+body.dark-mode .input-pill-container {
+    background-color: rgba(32, 44, 51, 0.9);
+    /* Color oscuro translúcido */
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .input-pill-container input {
+    color: #e9edef;
+}
+
 body.dark-mode .btn-adjuntar {
     color: #8696a0;
 }
 
 body.dark-mode .btn-adjuntar:hover {
-    background-color: #202c33;
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 body.dark-mode .menu-adjuntos {
