@@ -23,19 +23,33 @@ const Layout = () => {
         chat.nombre.toLowerCase().includes(busqueda.toLowerCase())
     );
 
-    // ✨ Escuchamos el tamaño de pantalla para asegurar el comportamiento por defecto
+    // ✨ EFECTO 1: Reaccionar al cambio de tamaño de la ventana
     useEffect(() => {
         const handleResize = () => {
-            if (window.innerWidth <= 900) {
-                setSidebarColapsado(true);
-            } else {
-                setSidebarColapsado(false);
+            if (window.innerWidth > 900) {
+                setSidebarColapsado(false); // En PC mostramos la barra normal
             }
         };
-
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
+
+    // ✨ EFECTO 2: La magia de navegación. Auto-colapsa al elegir un chat en móviles
+    useEffect(() => {
+        if (window.innerWidth <= 900) {
+            if (location.pathname === "/") {
+                setSidebarColapsado(false); // Lista abierta en el inicio
+            } else if (location.pathname.includes("/chat/")) {
+                setSidebarColapsado(true); // ✨ Colapsamos la lista para ver el chat
+                setSidebarContactosAbierto(false); // Cerramos también la lista de nuevos contactos por si acaso
+            }
+        } else {
+            // En PC, si creamos un nuevo chat desde la agenda, cerramos la agenda
+            if (location.pathname.includes("/chat/")) {
+                setSidebarContactosAbierto(false);
+            }
+        }
+    }, [location.pathname]);
 
     const handleAbrirContactos = () => {
         setSidebarColapsado(false); 
