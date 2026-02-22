@@ -1,36 +1,25 @@
 import React, { useState } from "react";
-import { Outlet, useNavigate } from "react-router";
+import { Outlet } from "react-router";
 import { useChat } from "../../Context/ChatContext";
 import { useTheme } from "../../Context/ThemeContext";
 import SidebarItem from "../SidebarItem/SidebarItem";
 import Avatar from "../Avatar/Avatar";
-import NewChatModal from "../NewChatModal/NewChatModal"; // ✨ Importamos el Modal
+import ContactsSidebar from "../ContactsSidebar/ContactsSidebar"; // ✨ Importamos
 import "./Layout.css";
 
 const Layout = () => {
-    const { chats, agregarNuevoChat, usuarioActual } = useChat();
+    const { chats, usuarioActual } = useChat();
     const { tema, toggleTema } = useTheme();
-    const navigate = useNavigate();
     
     const [busqueda, setBusqueda] = useState("");
     const [menuAbierto, setMenuAbierto] = useState(false);
-    const [modalAbierto, setModalAbierto] = useState(false);
+    
+    // ✨ Estado para abrir el nuevo Sidebar deslizante
+    const [sidebarContactosAbierto, setSidebarContactosAbierto] = useState(false);
 
     const chatsFiltrados = chats.filter(chat => 
         chat.nombre.toLowerCase().includes(busqueda.toLowerCase())
     );
-
-    const handleAbrirModal = () => {
-        setModalAbierto(true);
-        setMenuAbierto(false); 
-    };
-
-    // ✨ Ahora esta función recibe el nombre directamente desde el Modal
-    const confirmarCrearChat = (nombreNuevoChat) => {
-        const nuevoId = agregarNuevoChat(nombreNuevoChat);
-        setModalAbierto(false);
-        navigate(`/chat/${nuevoId}`);
-    };
 
     return (
         <div className="layout-container">
@@ -38,7 +27,12 @@ const Layout = () => {
                 <div className="sidebar-header">
                     <div className="sidebar-header-top">
                         <h2>Mensajes</h2>
-                        <button className="btn-nuevo-chat" onClick={handleAbrirModal} title="Nuevo Chat">
+                        <button 
+                            className="btn-nuevo-chat" 
+                            /* ✨ Al hacer clic, abrimos el panel lateral en vez del modal */
+                            onClick={() => setSidebarContactosAbierto(true)} 
+                            title="Nuevo Chat"
+                        >
                             <span className="material-symbols-outlined">chat</span>
                         </button>
                     </div>
@@ -95,17 +89,17 @@ const Layout = () => {
                         )}
                     </div>
                 </div>
+
+                {/* ✨ Aquí entra el nuevo panel. Se deslizará sobre el contenido anterior */}
+                <ContactsSidebar 
+                    isOpen={sidebarContactosAbierto} 
+                    onClose={() => setSidebarContactosAbierto(false)} 
+                />
+
             </aside>
             <main className="component-wrapper">
                 <Outlet />
             </main>
-
-            {/* ✨ Llamamos al componente limpio */}
-            <NewChatModal 
-                isOpen={modalAbierto} 
-                onClose={() => setModalAbierto(false)} 
-                onCrear={confirmarCrearChat} 
-            />
         </div >
     );
 };

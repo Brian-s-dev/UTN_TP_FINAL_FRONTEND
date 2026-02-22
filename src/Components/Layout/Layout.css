@@ -39,6 +39,8 @@ html {
     border-right: none;
     display: flex;
     flex-direction: column;
+    position: relative; 
+    overflow: hidden; 
 }
 
 .sidebar-header {
