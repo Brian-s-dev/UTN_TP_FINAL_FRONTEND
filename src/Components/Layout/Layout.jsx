@@ -17,23 +17,25 @@ const Layout = () => {
     const [menuAbierto, setMenuAbierto] = useState(false);
     const [sidebarContactosAbierto, setSidebarContactosAbierto] = useState(false);
     
-    // ✨ Inicializamos el estado dependiendo del tamaño de pantalla
     const [sidebarColapsado, setSidebarColapsado] = useState(window.innerWidth <= 900); 
 
     const chatsFiltrados = chats.filter(chat => 
         chat.nombre.toLowerCase().includes(busqueda.toLowerCase())
     );
 
-    // ✨ UX MÁGICA PARA MÓVILES: Auto-colapsar o expandir según dónde estemos
+    // ✨ Escuchamos el tamaño de pantalla para asegurar el comportamiento por defecto
     useEffect(() => {
-        if (window.innerWidth <= 900) {
-            if (location.pathname === "/") {
-                setSidebarColapsado(false); // Si vamos al inicio, expandimos la lista
-            } else if (location.pathname.includes("/chat/")) {
-                setSidebarColapsado(true); // Si entramos a un chat, colapsamos la lista a 85px
+        const handleResize = () => {
+            if (window.innerWidth <= 900) {
+                setSidebarColapsado(true);
+            } else {
+                setSidebarColapsado(false);
             }
-        }
-    }, [location.pathname]);
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const handleAbrirContactos = () => {
         setSidebarColapsado(false); 
@@ -42,14 +44,12 @@ const Layout = () => {
 
     return (
         <div className="layout-container">
-            {/* ✨ Quitamos la lógica destructiva de ocultar, ahora todo depende de "colapsado" */}
             <aside className={`sidebar-container ${sidebarColapsado ? 'colapsado' : ''}`}>
                 <div className="sidebar-header">
                     <div className="sidebar-header-top">
                         <h2>Mensajes</h2>
                         
                         <div className="header-buttons">
-                            {/* EL BOTÓN AHORA ES VISIBLE SIEMPRE */}
                             <button 
                                 className="btn-colapsar" 
                                 onClick={() => setSidebarColapsado(!sidebarColapsado)} 
@@ -130,7 +130,6 @@ const Layout = () => {
                 />
             </aside>
             
-            {/* ✨ El chat ahora está siempre renderizado, ocupando el espacio que la barra le deja */}
             <main className="component-wrapper">
                 <Outlet />
             </main>
