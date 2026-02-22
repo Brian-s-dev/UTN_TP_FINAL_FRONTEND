@@ -62,7 +62,6 @@ const ChatView = () => {
                         hora={mensaje.hora}
                         avatarContacto={chatActivo.avatar}
                         nombreContacto={chatActivo.nombre}
-                        /* ✨ El avatar lateral ahora solo aparece en los grupos */
                         mostrarAvatar={chatActivo.tipo === EMISOR.GRUPO}
                     />
                 ))}

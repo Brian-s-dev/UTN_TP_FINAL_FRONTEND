@@ -4,10 +4,25 @@
     flex: 1;
     height: 100%;
     width: 100%;
-    /* ✨ RESTAURADO: Color sólido para el chat activo */
+    /* Fondo sólido para el chat activo (tapa el blur de fondo) */
     background-color: #efeae2; 
     font-family: sans-serif;
     animation: deslizar-derecha 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    /* ✨ Clave para posicionar la capa de relieve */
+    position: relative; 
+    border-radius: 16px; /* Hacemos coincidir con el wrapper principal */
+}
+
+/* ✨ LA MAGIA DEL RELIEVE: Capa invisible que dibuja el borde iluminado por encima de todo */
+.chat-view-container::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none; /* Deja pasar los clics hacia el chat */
+    z-index: 50; /* Por encima del header y del input */
+    border-radius: 16px; 
+    /* Luz superior interna para el relieve 3D */
+    box-shadow: inset 0 3px 8px rgba(255, 255, 255, 0.9);
 }
 
 .chat-view-container.centered {
@@ -24,6 +39,8 @@
     padding: 15px 20px;
     background-color: #f0f2f5;
     border-bottom: 1px solid #d1d7db;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
 }
 
 .chat-header-info {
@@ -32,13 +49,6 @@
     gap: 15px;
 }
 
-.chat-header-info h2 {
-    margin: 0;
-    font-size: 1.2rem;
-    color: #111b21;
-}
-
-/* ✨ Estilos para agrupar nombre y estado */
 .chat-header-texto {
     display: flex;
     flex-direction: column;
@@ -47,21 +57,15 @@
 
 .chat-header-texto h2 {
     margin: 0;
-    font-size: 1.1rem; /* Un pelín más chico para que entre bien el subtítulo */
+    font-size: 1.1rem;
     color: #111b21;
     line-height: 1.2;
 }
 
-/* ✨ Estilo del texto de "última conexión" */
 .chat-status {
     font-size: 0.8rem;
     color: #667781;
     margin-top: 2px;
-}
-
-/* ✨ Ajuste para el estado en Modo Oscuro */
-body.dark-mode .chat-status {
-    color: #8696a0;
 }
 
 .btn-volver {
@@ -74,6 +78,7 @@ body.dark-mode .chat-status {
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 60; /* Para asegurarnos que sea clickeable por encima del ::after */
 }
 
 .btn-volver:hover {
@@ -97,6 +102,9 @@ body.dark-mode .chat-status {
     gap: 15px;
     align-items: center;
     border-top: 1px solid #d1d7db;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    z-index: 60; /* Para asegurar clics en el input */
 }
 
 .chat-input-area input {
@@ -137,9 +145,17 @@ body.dark-mode .chat-status {
     }
 }
 
-/* ✨ FONDO SÓLIDO EN MODO OSCURO TAMBIÉN */
+/* =========================================
+   🌙 MODO OSCURO
+   ========================================= */
+
 body.dark-mode .chat-view-container { 
-    background-color: #0e161c; /* Mismo color sólido que el wrapper */
+    background-color: #0e161c; 
+}
+
+/* ✨ Adaptamos el relieve para el modo oscuro */
+body.dark-mode .chat-view-container::after {
+    box-shadow: inset 0 2px 5px rgba(255, 255, 255, 0.12);
 }
 
 body.dark-mode .chat-header-placeholder { 
@@ -148,13 +164,18 @@ body.dark-mode .chat-header-placeholder {
     backdrop-filter: blur(10px);
 }
 
-body.dark-mode .chat-header-info h2 { 
+body.dark-mode .chat-header-texto h2 { 
     color: #e9edef; 
+}
+
+body.dark-mode .chat-status {
+    color: #8696a0;
 }
 
 body.dark-mode .chat-input-area { 
     background-color: rgba(32, 44, 51, 0.8);
     backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(49, 61, 69, 0.5);
 }
 
 body.dark-mode .chat-input-area input { 
