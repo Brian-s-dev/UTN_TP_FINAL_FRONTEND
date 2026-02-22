@@ -17,7 +17,7 @@ const Layout = () => {
     const [menuAbierto, setMenuAbierto] = useState(false);
     const [sidebarContactosAbierto, setSidebarContactosAbierto] = useState(false);
     
-    // ✨ NUEVO ESTADO: Controla si la barra está reducida o expandida
+    // Estado para controlar si la barra está reducida o expandida
     const [sidebarColapsado, setSidebarColapsado] = useState(false); 
 
     const isChatActivo = location.pathname.includes("/chat/");
@@ -34,22 +34,21 @@ const Layout = () => {
 
     return (
         <div className="layout-container">
-            {/* ✨ Le pasamos la clase "colapsado" dinámicamente al sidebar */}
             <aside className={`sidebar-container ${isChatActivo ? 'oculto-en-mobile' : ''} ${sidebarColapsado ? 'colapsado' : ''}`}>
                 <div className="sidebar-header">
                     <div className="sidebar-header-top">
                         <h2>Mensajes</h2>
                         
-                        {/* Agrupamos los botones superiores */}
                         <div className="header-buttons">
-                            {/* ✨ BOTÓN DE COLAPSAR/EXPANDIR */}
+                            {/* ✨ BOTÓN DE COLAPSAR/EXPANDIR ACTUALIZADO */}
                             <button 
                                 className="btn-colapsar" 
                                 onClick={() => setSidebarColapsado(!sidebarColapsado)} 
                                 title={sidebarColapsado ? "Expandir panel" : "Colapsar panel"}
                             >
                                 <span className="material-symbols-outlined">
-                                    {sidebarColapsado ? 'menu_open' : 'menu'}
+                                    {/* Si está colapsado, mostramos menú para abrir. Si está abierto, mostramos flechas para cerrar a la izquierda */}
+                                    {sidebarColapsado ? 'menu' : 'keyboard_double_arrow_left'}
                                 </span>
                             </button>
                             

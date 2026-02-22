@@ -37,7 +37,7 @@ html {
     margin: 0 auto;
 }
 
-/* ✨ Agregamos transición fluida para el ancho del Sidebar */
+/* Transición fluida para el ancho del Sidebar */
 .sidebar-container {
     width: 350px;
     background-color: #f0f2f5;
@@ -46,7 +46,6 @@ html {
     flex-direction: column;
     position: relative;
     overflow-x: hidden;
-    /* Evita que los textos asomen al colapsar */
     transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
@@ -70,7 +69,7 @@ html {
     color: #111b21;
 }
 
-/* ✨ Agrupador de botones en el header */
+/* Agrupador de botones en el header */
 .header-buttons {
     display: flex;
     gap: 8px;
@@ -99,7 +98,7 @@ html {
     background-color: #008f6f;
 }
 
-/* ✨ Botón de colapsar barra */
+/* Botón de colapsar barra */
 .btn-colapsar {
     background: transparent;
     color: #54656f;
@@ -249,10 +248,13 @@ html {
     cursor: pointer;
     opacity: 0.6;
     transition: 0.2s;
+    color: #54656f;
+    /* Color base para modo claro */
 }
 
 .btn-ajustes:hover {
     opacity: 1;
+    color: #111b21;
 }
 
 .menu-flotante {
@@ -285,12 +287,11 @@ html {
 
 
 /* =========================================
-   ✨ ESTILOS DEL SIDEBAR COLAPSADO (Solo en PC)
+   ESTILOS DEL SIDEBAR COLAPSADO (Solo en PC)
    ========================================= */
 @media (min-width: 901px) {
     .sidebar-container.colapsado {
         width: 85px;
-        /* Ancho justo para que entre el Avatar */
     }
 
     .sidebar-container.colapsado .sidebar-header-top {
@@ -301,37 +302,30 @@ html {
 
     .sidebar-container.colapsado .sidebar-header-top h2 {
         display: none;
-        /* Oculta el título "Mensajes" */
     }
 
     .sidebar-container.colapsado .header-buttons {
         flex-direction: column-reverse;
-        /* Pone el botón "+" arriba y el de menú abajo */
         gap: 15px;
     }
 
     .sidebar-container.colapsado .search-container {
         display: none;
-        /* Oculta el buscador */
     }
 
     .sidebar-container.colapsado .chat-info {
         display: none;
-        /* Oculta el nombre y mensaje del contacto */
     }
 
     .sidebar-container.colapsado .chat-item {
         padding: 15px 0;
         justify-content: center;
-        /* Centra el avatar */
     }
 
     .sidebar-container.colapsado .chat-item::after {
         display: none;
-        /* Quita las líneas divisorias para un look más limpio */
     }
 
-    /* Transformamos el footer a Vertical */
     .sidebar-container.colapsado .sidebar-footer {
         flex-direction: column;
         padding: 20px 0;
@@ -344,10 +338,8 @@ html {
 
     .sidebar-container.colapsado .mi-nombre {
         display: none;
-        /* Oculta tu nombre */
     }
 
-    /* Movemos el menú flotante de ajustes a la derecha para que no se corte */
     .sidebar-container.colapsado .menu-flotante {
         left: 60px;
         bottom: 0;
@@ -379,7 +371,6 @@ html {
         display: none !important;
     }
 
-    /* En celulares, ocultamos el botón de colapsar barra */
     .btn-colapsar {
         display: none !important;
     }
@@ -463,4 +454,14 @@ body.dark-mode .btn-colapsar {
 body.dark-mode .btn-colapsar:hover {
     background-color: #202c33;
     color: #e9edef;
+}
+
+/* ✨ REGLA CORREGIDA PARA LA TUERCA EN MODO OSCURO */
+body.dark-mode .btn-ajustes {
+    color: #e9edef;
+    opacity: 1;
+}
+
+body.dark-mode .btn-ajustes:hover {
+    color: #ffffff;
 }
