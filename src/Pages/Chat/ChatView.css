@@ -1,26 +1,29 @@
-.chat-view-container { 
-    display: flex; 
-    flex-direction: column; 
+.chat-view-container {
+    display: flex;
+    flex-direction: column;
     flex: 1;
     height: 100%;
     width: 100%;
-    /* Fondo sólido para el chat activo (tapa el blur de fondo) */
-    background-color: #efeae2; 
+    background-color: #efeae2;
     font-family: sans-serif;
     animation: deslizar-derecha 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-    /* ✨ Clave para posicionar la capa de relieve */
-    position: relative; 
-    border-radius: 16px; /* Hacemos coincidir con el wrapper principal */
+    position: relative;
+    border-radius: 16px;
 }
 
-/* ✨ LA MAGIA DEL RELIEVE: Capa invisible que dibuja el borde iluminado por encima de todo */
+/* LA MAGIA DEL RELIEVE: Capa invisible que dibuja el borde iluminado por encima de todo */
 .chat-view-container::after {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    pointer-events: none; /* Deja pasar los clics hacia el chat */
-    z-index: 50; /* Por encima del header y del input */
-    border-radius: 16px; 
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    /* Deja pasar los clics hacia el chat */
+    z-index: 50;
+    /* Por encima del header y del input */
+    border-radius: 16px;
     /* Luz superior interna para el relieve 3D */
     box-shadow: inset 0 3px 8px rgba(255, 255, 255, 0.9);
 }
@@ -78,7 +81,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 60; /* Para asegurarnos que sea clickeable por encima del ::after */
+    z-index: 60;
+    /* Para asegurarnos que sea clickeable por encima del ::after */
 }
 
 .btn-volver:hover {
@@ -95,16 +99,20 @@
     gap: 10px;
 }
 
+/* =========================================
+   NUEVA ÁREA DE INPUT Y ADJUNTOS
+   ========================================= */
+
 .chat-input-area {
     display: flex;
     padding: 15px 20px;
     background-color: #f0f2f5;
-    gap: 15px;
+    gap: 12px;
     align-items: center;
     border-top: 1px solid #d1d7db;
     border-bottom-left-radius: 16px;
     border-bottom-right-radius: 16px;
-    z-index: 60; /* Para asegurar clics en el input */
+    z-index: 60;
 }
 
 .chat-input-area input {
@@ -118,20 +126,137 @@
     transition: 0.2s;
 }
 
-.chat-input-area button {
-    background-color: #00a884;
-    color: white;
+/* Botones con iconos (General) */
+.btn-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border: none;
-    padding: 12px 20px;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: bold;
+    border-radius: 50%;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, transform 0.1s;
 }
 
-.chat-input-area button:hover {
+.btn-icon:active {
+    transform: scale(0.95);
+}
+
+/* Botón de "+" (Adjuntar) */
+.btn-adjuntar {
+    background: transparent;
+    color: #54656f;
+    width: 42px;
+    height: 42px;
+}
+
+.btn-adjuntar:hover {
+    background-color: #e4e6e9;
+}
+
+.btn-adjuntar .material-symbols-outlined {
+    font-size: 28px;
+}
+
+/* Botón de Enviar (Verde) */
+.btn-enviar {
+    background-color: #00a884;
+    color: white;
+    width: 42px;
+    height: 42px;
+}
+
+.btn-enviar:hover {
     background-color: #008f6f;
+}
+
+.btn-enviar .material-symbols-outlined {
+    font-size: 20px;
+    margin-left: 2px;
+    /* Centra visualmente el avioncito */
+}
+
+/* =========================================
+   MENÚ FLOTANTE DE ADJUNTOS
+   ========================================= */
+
+.adjuntos-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.menu-adjuntos {
+    position: absolute;
+    bottom: 60px;
+    /* Sube por encima de la barra */
+    left: 0;
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
+    min-width: 220px;
+    z-index: 100;
+    animation: slideUpFade 0.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes slideUpFade {
+    0% {
+        opacity: 0;
+        transform: translateY(15px) scale(0.95);
+        transform-origin: bottom left;
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        transform-origin: bottom left;
+    }
+}
+
+.menu-adjuntos button {
+    background: transparent;
+    border: none;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 20px;
+    color: #111b21;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color 0.15s;
+}
+
+.menu-adjuntos button:hover {
+    background-color: #f0f2f5;
+}
+
+/* Colores de WhatsApp para los iconos del menú */
+.color-doc {
+    color: #7f66ff;
+}
+
+.color-foto {
+    color: #007bfc;
+}
+
+.color-camara {
+    color: #ff2e74;
+}
+
+.color-contacto {
+    color: #009de2;
+}
+
+.color-encuesta {
+    color: #ffbc38;
+}
+
+.menu-adjuntos .material-symbols-outlined {
+    font-size: 22px;
 }
 
 @keyframes deslizar-derecha {
@@ -139,6 +264,7 @@
         opacity: 0;
         transform: translateX(-40px);
     }
+
     100% {
         opacity: 1;
         transform: translateX(0);
@@ -149,38 +275,38 @@
    🌙 MODO OSCURO
    ========================================= */
 
-body.dark-mode .chat-view-container { 
-    background-color: #0e161c; 
+body.dark-mode .chat-view-container {
+    background-color: #0e161c;
 }
 
-/* ✨ Adaptamos el relieve para el modo oscuro */
+/* Adaptamos el relieve para el modo oscuro */
 body.dark-mode .chat-view-container::after {
     box-shadow: inset 0 2px 5px rgba(255, 255, 255, 0.12);
 }
 
-body.dark-mode .chat-header-placeholder { 
-    background-color: rgba(32, 44, 51, 0.8); 
+body.dark-mode .chat-header-placeholder {
+    background-color: rgba(32, 44, 51, 0.8);
     border-bottom: 1px solid rgba(49, 61, 69, 0.5);
     backdrop-filter: blur(10px);
 }
 
-body.dark-mode .chat-header-texto h2 { 
-    color: #e9edef; 
+body.dark-mode .chat-header-texto h2 {
+    color: #e9edef;
 }
 
 body.dark-mode .chat-status {
     color: #8696a0;
 }
 
-body.dark-mode .chat-input-area { 
+body.dark-mode .chat-input-area {
     background-color: rgba(32, 44, 51, 0.8);
     backdrop-filter: blur(10px);
     border-top: 1px solid rgba(49, 61, 69, 0.5);
 }
 
-body.dark-mode .chat-input-area input { 
-    background-color: rgba(42, 57, 66, 0.8); 
-    color: #e9edef; 
+body.dark-mode .chat-input-area input {
+    background-color: rgba(42, 57, 66, 0.8);
+    color: #e9edef;
     border: 1px solid transparent;
 }
 
@@ -194,4 +320,26 @@ body.dark-mode .btn-volver {
 
 body.dark-mode .btn-volver:hover {
     color: #e9edef;
+}
+
+/* Ajustes del Modo Oscuro para Input y Adjuntos */
+body.dark-mode .btn-adjuntar {
+    color: #8696a0;
+}
+
+body.dark-mode .btn-adjuntar:hover {
+    background-color: #202c33;
+}
+
+body.dark-mode .menu-adjuntos {
+    background-color: #233138;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .menu-adjuntos button {
+    color: #e9edef;
+}
+
+body.dark-mode .menu-adjuntos button:hover {
+    background-color: #111b21;
 }
