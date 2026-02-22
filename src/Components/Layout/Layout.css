@@ -291,7 +291,7 @@ html {
    ========================================= */
 @media (min-width: 901px) {
     .sidebar-container.colapsado {
-        width: 85px;
+        width: 85px; 
     }
 
     .sidebar-container.colapsado .sidebar-header-top {
@@ -300,30 +300,31 @@ html {
         align-items: center;
     }
 
+    /* ✨ AQUÍ ESTÁ EL FIX: Forzamos la desaparición del texto */
     .sidebar-container.colapsado .sidebar-header-top h2 {
-        display: none;
+        display: none !important; 
     }
 
     .sidebar-container.colapsado .header-buttons {
-        flex-direction: column-reverse;
+        flex-direction: column-reverse; 
         gap: 15px;
     }
 
     .sidebar-container.colapsado .search-container {
-        display: none;
+        display: none !important; 
     }
 
     .sidebar-container.colapsado .chat-info {
-        display: none;
+        display: none !important; 
     }
 
     .sidebar-container.colapsado .chat-item {
-        padding: 15px 0;
-        justify-content: center;
+        padding: 15px 0; 
+        justify-content: center; 
     }
 
     .sidebar-container.colapsado .chat-item::after {
-        display: none;
+        display: none !important; 
     }
 
     .sidebar-container.colapsado .sidebar-footer {
@@ -333,11 +334,11 @@ html {
     }
 
     .sidebar-container.colapsado .mi-perfil {
-        margin: 0;
+        margin: 0; 
     }
 
     .sidebar-container.colapsado .mi-nombre {
-        display: none;
+        display: none !important; 
     }
 
     .sidebar-container.colapsado .menu-flotante {
@@ -346,7 +347,6 @@ html {
         right: auto;
     }
 }
-
 
 /* =========================================
    📱 RESPONSIVE DESIGN (Móviles)
