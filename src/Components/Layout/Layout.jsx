@@ -26,21 +26,14 @@ const Layout = () => {
     );
 
     // ✨ EL CEREBRO DEFINITIVO DE LAYOUT
-    // Esta función centraliza toda la lógica de cómo debe verse la app
+    // Simplificamos la lógica: Si es PC se expande, si es Tablet o Celular se colapsa.
     const ajustarLayout = () => {
         if (window.innerWidth > 900) {
             // MODO PC: Siempre expandido por defecto
             setSidebarColapsado(false);
-        } else if (window.innerWidth > 700 && window.innerWidth <= 900) {
-            // MODO TABLET: Siempre colapsado a 85px por defecto
-            setSidebarColapsado(true);
         } else {
-            // MODO CELULAR (<= 700px)
-            if (location.pathname.includes("/chat/")) {
-                setSidebarColapsado(true);  // Navbar superior si estamos dentro del chat
-            } else {
-                setSidebarColapsado(false); // Lista a pantalla completa si estamos en el inicio
-            }
+            // MODO TABLET Y CELULAR (<= 900px): Siempre colapsado por defecto
+            setSidebarColapsado(true);
         }
     };
 
@@ -62,7 +55,7 @@ const Layout = () => {
 
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
-    }, [location.pathname]); // Dependencia para que sepa en qué pantalla estás al redimensionar
+    }, [location.pathname]);
 
     const handleAbrirContactos = () => {
         setSidebarContactosAbierto(true);
