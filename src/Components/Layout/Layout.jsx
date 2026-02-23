@@ -16,8 +16,6 @@ const Layout = () => {
     const [busqueda, setBusqueda] = useState("");
     const [menuAbierto, setMenuAbierto] = useState(false);
     const [sidebarContactosAbierto, setSidebarContactosAbierto] = useState(false);
-    
-    // ✨ Nuevo estado para el panel de perfil de usuario
     const [perfilAbierto, setPerfilAbierto] = useState(false);
     
     const [sidebarColapsado, setSidebarColapsado] = useState(window.innerWidth <= 900); 
@@ -26,32 +24,38 @@ const Layout = () => {
         chat.nombre.toLowerCase().includes(busqueda.toLowerCase())
     );
 
+    // ✨ EL CEREBRO RESPONSIVO MEJORADO
+    // Este efecto vigila tanto la URL como el tamaño de la ventana en tiempo real
     useEffect(() => {
-        const handleResize = () => {
-            if (window.innerWidth > 900) {
-                setSidebarColapsado(false); 
+        const checkLayout = () => {
+            // Cerramos paneles superpuestos por precaución al mover la pantalla/ruta
+            setPerfilAbierto(false); 
+
+            if (window.innerWidth <= 900) {
+                // MODO TABLET Y CELULAR
+                if (location.pathname === "/") {
+                    setSidebarColapsado(false); // Lista de chats a pantalla completa
+                } else if (location.pathname.includes("/chat/")) {
+                    setSidebarColapsado(true); // Oculta la lista (o la hace barra superior)
+                    setSidebarContactosAbierto(false); 
+                }
+            } else {
+                // MODO PC
+                if (location.pathname === "/") {
+                    setSidebarColapsado(false); // Despliega la barra lateral por defecto
+                }
+                if (location.pathname.includes("/chat/")) {
+                    setSidebarContactosAbierto(false);
+                }
             }
         };
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
 
-    useEffect(() => {
-        // Al cambiar de ruta, cerramos el perfil por precaución
-        setPerfilAbierto(false); 
+        // Lo ejecutamos inmediatamente al cargar o cambiar de ruta
+        checkLayout();
 
-        if (window.innerWidth <= 900) {
-            if (location.pathname === "/") {
-                setSidebarColapsado(false); 
-            } else if (location.pathname.includes("/chat/")) {
-                setSidebarColapsado(true); 
-                setSidebarContactosAbierto(false); 
-            }
-        } else {
-            if (location.pathname.includes("/chat/")) {
-                setSidebarContactosAbierto(false);
-            }
-        }
+        // Lo enganchamos al evento de redimensionar ventana
+        window.addEventListener('resize', checkLayout);
+        return () => window.removeEventListener('resize', checkLayout);
     }, [location.pathname]);
 
     const handleAbrirContactos = () => {
@@ -108,7 +112,6 @@ const Layout = () => {
                 </nav>
 
                 <div className="sidebar-footer">
-                    {/* ✨ Agregamos clase "clickable" y el evento onClick al perfil */}
                     <div className="mi-perfil clickable" onClick={() => setPerfilAbierto(true)} title="Ver Perfil">
                         <Avatar nombre={usuarioActual} />
                         <span className="mi-nombre">{usuarioActual}</span>
@@ -152,9 +155,7 @@ const Layout = () => {
                 <Outlet />
             </main>
 
-            {/* =========================================
-                ✨ NUEVO SIDEBAR DERECHO DE MI PERFIL
-                ========================================= */}
+            {/* SIDEBAR DERECHO DE MI PERFIL */}
             <div className={`profile-sidebar ${perfilAbierto ? 'abierto' : ''}`}>
                 <div className="profile-sidebar-header">
                     <button className="btn-icon" onClick={() => setPerfilAbierto(false)} title="Cerrar info">
@@ -190,8 +191,6 @@ const Layout = () => {
                     </div>
                 </div>
             </div>
-            {/* FIN SIDEBAR PERFIL */}
-
         </div >
     );
 };
