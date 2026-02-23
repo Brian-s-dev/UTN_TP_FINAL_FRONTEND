@@ -22,15 +22,18 @@ const generarEstadoConexion = (id, tipo) => {
 const ChatView = () => {
     const { chatId } = useParams();
     const navigate = useNavigate(); 
-    // ✨ Traemos desbloquearContacto y contactos
     const { chats, contactos, usuarioActual, enviarMensaje, bloquearContacto, desbloquearContacto, eliminarChat } = useChat();
 
     const [infoAbierta, setInfoAbierta] = useState(false);
     const [menuEditarAbierto, setMenuEditarAbierto] = useState(false);
     const menuEditarRef = useRef(null);
+    
+    // ✨ 1. CREAMOS UNA REFERENCIA PARA EL FINAL DEL CHAT
+    const mensajesFinRef = useRef(null);
 
     const chatActivo = chats.find((chat) => chat.id === Number(chatId) || chat.id === chatId);
 
+    // Cerrar menú de editar si se hace clic afuera
     useEffect(() => {
         const handleClickFuera = (event) => {
             if (menuEditarRef.current && !menuEditarRef.current.contains(event.target)) {
@@ -41,16 +44,22 @@ const ChatView = () => {
         return () => document.removeEventListener("mousedown", handleClickFuera);
     }, []);
 
+    // Cerrar el panel derecho si cambiamos de chat
     useEffect(() => {
         setInfoAbierta(false);
     }, [chatId]);
+
+    // ✨ 2. EFECTO DE AUTO-SCROLL: Se ejecuta cada vez que cambian los mensajes de este chat
+    useEffect(() => {
+        // Hacemos scroll suave hacia el elemento "ancla" que pusimos al final
+        mensajesFinRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [chatActivo?.mensajes]);
 
     if (!chatActivo) return <div className="chat-view-container centered">Chat no encontrado</div>;
 
     const esGrupo = chatActivo.tipo === EMISOR.GRUPO;
     const estadoConexion = generarEstadoConexion(chatActivo.id, chatActivo.tipo);
 
-    // ✨ Alternamos entre bloquear y desbloquear
     const handleBloquearToggle = () => {
         if (chatActivo.bloqueado) {
             desbloquearContacto(chatId);
@@ -65,7 +74,6 @@ const ChatView = () => {
         navigate("/"); 
     };
 
-    // Textos dinámicos
     const txtMensajeSistema = esGrupo ? "Saliste del grupo" : "Se bloqueó el contacto";
     const txtInputApagado = esGrupo ? "Ya no eres participante de este grupo" : "No puedes enviar mensajes a un contacto bloqueado";
     const txtBotonBloquear = esGrupo 
@@ -111,9 +119,10 @@ const ChatView = () => {
                         />
                     ))
                 )}
+                {/* ✨ 3. ELEMENTO ANCLA INVISIBLE AL FINAL DE LA LISTA */}
+                <div ref={mensajesFinRef} />
             </div>
 
-            {/* ✨ Pasamos los textos dinámicos al input */}
             <ChatInput 
                 onEnviarMensaje={(texto) => enviarMensaje(chatId, texto)} 
                 deshabilitado={chatActivo.bloqueado} 
@@ -159,7 +168,6 @@ const ChatView = () => {
                         </div>
                     )}
 
-                    {/* ✨ LISTA DE PARTICIPANTES (Solo si es Grupo) */}
                     {esGrupo && (
                         <div className="contact-actions-card">
                             <h4 className="card-subtitle">{contactos.slice(0, 4).length + 1} participantes</h4>
@@ -171,7 +179,6 @@ const ChatView = () => {
                                         <span className="participant-role">Admin del grupo</span>
                                     </div>
                                 </div>
-                                {/* Tomamos los primeros 4 contactos de la agenda para rellenar el grupo */}
                                 {contactos.slice(0, 4).map(c => (
                                     <div key={c.id} className="participant-item">
                                         <Avatar imagen={c.avatar} nombre={c.nombre} />
