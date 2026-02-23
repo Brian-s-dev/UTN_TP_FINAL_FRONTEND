@@ -25,22 +25,46 @@ const Layout = () => {
         chat.nombre.toLowerCase().includes(busqueda.toLowerCase())
     );
 
-    // ✨ PASO 1: Lógica simple y directa para los 900px
+    // ✨ EL CEREBRO DE NAVEGACIÓN Y RESPONSIVE
     useEffect(() => {
-        const handleResize = () => {
+        const ajustarLayout = () => {
+            // 1. Siempre que cambiamos de ruta, cerramos los paneles superpuestos por precaución
+            setPerfilAbierto(false);
+            setSidebarContactosAbierto(false);
+
+            // 2. Lógica según el tamaño de pantalla
             if (window.innerWidth <= 900) {
-                setSidebarColapsado(true); // Fuerza a colapsar si es <= 900
+                // Si la pantalla es <= 900px y la URL dice "/chat/...", forzamos el colapso
+                if (location.pathname.includes("/chat/")) {
+                    setSidebarColapsado(true);
+                } else {
+                    // Si volvemos al inicio ("/"), expandimos la barra para ver los chats
+                    setSidebarColapsado(false);
+                }
             } else {
-                setSidebarColapsado(false); // Expande si es > 900
+                // En PC (> 900px), la barra principal siempre está expandida por defecto
+                setSidebarColapsado(false);
             }
         };
 
-        // Ejecutamos una vez al cargar
-        handleResize();
+        // Ejecutamos la validación cada vez que la URL cambie
+        ajustarLayout();
+
+    }, [location.pathname]); // ✨ Escucha atentamente los cambios de ruta
+
+    // ✨ Escuchamos también si el usuario arrastra la ventana del navegador manualmente
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth <= 900 && location.pathname.includes("/chat/")) {
+                setSidebarColapsado(true);
+            } else if (window.innerWidth > 900) {
+                setSidebarColapsado(false);
+            }
+        };
 
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
-    }, []);
+    }, [location.pathname]);
 
     const handleAbrirContactos = () => {
         setSidebarContactosAbierto(true);
