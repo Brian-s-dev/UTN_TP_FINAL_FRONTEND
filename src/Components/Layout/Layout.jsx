@@ -18,44 +18,31 @@ const Layout = () => {
     const [sidebarContactosAbierto, setSidebarContactosAbierto] = useState(false);
     const [perfilAbierto, setPerfilAbierto] = useState(false);
     
-    // Inicializamos asumiendo la vista correcta según pantalla
-    const [sidebarColapsado, setSidebarColapsado] = useState(window.innerWidth <= 900 && location.pathname !== "/"); 
+    // Estado inicial
+    const [sidebarColapsado, setSidebarColapsado] = useState(window.innerWidth <= 900); 
 
     const chatsFiltrados = chats.filter(chat => 
         chat.nombre.toLowerCase().includes(busqueda.toLowerCase())
     );
 
-    // ✨ EL CEREBRO DEFINITIVO
+    // ✨ PASO 1: Lógica simple y directa para los 900px
     useEffect(() => {
-        const checkLayout = () => {
-            setPerfilAbierto(false); 
-
+        const handleResize = () => {
             if (window.innerWidth <= 900) {
-                // TABLET Y MÓVIL (<= 900px)
-                if (location.pathname === "/") {
-                    setSidebarColapsado(false); // Expandido: Muestra 100% la lista de chats
-                } else {
-                    setSidebarColapsado(true);  // Colapsado: Entró a un chat, colapsa la barra
-                    setSidebarContactosAbierto(false); 
-                }
+                setSidebarColapsado(true); // Fuerza a colapsar si es <= 900
             } else {
-                // ESCRITORIO (> 900px)
-                if (location.pathname === "/") {
-                    setSidebarColapsado(false); // En PC la barra arranca abierta
-                }
-                if (location.pathname.includes("/chat/")) {
-                    setSidebarContactosAbierto(false);
-                }
+                setSidebarColapsado(false); // Expande si es > 900
             }
         };
 
-        checkLayout(); // Ejecuta al montar/cambiar ruta
-        window.addEventListener('resize', checkLayout); // Ejecuta si arrastras la ventana
-        return () => window.removeEventListener('resize', checkLayout);
-    }, [location.pathname]);
+        // Ejecutamos una vez al cargar
+        handleResize();
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const handleAbrirContactos = () => {
-        setSidebarColapsado(false); 
         setSidebarContactosAbierto(true);
     };
 
@@ -159,7 +146,6 @@ const Layout = () => {
                     </button>
                     <h3>Perfil</h3>
                 </div>
-
                 <div className="profile-sidebar-body">
                     <div className="profile-avatar-wrapper">
                         <Avatar nombre={usuarioActual} />
@@ -169,16 +155,6 @@ const Layout = () => {
                         <div className="profile-value-row">
                             <span className="profile-value">{usuarioActual}</span>
                             <button className="btn-icon-small" title="Editar nombre">
-                                <span className="material-symbols-outlined">edit</span>
-                            </button>
-                        </div>
-                        <p className="profile-disclaimer">Este no es tu nombre de usuario ni tu PIN. Este nombre será visible para tus contactos de la aplicación.</p>
-                    </div>
-                    <div className="profile-info-card">
-                        <span className="profile-label">Info.</span>
-                        <div className="profile-value-row">
-                            <span className="profile-value">¡Hola! Estoy usando React.</span>
-                            <button className="btn-icon-small" title="Editar info">
                                 <span className="material-symbols-outlined">edit</span>
                             </button>
                         </div>
