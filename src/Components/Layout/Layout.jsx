@@ -17,34 +17,37 @@ const Layout = () => {
     const [menuAbierto, setMenuAbierto] = useState(false);
     const [sidebarContactosAbierto, setSidebarContactosAbierto] = useState(false);
     
+    // ✨ Nuevo estado para el panel de perfil de usuario
+    const [perfilAbierto, setPerfilAbierto] = useState(false);
+    
     const [sidebarColapsado, setSidebarColapsado] = useState(window.innerWidth <= 900); 
 
     const chatsFiltrados = chats.filter(chat => 
         chat.nombre.toLowerCase().includes(busqueda.toLowerCase())
     );
 
-    // ✨ EFECTO 1: Reaccionar al cambio de tamaño de la ventana
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth > 900) {
-                setSidebarColapsado(false); // En PC mostramos la barra normal
+                setSidebarColapsado(false); 
             }
         };
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    // ✨ EFECTO 2: La magia de navegación. Auto-colapsa al elegir un chat en móviles
     useEffect(() => {
+        // Al cambiar de ruta, cerramos el perfil por precaución
+        setPerfilAbierto(false); 
+
         if (window.innerWidth <= 900) {
             if (location.pathname === "/") {
-                setSidebarColapsado(false); // Lista abierta en el inicio
+                setSidebarColapsado(false); 
             } else if (location.pathname.includes("/chat/")) {
-                setSidebarColapsado(true); // ✨ Colapsamos la lista para ver el chat
-                setSidebarContactosAbierto(false); // Cerramos también la lista de nuevos contactos por si acaso
+                setSidebarColapsado(true); 
+                setSidebarContactosAbierto(false); 
             }
         } else {
-            // En PC, si creamos un nuevo chat desde la agenda, cerramos la agenda
             if (location.pathname.includes("/chat/")) {
                 setSidebarContactosAbierto(false);
             }
@@ -105,7 +108,8 @@ const Layout = () => {
                 </nav>
 
                 <div className="sidebar-footer">
-                    <div className="mi-perfil">
+                    {/* ✨ Agregamos clase "clickable" y el evento onClick al perfil */}
+                    <div className="mi-perfil clickable" onClick={() => setPerfilAbierto(true)} title="Ver Perfil">
                         <Avatar nombre={usuarioActual} />
                         <span className="mi-nombre">{usuarioActual}</span>
                     </div>
@@ -147,6 +151,47 @@ const Layout = () => {
             <main className="component-wrapper">
                 <Outlet />
             </main>
+
+            {/* =========================================
+                ✨ NUEVO SIDEBAR DERECHO DE MI PERFIL
+                ========================================= */}
+            <div className={`profile-sidebar ${perfilAbierto ? 'abierto' : ''}`}>
+                <div className="profile-sidebar-header">
+                    <button className="btn-icon" onClick={() => setPerfilAbierto(false)} title="Cerrar info">
+                        <span className="material-symbols-outlined">close</span>
+                    </button>
+                    <h3>Perfil</h3>
+                </div>
+
+                <div className="profile-sidebar-body">
+                    <div className="profile-avatar-wrapper">
+                        <Avatar nombre={usuarioActual} />
+                    </div>
+
+                    <div className="profile-info-card">
+                        <span className="profile-label">Tu nombre</span>
+                        <div className="profile-value-row">
+                            <span className="profile-value">{usuarioActual}</span>
+                            <button className="btn-icon-small" title="Editar nombre">
+                                <span className="material-symbols-outlined">edit</span>
+                            </button>
+                        </div>
+                        <p className="profile-disclaimer">Este no es tu nombre de usuario ni tu PIN. Este nombre será visible para tus contactos de la aplicación.</p>
+                    </div>
+
+                    <div className="profile-info-card">
+                        <span className="profile-label">Info.</span>
+                        <div className="profile-value-row">
+                            <span className="profile-value">¡Hola! Estoy usando React.</span>
+                            <button className="btn-icon-small" title="Editar info">
+                                <span className="material-symbols-outlined">edit</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {/* FIN SIDEBAR PERFIL */}
+
         </div >
     );
 };
