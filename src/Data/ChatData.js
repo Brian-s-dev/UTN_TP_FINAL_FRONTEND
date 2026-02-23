@@ -40,7 +40,7 @@ export const chatsIniciales = [
         id: 4,
         nombre: "María Gómez UX",
         tipo: EMISOR.CONTACTO,
-        avatar: "https://i.pravatar.cc/150?u=maria",
+        avatar: "https://randomuser.me/api/portraits/women/44.jpg", // ✨ Avatar de mujer
         mensajes: [
             { id: "msg-4-1", texto: "Hola, te dejé los nuevos diseños en Figma.", emisor: EMISOR.CONTACTO, hora: "11:00" },
             { id: "msg-4-2", texto: "¡Hola María! Perfecto, ahora los miro y te comento.", emisor: EMISOR.USUARIO, hora: "11:05" },
@@ -73,7 +73,7 @@ export const chatsIniciales = [
         id: 7,
         nombre: "Carlos Dev",
         tipo: EMISOR.CONTACTO,
-        avatar: "https://i.pravatar.cc/150?u=carlos",
+        avatar: "https://randomuser.me/api/portraits/men/32.jpg", // ✨ Avatar de hombre
         mensajes: [
             { id: "msg-7-1", texto: "Carlos, ¿te funciona el entorno local?", emisor: EMISOR.USUARIO, hora: "09:30" },
             { id: "msg-7-2", texto: "Sí, me anda joya. ¿A vos te tira error?", emisor: EMISOR.CONTACTO, hora: "09:35" },
@@ -84,7 +84,7 @@ export const chatsIniciales = [
         id: 8,
         nombre: "Ana Proyecto Final",
         tipo: EMISOR.CONTACTO,
-        avatar: "https://i.pravatar.cc/150?u=ana",
+        avatar: "https://randomuser.me/api/portraits/women/68.jpg", // ✨ Avatar de mujer
         mensajes: [
             { id: "msg-8-1", texto: "¿Nos juntamos hoy a avanzar con el proyecto?", emisor: EMISOR.CONTACTO, hora: "18:00" },
             { id: "msg-8-2", texto: "¡De una! Tipo 19hs me conecto al Discord.", emisor: EMISOR.USUARIO, hora: "18:15" },
@@ -93,20 +93,21 @@ export const chatsIniciales = [
     },
     {
         id: 9,
-        nombre: "Profe UTN",
+        nombre: "Prof. Roberto Fernández", // ✨ Nuevo nombre de profesor
         tipo: EMISOR.CONTACTO,
-        avatar: "https://i.pravatar.cc/150?u=profe",
+        avatar: "https://randomuser.me/api/portraits/men/75.jpg", // ✨ Avatar de hombre maduro
         mensajes: [
-            { id: "msg-9-1", texto: "Profe, le mandé el TP por mail. ¿Me confirma si le llegó?", emisor: EMISOR.USUARIO, hora: "12:00" },
-            { id: "msg-9-2", texto: "Hola. Sí, lo recibí correctamente. Lo corrijo el fin de semana.", emisor: EMISOR.CONTACTO, hora: "13:15" },
-            { id: "msg-9-3", texto: "¡Muchas gracias! Buen fin de semana.", emisor: EMISOR.USUARIO, hora: "13:20" }
+            // ✨ Nueva conversación académica
+            { id: "msg-9-1", texto: "Estimados, les recuerdo que la fecha límite para entregar el Trabajo Práctico es el viernes.", emisor: EMISOR.CONTACTO, hora: "09:00" },
+            { id: "msg-9-2", texto: "¡Hola profe! ¿Existe la posibilidad de entregarlo el fin de semana si nos falta probar un par de endpoints?", emisor: EMISOR.USUARIO, hora: "09:45" },
+            { id: "msg-9-3", texto: "Por esta vez haré una excepción. Tienen tiempo hasta el domingo a las 23:59hs sin penalización. Saludos.", emisor: EMISOR.CONTACTO, hora: "10:10" }
         ]
     },
     {
         id: 10,
         nombre: "Laura QA",
         tipo: EMISOR.CONTACTO,
-        avatar: "https://i.pravatar.cc/150?u=laura",
+        avatar: "https://randomuser.me/api/portraits/women/12.jpg", // ✨ Avatar de mujer
         mensajes: [
             { id: "msg-10-1", texto: "Encontré un bug en la vista de login.", emisor: EMISOR.CONTACTO, hora: "15:40" },
             { id: "msg-10-2", texto: "Uh, ¿qué pasa?", emisor: EMISOR.USUARIO, hora: "15:42" },
@@ -121,37 +122,37 @@ export const contactosIniciales = [
     {
         id: "c1", 
         nombre: "Juan Pérez", 
-        avatar: "https://i.pravatar.cc/150?u=juan", 
+        avatar: "https://i.pravatar.cc/432?u=juan", 
         tipo: EMISOR.CONTACTO 
     },
     { 
         id: "c2", 
         nombre: "María Gómez UX", 
-        avatar: "https://i.pravatar.cc/150?u=maria", 
+        avatar: "https://randomuser.me/api/portraits/women/44.jpg", // ✨ Actualizado
         tipo: EMISOR.CONTACTO 
     },
     { 
         id: "c3", 
         nombre: "Carlos Dev", 
-        avatar: "https://i.pravatar.cc/150?u=carlos", 
+        avatar: "https://randomuser.me/api/portraits/men/32.jpg", // ✨ Actualizado
         tipo: EMISOR.CONTACTO 
     },
     {
         id: "c4", 
         nombre: "Ana Proyecto Final", 
-        avatar: "https://i.pravatar.cc/150?u=ana", 
+        avatar: "https://randomuser.me/api/portraits/women/68.jpg", // ✨ Actualizado
         tipo: EMISOR.CONTACTO 
     },
     { 
         id: "c5", 
-        nombre: "Profe UTN", 
-        avatar: "https://i.pravatar.cc/150?u=profe", 
+        nombre: "Prof. Roberto Fernández", // ✨ Actualizado
+        avatar: "https://randomuser.me/api/portraits/men/75.jpg", // ✨ Actualizado
         tipo: EMISOR.CONTACTO 
     },
     { 
         id: "c6", 
         nombre: "Laura QA", 
-        avatar: "https://i.pravatar.cc/150?u=laura", 
+        avatar: "https://randomuser.me/api/portraits/women/12.jpg", // ✨ Actualizado
         tipo: EMISOR.CONTACTO 
     },
     { 
