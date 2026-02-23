@@ -17,7 +17,6 @@ const MessageBubble = ({ texto, emisor, avatarContacto, nombreContacto, mostrarA
 
             <div className={`mensaje-burbuja ${esMio ? "mi-mensaje" : "su-mensaje"}`}>
                 
-                {/* ✨ Si es un grupo y el mensaje no es mío, mostramos el nombre del autor */}
                 {esGrupo && !esMio && (
                     <span className="mensaje-nombre-autor">{nombreContacto}</span>
                 )}

@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
 
-// ✨ Recibimos la prop mensajeDeshabilitado
 const ChatInput = ({ onEnviarMensaje, deshabilitado, mensajeDeshabilitado }) => { 
     const [texto, setTexto] = useState("");
     const [mostrarMenu, setMostrarMenu] = useState(false);
@@ -61,7 +60,6 @@ const ChatInput = ({ onEnviarMensaje, deshabilitado, mensajeDeshabilitado }) => 
 
                 <input 
                     type="text" 
-                    /* ✨ Usamos el mensaje personalizado que viene de ChatView */
                     placeholder={deshabilitado ? mensajeDeshabilitado : "Escribe un mensaje aquí..."} 
                     value={texto}
                     onChange={(e) => setTexto(e.target.value)}

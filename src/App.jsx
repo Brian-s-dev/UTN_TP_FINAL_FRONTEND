@@ -7,7 +7,6 @@ import IntroScreen from './Pages/IntroScreen/IntroScreen';
 import LoginScreen from './Pages/LoginScreen/LoginScreen';
 
 const AppContent = () => {
-  // Etapas: 'login' -> 'intro' -> 'app'
   const [etapa, setEtapa] = useState('login');
 
   if (etapa === 'login') {
@@ -15,7 +14,6 @@ const AppContent = () => {
   }
 
   if (etapa === 'intro') {
-    // Cuando la intro termine (100% + 2 seg), pasa a 'app'
     return <IntroScreen onTerminar={() => setEtapa('app')} />;
   }
 
@@ -28,7 +26,6 @@ function App() {
   return (
     <BrowserRouter>
       <ThemeProvider>
-        {/* ChatProvider envuelve desde el Login para guardar el usuario */}
         <ChatProvider> 
           <AppContent />
         </ChatProvider>

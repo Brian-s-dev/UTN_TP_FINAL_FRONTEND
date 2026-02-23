@@ -38,9 +38,6 @@ html {
     position: relative;
 }
 
-/* =========================================
-   ESTILOS BASE (PC Normal > 900px)
-   ========================================= */
 .sidebar-container {
     width: 350px;
     background-color: #f0f2f5;
@@ -221,7 +218,6 @@ html {
     background-color: #e4e6e9;
 }
 
-/* El Chat a la derecha */
 .component-wrapper {
     flex: 1;
     display: flex;
@@ -297,7 +293,6 @@ html {
     background-color: #f0f2f5;
 }
 
-/* Panel Perfil */
 .profile-sidebar {
     position: absolute;
     top: 0;
@@ -415,10 +410,6 @@ html {
 }
 
 
-/* =========================================
-   ESTILOS DEL SIDEBAR COLAPSADO (85px)
-   Aplica a PC y Tablets (hasta 701px)
-   ========================================= */
 .sidebar-container.colapsado {
     width: 85px !important;
     min-width: 85px !important;
@@ -488,9 +479,6 @@ html {
 }
 
 
-/* =========================================
-   RESPONSIVE: 900px a 701px (Tablets)
-   ========================================= */
 @media (max-width: 900px) {
     .component-wrapper {
         margin: 0;
@@ -505,28 +493,20 @@ html {
     }
 }
 
-
-/* =========================================
-   ✨ NUEVO: RESPONSIVE 700px o menos (Celulares)
-   ========================================= */
 @media (max-width: 550px) {
     .layout-container {
         flex-direction: column;
     }
 
-    /* ✨ 1. Si el sidebar NO está colapsado (viendo la lista de chats) */
     .sidebar-container:not(.colapsado) {
         width: 100vw !important;
         height: 100dvh !important;
-        /* Ocupa TODA la pantalla */
     }
 
-    /* Ocultamos completamente el panel del chat para que no estorbe */
     .sidebar-container:not(.colapsado)~.component-wrapper {
         display: none !important;
     }
 
-    /* ✨ 2. Si el sidebar SÍ está colapsado (Navbar Superior al entrar a un chat) */
     .sidebar-container.colapsado {
         width: 100vw !important;
         max-width: 100vw !important;
@@ -582,10 +562,6 @@ html {
     }
 }
 
-
-/* =========================================
-   🌙 MODO OSCURO
-   ========================================= */
 body.dark-mode {
     background-color: #0b0f12;
     background-image: radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.04) 0%, transparent 40%), url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" opacity="0.04" filter="url(%23noiseFilter)"/></svg>');

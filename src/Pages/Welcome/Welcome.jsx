@@ -11,10 +11,6 @@ const Welcome = () => {
         animationData: blobAnimation,
         loop: true,
         autoplay: true,
-        // ✨ LA SOLUCIÓN AL PARPADEO:
-        // Si la animación desaparece al final, quítale las dos barras "//" a la línea de abajo.
-        // Esto le dice a Lottie: "Reproduce solo desde el fotograma 0 hasta el 90 y vuelve a empezar",
-        // saltándose los fotogramas vacíos que trajo el archivo JSON original.
         initialSegment: [0, 120] 
     };
     

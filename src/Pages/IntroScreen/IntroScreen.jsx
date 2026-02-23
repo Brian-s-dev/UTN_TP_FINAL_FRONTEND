@@ -12,16 +12,13 @@ const IntroScreen = ({ onTerminar }) => {
         animationData: blobAnimation,
         loop: true,
         autoplay: true,
-        // ✨ LA MISMA MAGIA: Cortamos los frames vacíos del final para un loop perfecto
         initialSegment: [0, 120] 
     };
     const { View } = useLottie(opciones);
 
     useEffect(() => {
-        // A los 3.6s el primer texto se va para abajo
         const saleTexto = setTimeout(() => setEstadoTexto("saliendo"), 3600);
 
-        // La barra se llena en exactamente 4 segundos (40ms * 100)
         const intervaloProgreso = setInterval(() => {
             setProgreso((prev) => {
                 if (prev >= 100) {
@@ -40,17 +37,13 @@ const IntroScreen = ({ onTerminar }) => {
 
     useEffect(() => {
         if (progreso === 100) {
-            // La magia de React: Al cambiar el mensaje, la "key" reinicia 
-            // la animación de CSS automáticamente desde arriba.
             setMensaje("Mensajes cargados");
             setEstadoTexto("entrando"); 
             
-            // A los 600ms (4.6s en total) mandamos el texto hacia abajo
             const saleNuevoTexto = setTimeout(() => {
                 setEstadoTexto("saliendo");
             }, 600);
-            
-            // A los 1000ms (5s exactos en total) pasamos a la App
+
             const pasarALaApp = setTimeout(() => {
                 onTerminar();
             }, 1000);

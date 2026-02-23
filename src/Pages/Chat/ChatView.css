@@ -11,7 +11,6 @@
     border-radius: 16px;
 }
 
-/* LA MAGIA DEL RELIEVE: Capa invisible que dibuja el borde iluminado por encima de todo */
 .chat-view-container::after {
     content: '';
     position: absolute;
@@ -20,11 +19,8 @@
     right: 0;
     bottom: 0;
     pointer-events: none;
-    /* Deja pasar los clics hacia el chat */
     z-index: 50;
-    /* Por encima del header y del input */
     border-radius: 16px;
-    /* Luz superior interna para el relieve 3D */
     box-shadow: inset 0 3px 8px rgba(255, 255, 255, 0.9);
 }
 
@@ -82,7 +78,6 @@
     align-items: center;
     justify-content: center;
     z-index: 60;
-    /* Para asegurarnos que sea clickeable por encima del ::after */
 }
 
 .btn-volver:hover {
@@ -98,10 +93,6 @@
     flex-direction: column;
     gap: 10px;
 }
-
-/* =========================================
-   ✨ ÁREA DE INPUT FLOTANTE
-   ========================================= */
 
 .chat-input-area {
     display: flex;
@@ -123,7 +114,6 @@
     border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-/* ✨ AJUSTE APLICADO AQUÍ: Previene que el input rompa el diseño */
 .input-pill-container input {
     flex: 1;
     padding: 10px 5px;
@@ -133,14 +123,12 @@
     outline: none;
     background-color: transparent;
     transition: 0.2s;
-    /* Evita el desborde y pone los tres puntos (...) */
     min-width: 0;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
 }
 
-/* ✨ AJUSTE APLICADO AQUÍ: Asegura que el placeholder también se corte bien */
 .input-pill-container input::placeholder {
     text-overflow: ellipsis;
     overflow: hidden;
@@ -191,10 +179,6 @@
     font-size: 20px;
     margin-left: 2px;
 }
-
-/* =========================================
-   ✨ MENÚ FLOTANTE DE ADJUNTOS
-   ========================================= */
 
 .adjuntos-container {
     position: relative;
@@ -286,10 +270,6 @@
     }
 }
 
-/* =========================================
-   🌙 MODO OSCURO
-   ========================================= */
-
 body.dark-mode .chat-view-container {
     background-color: #0e161c;
 }
@@ -375,10 +355,6 @@ body.dark-mode .menu-adjuntos button:hover {
         padding: 4px 6px;
     }
 }
-
-/* =========================================
-   ✨ SIDEBAR DERECHO DE INFORMACIÓN
-   ========================================= */
 
 .chat-header-info.clickable {
     cursor: pointer;
@@ -618,10 +594,6 @@ body.dark-mode .action-btn .material-symbols-outlined {
     color: #8696a0;
 }
 
-/* =========================================
-   ✨ MENSAJE DE SISTEMA Y ESTADOS DESHABILITADOS
-   ========================================= */
-
 .mensaje-sistema-wrapper {
     display: flex;
     justify-content: center;
@@ -655,10 +627,6 @@ body.dark-mode .mensaje-sistema-burbuja {
 body.dark-mode .input-deshabilitado .input-pill-container {
     background-color: rgba(32, 44, 51, 0.5);
 }
-
-/* =========================================
-   ✨ ESTILOS DE PARTICIPANTES DEL GRUPO
-   ========================================= */
 
 .card-subtitle {
     margin: 0 0 15px 0;

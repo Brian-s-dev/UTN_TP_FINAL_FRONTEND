@@ -57,7 +57,6 @@ export const ChatProvider = ({ children }) => {
         }));
     };
 
-    // ✨ NUEVA FUNCIÓN: Reactiva el chat
     const desbloquearContacto = (chatId) => {
         setChats(prevChats => prevChats.map(chat => {
             if (chat.id === Number(chatId) || chat.id === chatId) {
@@ -79,7 +78,7 @@ export const ChatProvider = ({ children }) => {
             iniciarChatConContacto, 
             agregarNuevoContacto, 
             bloquearContacto, 
-            desbloquearContacto, // ✨ La exportamos
+            desbloquearContacto,
             eliminarChat, 
             usuarioActual, 
             setUsuarioActual 

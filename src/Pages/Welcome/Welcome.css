@@ -5,7 +5,6 @@
     align-items: center;
     height: 100%;
     width: 100%;
-    /* Transparente y forzado para que no lo pise nadie y herede el fondo de Layout */
     background-color: transparent !important;
     text-align: center;
     padding: 20px;
@@ -19,46 +18,42 @@
     100% { opacity: 1; transform: scale(1); }
 }
 
-/* ✨ ESTILOS DEL BLOB */
 .welcome-blob-wrapper {
     width: 220px; 
     height: 220px;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: -30px; /* Lo acercamos un poco al texto inferior */
+    margin-bottom: -30px;
 }
 
-/* ✨ ESTILOS DEL ENCABEZADO */
 .welcome-header {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 12px;
-    font-size: 2.8rem; /* Texto un poco más grande e imponente */
+    font-size: 2.8rem;
     color: #333;
     margin-bottom: 0.5rem;
     flex-wrap: wrap; 
 }
 
 .welcome-greeting {
-    font-weight: 300; /* Saludo más delgado para dar jerarquía al nombre */
+    font-weight: 300;
 }
 
-/* ✨ EL EFECTO DE CAÍDA EN BLOQUE (MÁSCARA) */
 .welcome-name-container {
     display: inline-flex;
-    overflow: hidden; /* Esto hace que el texto sea invisible hasta que baje */
-    padding-bottom: 5px; /* Previene cortes en las letras bajas (como la g, p, y) */
+    overflow: hidden;
+    padding-bottom: 5px;
 }
 
 .welcome-name {
     font-weight: bold;
-    color: #00a884; /* Verde principal para modo claro */
-    /* Empieza fuera de la vista hacia arriba (-100%) */
+    color: #00a884;
     transform: translateY(-100%); 
     animation: block-drop 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-    animation-delay: 0.4s; /* Espera un instante antes de caer */
+    animation-delay: 0.4s;
 }
 
 @keyframes block-drop {
@@ -66,7 +61,6 @@
     100% { transform: translateY(0); }
 }
 
-/* ✨ SUBTÍTULO */
 .welcome-subtitle {
     color: #667781;
     font-size: 1.3rem;
@@ -74,10 +68,6 @@
     margin: 0;
     margin-top: 5px;
 }
-
-/* =========================================
-   🌙 MODO OSCURO
-   ========================================= */
 
 body.dark-mode .welcome-container {
     background-color: transparent !important;
@@ -88,7 +78,7 @@ body.dark-mode .welcome-header {
 }
 
 body.dark-mode .welcome-name {
-    color: #53bdeb; /* Celeste vibrante en modo oscuro para contrastar genial */
+    color: #53bdeb;
 }
 
 body.dark-mode .welcome-subtitle {

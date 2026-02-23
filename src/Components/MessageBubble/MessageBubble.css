@@ -21,19 +21,17 @@
 }
 
 .mensaje-burbuja { 
-    /* ✨ Agregamos position relative y min-width para acomodar la hora */
     position: relative; 
     max-width: 65%; 
-    padding: 10px 15px 22px 15px; /* ✨ padding inferior de 22px para que el texto no pise la hora */
+    padding: 10px 15px 22px 15px;
     border-radius: 15px; 
     word-wrap: break-word; 
     overflow-wrap: break-word; 
     word-break: break-word; 
     width: fit-content;
-    min-width: 85px; /* Evita que los mensajes muy cortitos como "Ok" se rompan */
+    min-width: 85px;
 }
 
-/* ✨ ESTILOS NUEVOS PARA HORA Y TILDES */
 .mensaje-meta {
     position: absolute;
     bottom: 4px;
@@ -49,8 +47,8 @@
 }
 
 .icono-leido {
-    font-size: 16px !important; /* Achicamos el ícono de Google Fonts */
-    color: #53bdeb; /* ✨ El clásico celeste de WhatsApp */
+    font-size: 16px !important;
+    color: #53bdeb;
 }
 
 .su-mensaje {
@@ -75,29 +73,26 @@ body.dark-mode .mi-mensaje {
     color: #e9edef;
 }
 
-/* ✨ Ajuste del color de la hora para el modo oscuro */
 body.dark-mode .mensaje-hora {
     color: rgba(255, 255, 255, 0.6);
 }
 
-/* ✨ Estilo del nombre del remitente en grupos */
 .mensaje-nombre-autor {
     display: block;
     font-size: 0.8rem;
     font-weight: bold;
-    color: #e55375; /* Un color bonito (como WhatsApp asigna colores al azar) */
+    color: #e55375;
     margin-bottom: 3px;
     line-height: 1;
 }
 
 body.dark-mode .mensaje-nombre-autor {
-    color: #ff7a9f; /* Color más claro para que resalte en la burbuja oscura */
+    color: #ff7a9f;
 }
 
-/* Ajustes Mobile para las burbujas */
 @media (max-width: 900px) {
     .mensaje-burbuja {
-        max-width: 85%; /* En celular, permitimos que las burbujas ocupen más ancho de la pantalla */
+        max-width: 85%;
     }
     
     .mensaje-fila {

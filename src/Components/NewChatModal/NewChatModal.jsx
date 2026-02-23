@@ -4,14 +4,13 @@ import "./NewChatModal.css";
 const NewChatModal = ({ isOpen, onClose, onCrear }) => {
     const [nombreNuevoChat, setNombreNuevoChat] = useState("");
 
-    // Si no está abierto, no renderizamos nada
     if (!isOpen) return null;
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (nombreNuevoChat.trim() !== "") {
             onCrear(nombreNuevoChat);
-            setNombreNuevoChat(""); // Limpiamos para el próximo uso
+            setNombreNuevoChat("");
         }
     };
 

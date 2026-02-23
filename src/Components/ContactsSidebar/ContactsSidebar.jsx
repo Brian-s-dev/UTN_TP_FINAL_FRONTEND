@@ -18,7 +18,7 @@ const ContactsSidebar = ({ isOpen, onClose }) => {
 
     const handleContactoClick = (contacto) => {
         const chatId = iniciarChatConContacto(contacto);
-        onClose(); // Cerramos el sidebar
+        onClose();
         navigate(`/chat/${chatId}`);
     };
 
@@ -69,7 +69,6 @@ const ContactsSidebar = ({ isOpen, onClose }) => {
                 </div>
             </div>
 
-            {/* Reutilizamos el modal que ya tenías hermoso para crear el contacto */}
             <NewChatModal 
                 isOpen={modalAbierto} 
                 onClose={() => setModalAbierto(false)} 

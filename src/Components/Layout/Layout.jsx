@@ -18,36 +18,27 @@ const Layout = () => {
     const [sidebarContactosAbierto, setSidebarContactosAbierto] = useState(false);
     const [perfilAbierto, setPerfilAbierto] = useState(false);
     
-    // Estado inicial
     const [sidebarColapsado, setSidebarColapsado] = useState(window.innerWidth <= 900); 
 
     const chatsFiltrados = chats.filter(chat => 
         chat.nombre.toLowerCase().includes(busqueda.toLowerCase())
     );
 
-    // ✨ EL CEREBRO DEFINITIVO DE LAYOUT
-    // Simplificamos la lógica: Si es PC se expande, si es Tablet o Celular se colapsa.
     const ajustarLayout = () => {
         if (window.innerWidth > 900) {
-            // MODO PC: Siempre expandido por defecto
             setSidebarColapsado(false);
         } else {
-            // MODO TABLET Y CELULAR (<= 900px): Siempre colapsado por defecto
             setSidebarColapsado(true);
         }
     };
 
-    // 1. Efecto que escucha los cambios de ruta (URL)
     useEffect(() => {
-        // Al cambiar de pantalla, cerramos los menús superpuestos
         setPerfilAbierto(false);
         setSidebarContactosAbierto(false);
         
-        // Evaluamos cómo debe quedar el menú
         ajustarLayout();
     }, [location.pathname]);
 
-    // 2. Efecto que escucha si estiras o achicas la ventana manualmente
     useEffect(() => {
         const handleResize = () => {
             ajustarLayout();
@@ -153,7 +144,6 @@ const Layout = () => {
                 <Outlet />
             </main>
 
-            {/* SIDEBAR DERECHO DE MI PERFIL */}
             <div className={`profile-sidebar ${perfilAbierto ? 'abierto' : ''}`}>
                 <div className="profile-sidebar-header">
                     <button className="btn-icon" onClick={() => setPerfilAbierto(false)} title="Cerrar info">

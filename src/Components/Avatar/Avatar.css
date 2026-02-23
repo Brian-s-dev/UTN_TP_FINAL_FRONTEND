@@ -6,7 +6,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #dfe5e7; /* Fondo gris por defecto */
+    background-color: #dfe5e7;
     flex-shrink: 0;
 }
 
@@ -16,20 +16,18 @@
     object-fit: cover;
 }
 
-/* ✨ Estilos para cuando solo hay iniciales de texto */
 .text-avatar {
-    color: #ffffff; /* Letras blancas para contrastar con los fondos de colores */
+    color: #ffffff;
     font-weight: 500;
     font-family: system-ui, -apple-system, sans-serif;
     user-select: none;
 }
 
 .avatar-initials {
-    font-size: 0.45em; /* Escala en base al tamaño del contenedor padre */
+    font-size: 0.45em;
     letter-spacing: 1px;
 }
 
-/* Avatar especial para el bot de IA */
 .ia-avatar {
     background: linear-gradient(135deg, #00a884, #007bfc);
     color: white;

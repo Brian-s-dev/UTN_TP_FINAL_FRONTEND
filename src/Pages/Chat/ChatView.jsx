@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useParams, useNavigate } from "react-router"; 
+import { useParams, useNavigate } from "react-router";
 import { useChat } from "../../Context/ChatContext";
 import { EMISOR } from "../../Utils/constants";
 import MessageBubble from "../../Components/MessageBubble/MessageBubble";
@@ -14,26 +14,24 @@ const generarEstadoConexion = (id, tipo) => {
     const numeroAleatorioFijo = String(id).charCodeAt(0) || 1;
     if (numeroAleatorioFijo % 3 === 0) return "En línea";
     if (numeroAleatorioFijo % 2 === 0) return `última conexión hoy a las ${numeroAleatorioFijo % 12 + 8}:30`;
-    
+
     const dias = (numeroAleatorioFijo % 5) + 1;
     return `última conexión hace ${dias} día${dias > 1 ? 's' : ''}`;
 };
 
 const ChatView = () => {
     const { chatId } = useParams();
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
     const { chats, contactos, usuarioActual, enviarMensaje, bloquearContacto, desbloquearContacto, eliminarChat } = useChat();
 
     const [infoAbierta, setInfoAbierta] = useState(false);
     const [menuEditarAbierto, setMenuEditarAbierto] = useState(false);
     const menuEditarRef = useRef(null);
-    
-    // ✨ 1. CREAMOS UNA REFERENCIA PARA EL FINAL DEL CHAT
+
     const mensajesFinRef = useRef(null);
 
     const chatActivo = chats.find((chat) => chat.id === Number(chatId) || chat.id === chatId);
 
-    // Cerrar menú de editar si se hace clic afuera
     useEffect(() => {
         const handleClickFuera = (event) => {
             if (menuEditarRef.current && !menuEditarRef.current.contains(event.target)) {
@@ -44,14 +42,11 @@ const ChatView = () => {
         return () => document.removeEventListener("mousedown", handleClickFuera);
     }, []);
 
-    // Cerrar el panel derecho si cambiamos de chat
     useEffect(() => {
         setInfoAbierta(false);
     }, [chatId]);
 
-    // ✨ 2. EFECTO DE AUTO-SCROLL: Se ejecuta cada vez que cambian los mensajes de este chat
     useEffect(() => {
-        // Hacemos scroll suave hacia el elemento "ancla" que pusimos al final
         mensajesFinRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [chatActivo?.mensajes]);
 
@@ -71,20 +66,20 @@ const ChatView = () => {
 
     const handleEliminar = () => {
         eliminarChat(chatId);
-        navigate("/"); 
+        navigate("/");
     };
 
     const txtMensajeSistema = esGrupo ? "Saliste del grupo" : "Se bloqueó el contacto";
     const txtInputApagado = esGrupo ? "Ya no eres participante de este grupo" : "No puedes enviar mensajes a un contacto bloqueado";
-    const txtBotonBloquear = esGrupo 
-        ? (chatActivo.bloqueado ? "Volver al grupo (Solo Admins)" : "Salir del grupo") 
+    const txtBotonBloquear = esGrupo
+        ? (chatActivo.bloqueado ? "Volver al grupo (Solo Admins)" : "Salir del grupo")
         : (chatActivo.bloqueado ? "Desbloquear contacto" : "Bloquear contacto");
 
     return (
         <div className="chat-view-container" key={chatId}>
             <div className="chat-header-placeholder">
-                <div 
-                    className="chat-header-info clickable" 
+                <div
+                    className="chat-header-info clickable"
                     onClick={() => setInfoAbierta(true)}
                     title="Ver información"
                 >
@@ -119,13 +114,12 @@ const ChatView = () => {
                         />
                     ))
                 )}
-                {/* ✨ 3. ELEMENTO ANCLA INVISIBLE AL FINAL DE LA LISTA */}
                 <div ref={mensajesFinRef} />
             </div>
 
-            <ChatInput 
-                onEnviarMensaje={(texto) => enviarMensaje(chatId, texto)} 
-                deshabilitado={chatActivo.bloqueado} 
+            <ChatInput
+                onEnviarMensaje={(texto) => enviarMensaje(chatId, texto)}
+                deshabilitado={chatActivo.bloqueado}
                 mensajeDeshabilitado={txtInputApagado}
             />
 
@@ -135,12 +129,12 @@ const ChatView = () => {
                         <span className="material-symbols-outlined">close</span>
                     </button>
                     <h3>{esGrupo ? 'Info. del grupo' : 'Info. del contacto'}</h3>
-                    
+
                     <div className="edit-menu-wrapper" ref={menuEditarRef}>
                         <button className="btn-icon" onClick={() => setMenuEditarAbierto(!menuEditarAbierto)} title="Editar">
                             <span className="material-symbols-outlined">edit</span>
                         </button>
-                        
+
                         {menuEditarAbierto && (
                             <div className="menu-flotante-editar">
                                 <button onClick={() => setMenuEditarAbierto(false)}>Editar {esGrupo ? 'grupo' : 'contacto'}</button>
