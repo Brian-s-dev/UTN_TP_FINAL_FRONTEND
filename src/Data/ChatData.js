@@ -92,18 +92,6 @@ export const chatsIniciales = [
         ]
     },
     {
-        id: 9,
-        nombre: "Prof. Roberto Fernández", // ✨ Nuevo nombre de profesor
-        tipo: EMISOR.CONTACTO,
-        avatar: "https://randomuser.me/api/portraits/men/75.jpg", // ✨ Avatar de hombre maduro
-        mensajes: [
-            // ✨ Nueva conversación académica
-            { id: "msg-9-1", texto: "Estimados, les recuerdo que la fecha límite para entregar el Trabajo Práctico es el viernes.", emisor: EMISOR.CONTACTO, hora: "09:00" },
-            { id: "msg-9-2", texto: "¡Hola profe! ¿Existe la posibilidad de entregarlo el fin de semana si nos falta probar un par de endpoints?", emisor: EMISOR.USUARIO, hora: "09:45" },
-            { id: "msg-9-3", texto: "Por esta vez haré una excepción. Tienen tiempo hasta el domingo a las 23:59hs sin penalización. Saludos.", emisor: EMISOR.CONTACTO, hora: "10:10" }
-        ]
-    },
-    {
         id: 10,
         nombre: "Laura QA",
         tipo: EMISOR.CONTACTO,
@@ -141,12 +129,6 @@ export const contactosIniciales = [
         id: "c4", 
         nombre: "Ana Proyecto Final", 
         avatar: "https://randomuser.me/api/portraits/women/68.jpg", // ✨ Actualizado
-        tipo: EMISOR.CONTACTO 
-    },
-    { 
-        id: "c5", 
-        nombre: "Prof. Roberto Fernández", // ✨ Actualizado
-        avatar: "https://randomuser.me/api/portraits/men/75.jpg", // ✨ Actualizado
         tipo: EMISOR.CONTACTO 
     },
     { 
