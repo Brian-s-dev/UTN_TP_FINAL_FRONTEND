@@ -1,33 +1,24 @@
-import React from "react";
-import { NavLink } from "react-router"; // (o react-router-dom, según tu versión)
-import Avatar from "../Avatar/Avatar";
-import { EMISOR } from "../../Utils/constants";
+    import React from "react";
+    import { NavLink } from "react-router";
+    import { EMISOR } from "../../Utils/constants"; // Importamos la constante
+    import Avatar from "../Avatar/Avatar";
 
-const SidebarItem = ({ chat }) => {
-    // ✨ LÓGICA PARA OBTENER EL ÚLTIMO MENSAJE
-    // Verificamos si hay mensajes en el array. Si hay, tomamos el texto del último.
-    // Si no hay, mostramos un texto por defecto.
-    const ultimoMensaje = chat.mensajes && chat.mensajes.length > 0 
-        ? chat.mensajes[chat.mensajes.length - 1].texto 
-        : "No hay mensajes aún";
+    const SidebarItem = ({ chat }) => {
+        const { id, nombre, avatar, tipo } = chat;
 
-    return (
-        <NavLink 
-            to={`/chat/${chat.id}`} 
-            className={({ isActive }) => `chat-item ${isActive ? "active" : ""}`}
-        >
-            <Avatar 
-                imagen={chat.avatar} 
-                nombre={chat.nombre} 
-                isIA={chat.tipo === EMISOR.IA} 
-            />
-            <div className="chat-info">
-                <h4>{chat.nombre}</h4>
-                {/* ✨ Aquí mostramos la previsualización dinámica */}
-                <p>{ultimoMensaje}</p>
-            </div>
-        </NavLink>
-    );
-};
+        return (
+            <NavLink 
+                to={`/chat/${id}`}
+                className={({ isActive }) => isActive ? "chat-item active" : "chat-item"}
+            >
+                {/* ✨ Le avisamos al Avatar si este chat es de tipo IA */}
+                <Avatar imagen={avatar} nombre={nombre} isIA={tipo === EMISOR.IA} />
+                <div className="chat-info">
+                    <h4 className="chat-name">{nombre}</h4>
+                    <p className="chat-preview">Haz clic para entrar</p>
+                </div>
+            </NavLink>
+        );
+    };
 
-export default SidebarItem;
+    export default SidebarItem;
