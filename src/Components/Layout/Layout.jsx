@@ -18,31 +18,30 @@ const Layout = () => {
     const [sidebarContactosAbierto, setSidebarContactosAbierto] = useState(false);
     const [perfilAbierto, setPerfilAbierto] = useState(false);
     
-    const [sidebarColapsado, setSidebarColapsado] = useState(window.innerWidth <= 900); 
+    // Inicializamos asumiendo la vista correcta según pantalla
+    const [sidebarColapsado, setSidebarColapsado] = useState(window.innerWidth <= 900 && location.pathname !== "/"); 
 
     const chatsFiltrados = chats.filter(chat => 
         chat.nombre.toLowerCase().includes(busqueda.toLowerCase())
     );
 
-    // ✨ EL CEREBRO RESPONSIVO MEJORADO
-    // Este efecto vigila tanto la URL como el tamaño de la ventana en tiempo real
+    // ✨ EL CEREBRO DEFINITIVO
     useEffect(() => {
         const checkLayout = () => {
-            // Cerramos paneles superpuestos por precaución al mover la pantalla/ruta
             setPerfilAbierto(false); 
 
             if (window.innerWidth <= 900) {
-                // MODO TABLET Y CELULAR
+                // TABLET Y MÓVIL (<= 900px)
                 if (location.pathname === "/") {
-                    setSidebarColapsado(false); // Lista de chats a pantalla completa
-                } else if (location.pathname.includes("/chat/")) {
-                    setSidebarColapsado(true); // Oculta la lista (o la hace barra superior)
+                    setSidebarColapsado(false); // Expandido: Muestra 100% la lista de chats
+                } else {
+                    setSidebarColapsado(true);  // Colapsado: Entró a un chat, colapsa la barra
                     setSidebarContactosAbierto(false); 
                 }
             } else {
-                // MODO PC
+                // ESCRITORIO (> 900px)
                 if (location.pathname === "/") {
-                    setSidebarColapsado(false); // Despliega la barra lateral por defecto
+                    setSidebarColapsado(false); // En PC la barra arranca abierta
                 }
                 if (location.pathname.includes("/chat/")) {
                     setSidebarContactosAbierto(false);
@@ -50,11 +49,8 @@ const Layout = () => {
             }
         };
 
-        // Lo ejecutamos inmediatamente al cargar o cambiar de ruta
-        checkLayout();
-
-        // Lo enganchamos al evento de redimensionar ventana
-        window.addEventListener('resize', checkLayout);
+        checkLayout(); // Ejecuta al montar/cambiar ruta
+        window.addEventListener('resize', checkLayout); // Ejecuta si arrastras la ventana
         return () => window.removeEventListener('resize', checkLayout);
     }, [location.pathname]);
 
@@ -168,7 +164,6 @@ const Layout = () => {
                     <div className="profile-avatar-wrapper">
                         <Avatar nombre={usuarioActual} />
                     </div>
-
                     <div className="profile-info-card">
                         <span className="profile-label">Tu nombre</span>
                         <div className="profile-value-row">
@@ -179,7 +174,6 @@ const Layout = () => {
                         </div>
                         <p className="profile-disclaimer">Este no es tu nombre de usuario ni tu PIN. Este nombre será visible para tus contactos de la aplicación.</p>
                     </div>
-
                     <div className="profile-info-card">
                         <span className="profile-label">Info.</span>
                         <div className="profile-value-row">
