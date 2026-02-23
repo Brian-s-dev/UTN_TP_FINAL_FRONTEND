@@ -1,17 +1,13 @@
 .avatar-circle {
-    width: 38px;
-    height: 38px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    background-color: #00a884;
-    color: white;
+    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-weight: bold;
-    font-size: 1.2rem;
-    overflow: hidden;
+    background-color: #dfe5e7; /* Fondo gris por defecto */
     flex-shrink: 0;
-    position: relative;
 }
 
 .avatar-img {
@@ -20,19 +16,25 @@
     object-fit: cover;
 }
 
-.avatar-lottie {
-    width: 160%; 
-    height: 160%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+/* ✨ Estilos para cuando solo hay iniciales de texto */
+.text-avatar {
+    color: #ffffff; /* Letras blancas para contrastar con los fondos de colores */
+    font-weight: 500;
+    font-family: system-ui, -apple-system, sans-serif;
+    user-select: none;
 }
 
-body.dark-mode .avatar-circle.ia-avatar {
-    background-color: #05080a;
-    border: 1px solid rgba(255, 255, 255, 0.05); 
+.avatar-initials {
+    font-size: 0.45em; /* Escala en base al tamaño del contenedor padre */
+    letter-spacing: 1px;
+}
+
+/* Avatar especial para el bot de IA */
+.ia-avatar {
+    background: linear-gradient(135deg, #00a884, #007bfc);
+    color: white;
+}
+
+.ia-avatar .material-symbols-outlined {
+    font-size: 24px;
 }
