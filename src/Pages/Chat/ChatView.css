@@ -250,11 +250,25 @@
     background-color: #f0f2f5;
 }
 
-.color-doc { color: #7f66ff; }
-.color-foto { color: #007bfc; }
-.color-camara { color: #ff2e74; }
-.color-contacto { color: #009de2; }
-.color-encuesta { color: #ffbc38; }
+.color-doc {
+    color: #7f66ff;
+}
+
+.color-foto {
+    color: #007bfc;
+}
+
+.color-camara {
+    color: #ff2e74;
+}
+
+.color-contacto {
+    color: #009de2;
+}
+
+.color-encuesta {
+    color: #ffbc38;
+}
 
 .menu-adjuntos .material-symbols-outlined {
     font-size: 22px;
@@ -265,6 +279,7 @@
         opacity: 0;
         transform: translateX(-40px);
     }
+
     100% {
         opacity: 1;
         transform: translateX(0);
@@ -289,10 +304,21 @@ body.dark-mode .chat-header-placeholder {
     backdrop-filter: blur(10px);
 }
 
-body.dark-mode .chat-header-texto h2 { color: #e9edef; }
-body.dark-mode .chat-status { color: #8696a0; }
-body.dark-mode .btn-volver { color: #8696a0; }
-body.dark-mode .btn-volver:hover { color: #e9edef; }
+body.dark-mode .chat-header-texto h2 {
+    color: #e9edef;
+}
+
+body.dark-mode .chat-status {
+    color: #8696a0;
+}
+
+body.dark-mode .btn-volver {
+    color: #8696a0;
+}
+
+body.dark-mode .btn-volver:hover {
+    color: #e9edef;
+}
 
 body.dark-mode .chat-input-area {
     background-color: transparent;
@@ -311,22 +337,43 @@ body.dark-mode .input-pill-container input {
     color: #e9edef;
 }
 
-body.dark-mode .btn-adjuntar { color: #8696a0; }
-body.dark-mode .btn-adjuntar:hover { background-color: rgba(255, 255, 255, 0.05); }
+body.dark-mode .btn-adjuntar {
+    color: #8696a0;
+}
+
+body.dark-mode .btn-adjuntar:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
 
 body.dark-mode .menu-adjuntos {
     background-color: #233138;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-body.dark-mode .menu-adjuntos button { color: #e9edef; }
-body.dark-mode .menu-adjuntos button:hover { background-color: #111b21; }
+body.dark-mode .menu-adjuntos button {
+    color: #e9edef;
+}
+
+body.dark-mode .menu-adjuntos button:hover {
+    background-color: #111b21;
+}
 
 @media (max-width: 900px) {
-    .chat-view-container { border-radius: 0; }
-    .chat-view-container::after { border-radius: 0; }
-    .chat-input-area { padding: 0 10px 15px 10px; }
-    .input-pill-container { padding: 4px 6px; }
+    .chat-view-container {
+        border-radius: 0;
+    }
+
+    .chat-view-container::after {
+        border-radius: 0;
+    }
+
+    .chat-input-area {
+        padding: 0 10px 15px 10px;
+    }
+
+    .input-pill-container {
+        padding: 4px 6px;
+    }
 }
 
 /* =========================================
@@ -460,8 +507,17 @@ body.dark-mode .chat-header-info.clickable:hover {
     margin: 0 0 15px 0;
 }
 
-.contact-profile-card h2 { margin: 0 0 5px 0; font-size: 1.4rem; color: #111b21; }
-.contact-profile-card p { margin: 0; font-size: 1rem; color: #667781; }
+.contact-profile-card h2 {
+    margin: 0 0 5px 0;
+    font-size: 1.4rem;
+    color: #111b21;
+}
+
+.contact-profile-card p {
+    margin: 0;
+    font-size: 1rem;
+    color: #667781;
+}
 
 .action-btn {
     display: flex;
@@ -477,29 +533,90 @@ body.dark-mode .chat-header-info.clickable:hover {
     transition: color 0.2s;
 }
 
-.action-btn:hover { opacity: 0.8; }
-.action-btn .material-symbols-outlined { font-size: 24px; color: #54656f; }
-.text-danger { color: #ea0038 !important; }
-.text-danger .material-symbols-outlined { color: #ea0038 !important; }
-
-@media (max-width: 900px) {
-    .contact-info-sidebar { width: 100%; border-radius: 0; }
-    .contact-info-header { border-radius: 0; }
+.action-btn:hover {
+    opacity: 0.8;
 }
 
-body.dark-mode .contact-info-sidebar { background-color: #0e161c; box-shadow: -5px 0 25px rgba(0, 0, 0, 0.5); }
-body.dark-mode .contact-info-header { background-color: rgba(32, 44, 51, 0.8); border-bottom: 1px solid rgba(49, 61, 69, 0.5); }
-body.dark-mode .contact-info-header h3 { color: #e9edef; }
-body.dark-mode .contact-info-header .btn-icon { color: #8696a0; }
-body.dark-mode .contact-info-header .btn-icon:hover { background-color: #202c33; }
-body.dark-mode .menu-flotante-editar { background-color: #233138; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); }
-body.dark-mode .menu-flotante-editar button { color: #e9edef; }
-body.dark-mode .menu-flotante-editar button:hover { background-color: #111b21; }
-body.dark-mode .contact-profile-card, body.dark-mode .contact-actions-card { background-color: #111b21; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); }
-body.dark-mode .contact-profile-card h2 { color: #e9edef; }
-body.dark-mode .contact-profile-card p { color: #8696a0; }
-body.dark-mode .action-btn { color: #e9edef; }
-body.dark-mode .action-btn .material-symbols-outlined { color: #8696a0; }
+.action-btn .material-symbols-outlined {
+    font-size: 24px;
+    color: #54656f;
+}
+
+.text-danger {
+    color: #ea0038 !important;
+}
+
+.text-danger .material-symbols-outlined {
+    color: #ea0038 !important;
+}
+
+@media (max-width: 900px) {
+    .contact-info-sidebar {
+        width: 100%;
+        border-radius: 0;
+    }
+
+    .contact-info-header {
+        border-radius: 0;
+    }
+}
+
+body.dark-mode .contact-info-sidebar {
+    background-color: #0e161c;
+    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .contact-info-header {
+    background-color: rgba(32, 44, 51, 0.8);
+    border-bottom: 1px solid rgba(49, 61, 69, 0.5);
+}
+
+body.dark-mode .contact-info-header h3 {
+    color: #e9edef;
+}
+
+body.dark-mode .contact-info-header .btn-icon {
+    color: #8696a0;
+}
+
+body.dark-mode .contact-info-header .btn-icon:hover {
+    background-color: #202c33;
+}
+
+body.dark-mode .menu-flotante-editar {
+    background-color: #233138;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .menu-flotante-editar button {
+    color: #e9edef;
+}
+
+body.dark-mode .menu-flotante-editar button:hover {
+    background-color: #111b21;
+}
+
+body.dark-mode .contact-profile-card,
+body.dark-mode .contact-actions-card {
+    background-color: #111b21;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .contact-profile-card h2 {
+    color: #e9edef;
+}
+
+body.dark-mode .contact-profile-card p {
+    color: #8696a0;
+}
+
+body.dark-mode .action-btn {
+    color: #e9edef;
+}
+
+body.dark-mode .action-btn .material-symbols-outlined {
+    color: #8696a0;
+}
 
 /* =========================================
    ✨ MENSAJE DE SISTEMA Y ESTADOS DESHABILITADOS
@@ -513,7 +630,7 @@ body.dark-mode .action-btn .material-symbols-outlined { color: #8696a0; }
 }
 
 .mensaje-sistema-burbuja {
-    background-color: rgba(0, 0, 0, 0.08); 
+    background-color: rgba(0, 0, 0, 0.08);
     color: #54656f;
     padding: 8px 16px;
     border-radius: 12px;
@@ -523,11 +640,11 @@ body.dark-mode .action-btn .material-symbols-outlined { color: #8696a0; }
 
 .input-deshabilitado {
     opacity: 0.6;
-    pointer-events: none; 
+    pointer-events: none;
 }
 
 .input-deshabilitado .input-pill-container {
-    background-color: #f0f2f5; 
+    background-color: #f0f2f5;
 }
 
 body.dark-mode .mensaje-sistema-burbuja {
@@ -543,12 +660,44 @@ body.dark-mode .input-deshabilitado .input-pill-container {
    ✨ ESTILOS DE PARTICIPANTES DEL GRUPO
    ========================================= */
 
-.card-subtitle { margin: 0 0 15px 0; font-size: 1rem; color: #54656f; font-weight: 500; }
-.participant-list { display: flex; flex-direction: column; gap: 15px; }
-.participant-item { display: flex; align-items: center; gap: 15px; }
-.participant-info { display: flex; flex-direction: column; }
-.participant-name { font-size: 1rem; color: #111b21; }
-.participant-role { font-size: 0.8rem; color: #00a884; }
+.card-subtitle {
+    margin: 0 0 15px 0;
+    font-size: 1rem;
+    color: #54656f;
+    font-weight: 500;
+}
 
-body.dark-mode .card-subtitle { color: #8696a0; }
-body.dark-mode .participant-name { color: #e9edef; }
+.participant-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.participant-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.participant-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.participant-name {
+    font-size: 1rem;
+    color: #111b21;
+}
+
+.participant-role {
+    font-size: 0.8rem;
+    color: #00a884;
+}
+
+body.dark-mode .card-subtitle {
+    color: #8696a0;
+}
+
+body.dark-mode .participant-name {
+    color: #e9edef;
+}

@@ -7,9 +7,9 @@ export const chatsIniciales = [
         tipo: EMISOR.IA,
         avatar: "https://robohash.org/chat-ia?set=set3&bgset=bg1",
         mensajes: [
-            { id: "msg-1-1", texto: "Hola, ¿en qué puedo ayudarte hoy?", emisor: EMISOR.IA, hora: "09:00" },
-            { id: "msg-1-2", texto: "Necesito ayuda para centrar un div con CSS.", emisor: EMISOR.USUARIO, hora: "09:02" },
-            { id: "msg-1-3", texto: "¡Claro! La forma más moderna es usar Flexbox. Solo aplícale al contenedor padre: display: flex; justify-content: center; align-items: center;", emisor: EMISOR.IA, hora: "09:03" }
+            { id: "msg-1-1", texto: "Hola, en este momento estoy usando toda mi memoria para definir cual es la clave para ser un buen programador, por lo que solamente voy a poder contarte chistes malos", emisor: EMISOR.IA, hora: "09:00" },
+            { id: "msg-1-2", texto: "No podria haber mejor uso para la ia", emisor: EMISOR.USUARIO, hora: "09:02" },
+            { id: "msg-1-3", texto: "¿Por qué el desarrollador de Java enseñó a sus hijos pequeños sobre las comillas simples? Porque construyen el carácter.", emisor: EMISOR.IA, hora: "09:03" }
         ]
     },
     {
