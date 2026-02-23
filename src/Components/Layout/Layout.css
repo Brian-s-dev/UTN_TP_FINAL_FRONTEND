@@ -107,6 +107,7 @@ body, html {
 .btn-icon-small { background: transparent; border: none; color: #54656f; cursor: pointer; display: flex; justify-content: center; align-items: center; padding: 5px; border-radius: 50%; transition: background 0.2s; }
 .btn-icon-small:hover { background-color: #f0f2f5; }
 
+
 /* =========================================
    ✨ ESTILOS DEL SIDEBAR COLAPSADO (85px)
    ========================================= */
@@ -116,13 +117,15 @@ body, html {
     max-width: 85px !important;
 }
 
-/* ✨ Si el sidebar padre está colapsado, el sidebar de contactos también se comprime a 100% (85px) */
+/* ✨ 1. Comprimimos el Sidebar de Contactos para que no desborde */
 .sidebar-container.colapsado .contacts-sidebar-container { 
     width: 100% !important; 
+    overflow: hidden !important;
 }
 
-/* Escondemos los textos cuando está comprimido */
-.sidebar-container.colapsado .sidebar-header-top h2,
+/* ✨ 2. Ocultamos todos los textos del sidebar principal Y del de contactos */
+.sidebar-container.colapsado h2,
+.sidebar-container.colapsado h3,
 .sidebar-container.colapsado .search-container,
 .sidebar-container.colapsado .chat-info,
 .sidebar-container.colapsado .chat-item::after,
@@ -130,11 +133,26 @@ body, html {
     display: none !important; 
 }
 
-/* Reacomodamos los iconos */
+/* ✨ 3. Regla extra por si el ContactsSidebar usa clases diferentes para la info */
+.sidebar-container.colapsado .contacts-sidebar-container .contact-info,
+.sidebar-container.colapsado .contacts-sidebar-container .contact-name,
+/* Oculta spans que sean de texto, pero deja los iconos intactos */
+.sidebar-container.colapsado .contacts-sidebar-container span:not(.material-symbols-outlined) {
+    display: none !important;
+}
+
+/* Reacomodamos los iconos para que queden centrados */
 .sidebar-container.colapsado .sidebar-header { padding: 15px 10px; }
 .sidebar-container.colapsado .sidebar-header-top { flex-direction: column; gap: 15px; align-items: center; justify-content: center; width: 100%; }
 .sidebar-container.colapsado .header-buttons { flex-direction: column-reverse; gap: 15px; width: 100%; justify-content: center; }
-.sidebar-container.colapsado .chat-item { padding: 15px 0; justify-content: center; }
+
+/* Alineamos los avatares tanto de chats como de la agenda */
+.sidebar-container.colapsado .chat-item,
+.sidebar-container.colapsado .contact-item { 
+    padding: 15px 0; 
+    justify-content: center; 
+}
+
 .sidebar-container.colapsado .sidebar-footer { flex-direction: column; padding: 20px 0; gap: 25px; }
 .sidebar-container.colapsado .mi-perfil.clickable { margin: 0; padding: 5px; }
 .sidebar-container.colapsado .menu-flotante { left: 60px; bottom: 0; right: auto; }
@@ -159,7 +177,7 @@ body, html {
 }
 
 /* =========================================
-   🌙 MODO OSCURO (Sin modificaciones)
+   🌙 MODO OSCURO
    ========================================= */
 body.dark-mode { background-color: #0b0f12; background-image: radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.04) 0%, transparent 40%), url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" opacity="0.04" filter="url(%23noiseFilter)"/></svg>'); }
 body.dark-mode .layout-container, body.dark-mode .sidebar-container, body.dark-mode .sidebar-header, body.dark-mode .sidebar-nav, body.dark-mode .sidebar-footer { background-color: transparent; }
