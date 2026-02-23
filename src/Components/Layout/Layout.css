@@ -184,26 +184,26 @@ body, html {
         min-height: 60px !important;
         max-height: 60px !important;
         flex-direction: row !important; 
-        justify-content: flex-start !important; /* Alineamos los botones a la izquierda */
+        justify-content: center !important; 
         align-items: center !important;
         padding: 0 10px !important;
         border-bottom: 1px solid #d1d7db;
+        box-sizing: border-box !important; /* Evita que el padding rompa el 100vw */
     }
 
-    /* Ocultamos los avatares y la lista de chats */
     .sidebar-container.colapsado .sidebar-nav {
         display: none !important;
     }
 
-    /* ✨ LA MAGIA ESTÁ AQUÍ: Ocultamos el footer (tu foto de perfil y el engranaje) */
     .sidebar-container.colapsado .sidebar-footer {
         display: none !important;
     }
 
-    /* Acomodamos los únicos botones que quedan visibles */
+    /* ✨ LA MAGIA: Hacemos que la cabecera ocupe el 100% de la barra */
     .sidebar-container.colapsado .sidebar-header {
         padding: 0 !important;
         height: 100% !important;
+        width: 100% !important; 
         flex-direction: row !important;
         align-items: center !important;
         background: transparent;
@@ -211,14 +211,16 @@ body, html {
     
     .sidebar-container.colapsado .sidebar-header-top {
         flex-direction: row !important;
-        gap: 15px;
+        width: 100% !important; 
     }
 
+    /* ✨ Separamos el menú (izq) y el nuevo chat (der) usando space-between */
     .sidebar-container.colapsado .header-buttons {
         flex-direction: row !important;
+        width: 100% !important; 
+        justify-content: space-between !important; 
     }
 
-    /* El Chat toma todo el espacio restante */
     .component-wrapper {
         width: 100vw !important;
         min-width: 100vw !important;
