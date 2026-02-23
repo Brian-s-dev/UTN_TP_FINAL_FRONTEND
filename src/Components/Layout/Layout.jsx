@@ -25,46 +25,44 @@ const Layout = () => {
         chat.nombre.toLowerCase().includes(busqueda.toLowerCase())
     );
 
-    // ✨ EL CEREBRO DE NAVEGACIÓN Y RESPONSIVE
-    useEffect(() => {
-        const ajustarLayout = () => {
-            // 1. Siempre que cambiamos de ruta, cerramos los paneles superpuestos por precaución
-            setPerfilAbierto(false);
-            setSidebarContactosAbierto(false);
-
-            // 2. Lógica según el tamaño de pantalla
-            if (window.innerWidth <= 900) {
-                // Si la pantalla es <= 900px y la URL dice "/chat/...", forzamos el colapso
-                if (location.pathname.includes("/chat/")) {
-                    setSidebarColapsado(true);
-                } else {
-                    // Si volvemos al inicio ("/"), expandimos la barra para ver los chats
-                    setSidebarColapsado(false);
-                }
+    // ✨ EL CEREBRO DEFINITIVO DE LAYOUT
+    // Esta función centraliza toda la lógica de cómo debe verse la app
+    const ajustarLayout = () => {
+        if (window.innerWidth > 900) {
+            // MODO PC: Siempre expandido por defecto
+            setSidebarColapsado(false);
+        } else if (window.innerWidth > 700 && window.innerWidth <= 900) {
+            // MODO TABLET: Siempre colapsado a 85px por defecto
+            setSidebarColapsado(true);
+        } else {
+            // MODO CELULAR (<= 700px)
+            if (location.pathname.includes("/chat/")) {
+                setSidebarColapsado(true);  // Navbar superior si estamos dentro del chat
             } else {
-                // En PC (> 900px), la barra principal siempre está expandida por defecto
-                setSidebarColapsado(false);
+                setSidebarColapsado(false); // Lista a pantalla completa si estamos en el inicio
             }
-        };
+        }
+    };
 
-        // Ejecutamos la validación cada vez que la URL cambie
+    // 1. Efecto que escucha los cambios de ruta (URL)
+    useEffect(() => {
+        // Al cambiar de pantalla, cerramos los menús superpuestos
+        setPerfilAbierto(false);
+        setSidebarContactosAbierto(false);
+        
+        // Evaluamos cómo debe quedar el menú
         ajustarLayout();
+    }, [location.pathname]);
 
-    }, [location.pathname]); // ✨ Escucha atentamente los cambios de ruta
-
-    // ✨ Escuchamos también si el usuario arrastra la ventana del navegador manualmente
+    // 2. Efecto que escucha si estiras o achicas la ventana manualmente
     useEffect(() => {
         const handleResize = () => {
-            if (window.innerWidth <= 900 && location.pathname.includes("/chat/")) {
-                setSidebarColapsado(true);
-            } else if (window.innerWidth > 900) {
-                setSidebarColapsado(false);
-            }
+            ajustarLayout();
         };
 
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
-    }, [location.pathname]);
+    }, [location.pathname]); // Dependencia para que sepa en qué pantalla estás al redimensionar
 
     const handleAbrirContactos = () => {
         setSidebarContactosAbierto(true);
