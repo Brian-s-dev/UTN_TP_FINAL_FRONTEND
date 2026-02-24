@@ -24,6 +24,9 @@ const Layout = () => {
         chat.nombre.toLowerCase().includes(busqueda.toLowerCase())
     );
 
+    // ✨ Verificamos si estamos dentro de la vista de un chat
+    const isChatOpen = location.pathname.includes("/chat/");
+
     const ajustarLayout = () => {
         if (window.innerWidth > 900) {
             setSidebarColapsado(false);
@@ -54,7 +57,8 @@ const Layout = () => {
 
     return (
         <div className="layout-container">
-            <aside className={`sidebar-container ${sidebarColapsado ? 'colapsado' : ''}`}>
+            {/* ✨ Le agregamos la clase 'chat-abierto' de forma dinámica */}
+            <aside className={`sidebar-container ${sidebarColapsado ? 'colapsado' : ''} ${isChatOpen ? 'chat-abierto' : ''}`}>
                 <div className="sidebar-header">
                     <div className="sidebar-header-top">
                         <h2>Mensajes</h2>
@@ -77,6 +81,15 @@ const Layout = () => {
                             >
                                 <span className="material-symbols-outlined">chat</span>
                             </button>
+
+                            {/* ✨ Este avatar solo se mostrará en móviles, reemplazando al botón anterior */}
+                            <div 
+                                className="mobile-header-avatar clickable" 
+                                onClick={() => setPerfilAbierto(true)}
+                                title="Ver Perfil"
+                            >
+                                <Avatar nombre={usuarioActual} />
+                            </div>
                         </div>
                     </div>
                     

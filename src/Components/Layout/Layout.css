@@ -75,6 +75,20 @@ html {
     align-items: center;
 }
 
+/* ✨ Avatar en el header solo para móviles (por defecto oculto) */
+.mobile-header-avatar {
+    display: none;
+}
+
+.mobile-header-avatar.clickable {
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.mobile-header-avatar.clickable:hover {
+    opacity: 0.8;
+}
+
 .btn-nuevo-chat,
 .btn-colapsar {
     border: none;
@@ -409,7 +423,6 @@ html {
     background-color: #f0f2f5;
 }
 
-
 .sidebar-container.colapsado {
     width: 85px !important;
     min-width: 85px !important;
@@ -477,7 +490,6 @@ html {
     bottom: 0;
     right: auto;
 }
-
 
 @media (max-width: 900px) {
     .component-wrapper {
@@ -549,6 +561,33 @@ html {
         justify-content: space-between !important;
     }
 
+    /* ✨ 1. Ocultar el botón de nuevo chat y mostrar el avatar */
+    .sidebar-container.colapsado .btn-nuevo-chat {
+        display: none !important;
+    }
+    
+    .sidebar-container.colapsado .mobile-header-avatar {
+        display: block !important;
+    }
+
+    /* Ajustamos el tamaño del avatar para que encaje perfecto en el menú de 60px */
+    .sidebar-container.colapsado .mobile-header-avatar .avatar-circle {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+
+    /* ✨ 2. Si estamos dentro de un chat, ocultamos la barra horizontal completamente */
+    .sidebar-container.colapsado.chat-abierto {
+        display: none !important;
+    }
+
+    /* Y el chat ocupa toda la pantalla de arriba a abajo */
+    .sidebar-container.colapsado.chat-abierto ~ .component-wrapper {
+        height: 100dvh !important;
+    }
+
+    /* Si NO estamos en un chat (viendo Welcome), la altura se ajusta a la barra */
     .component-wrapper {
         width: 100vw !important;
         min-width: 100vw !important;
