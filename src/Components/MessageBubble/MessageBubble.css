@@ -1,3 +1,6 @@
+/* =========================================
+   CONTENEDORES DE FILA
+   ========================================= */
 .mensaje-fila {
     display: flex;
     align-items: flex-end;
@@ -13,6 +16,9 @@
     justify-content: flex-start;
 }
 
+/* =========================================
+   AVATAR (Solo para grupos/IA)
+   ========================================= */
 .mensaje-avatar .avatar-circle {
     width: 30px;
     height: 30px;
@@ -20,16 +26,48 @@
     font-size: 0.8rem;
 }
 
-.mensaje-burbuja { 
-    position: relative; 
-    max-width: 65%; 
+/* =========================================
+   BURBUJAS DE MENSAJE
+   ========================================= */
+.mensaje-burbuja {
+    position: relative;
+    max-width: 65%;
     padding: 10px 15px 22px 15px;
-    border-radius: 15px; 
-    word-wrap: break-word; 
-    overflow-wrap: break-word; 
-    word-break: break-word; 
+    /* Espacio extra abajo para la hora */
+    border-radius: 15px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
     width: fit-content;
     min-width: 85px;
+    /* Evita que la burbuja se achique más que la hora */
+}
+
+.su-mensaje {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-bottom-left-radius: 4px;
+    /* Punta del globo hacia la izquierda */
+}
+
+.mi-mensaje {
+    background-color: #dcf8c6;
+    /* Verde clásico de WhatsApp */
+    border-bottom-right-radius: 4px;
+    /* Punta del globo hacia la derecha */
+}
+
+/* =========================================
+   METADATOS (Hora, Autor y Tildes)
+   ========================================= */
+.mensaje-nombre-autor {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #e55375;
+    /* Color para destacar quién habla en un grupo */
+    margin-bottom: 3px;
+    line-height: 1;
 }
 
 .mensaje-meta {
@@ -49,19 +87,26 @@
 .icono-leido {
     font-size: 16px !important;
     color: #53bdeb;
+    /* Azul de "visto" */
 }
 
-.su-mensaje {
-    background-color: white;
-    border: 1px solid #ddd;
-    border-bottom-left-radius: 4px;
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+@media (max-width: 900px) {
+    .mensaje-burbuja {
+        max-width: 85%;
+        /* En móvil aprovechamos más el ancho */
+    }
+
+    .mensaje-fila {
+        margin-bottom: 12px;
+    }
 }
 
-.mi-mensaje {
-    background-color: #dcf8c6;
-    border-bottom-right-radius: 4px;
-}
-
+/* =========================================
+   MODO OSCURO
+   ========================================= */
 body.dark-mode .su-mensaje {
     background-color: #202c33;
     border-color: #202c33;
@@ -70,6 +115,7 @@ body.dark-mode .su-mensaje {
 
 body.dark-mode .mi-mensaje {
     background-color: #005c4b;
+    /* Verde oscuro para el modo dark */
     color: #e9edef;
 }
 
@@ -77,25 +123,7 @@ body.dark-mode .mensaje-hora {
     color: rgba(255, 255, 255, 0.6);
 }
 
-.mensaje-nombre-autor {
-    display: block;
-    font-size: 0.8rem;
-    font-weight: bold;
-    color: #e55375;
-    margin-bottom: 3px;
-    line-height: 1;
-}
-
 body.dark-mode .mensaje-nombre-autor {
     color: #ff7a9f;
-}
-
-@media (max-width: 900px) {
-    .mensaje-burbuja {
-        max-width: 85%;
-    }
-    
-    .mensaje-fila {
-        margin-bottom: 12px;
-    }
+    /* Color más claro para leer mejor en fondos oscuros */
 }

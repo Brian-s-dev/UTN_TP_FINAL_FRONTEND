@@ -3,26 +3,43 @@ import { EMISOR } from "../../Utils/constants";
 import Avatar from "../Avatar/Avatar";
 import "./MessageBubble.css";
 
-const MessageBubble = ({ texto, emisor, avatarContacto, nombreContacto, mostrarAvatar, hora, esGrupo }) => {
+const MessageBubble = ({
+    texto,
+    emisor,
+    avatarContacto,
+    nombreContacto,
+    mostrarAvatar,
+    hora,
+    esGrupo
+}) => {
+    // Determinamos si el mensaje fue enviado por el usuario actual
     const esMio = emisor === EMISOR.USUARIO;
 
     return (
         <div className={`mensaje-fila ${esMio ? "fila-mia" : "fila-suya"}`}>
-            
+
+            {/* Si NO es mío y es un grupo, mostramos el avatar pequeño al lado del mensaje */}
             {!esMio && mostrarAvatar && (
                 <div className="mensaje-avatar">
-                    <Avatar imagen={avatarContacto} nombre={nombreContacto} isIA={emisor === EMISOR.IA} />
+                    <Avatar
+                        imagen={avatarContacto}
+                        nombre={nombreContacto}
+                        isIA={emisor === EMISOR.IA}
+                    />
                 </div>
             )}
 
             <div className={`mensaje-burbuja ${esMio ? "mi-mensaje" : "su-mensaje"}`}>
-                
+
+                {/* Si es un grupo y el mensaje no es mío, mostramos el nombre del remitente arriba */}
                 {esGrupo && !esMio && (
                     <span className="mensaje-nombre-autor">{nombreContacto}</span>
                 )}
-                
+
+                {/* Texto del mensaje */}
                 <span>{texto}</span>
-                
+
+                {/* Metadatos (Hora y tildes de lectura) */}
                 <div className="mensaje-meta">
                     <span className="mensaje-hora">{hora || "12:00"}</span>
                     {esMio && (
