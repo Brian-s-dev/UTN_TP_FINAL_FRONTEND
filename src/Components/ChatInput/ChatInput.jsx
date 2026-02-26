@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
+import "./ChatInput.css";
 
-const ChatInput = ({ onEnviarMensaje, deshabilitado, mensajeDeshabilitado }) => { 
+const ChatInput = ({ onEnviarMensaje, deshabilitado, mensajeDeshabilitado }) => {
     const [texto, setTexto] = useState("");
     const [mostrarMenu, setMostrarMenu] = useState(false);
     const menuRef = useRef(null);
@@ -17,18 +18,18 @@ const ChatInput = ({ onEnviarMensaje, deshabilitado, mensajeDeshabilitado }) => 
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (texto.trim() === "" || deshabilitado) return; 
+        if (texto.trim() === "" || deshabilitado) return;
         onEnviarMensaje(texto);
-        setTexto(""); 
-        setMostrarMenu(false); 
+        setTexto("");
+        setMostrarMenu(false);
     };
 
     return (
         <form className={`chat-input-area ${deshabilitado ? 'input-deshabilitado' : ''}`} onSubmit={handleSubmit}>
             <div className="input-pill-container">
                 <div className="adjuntos-container" ref={menuRef}>
-                    <button 
-                        type="button" 
+                    <button
+                        type="button"
                         className="btn-icon btn-adjuntar"
                         onClick={() => !deshabilitado && setMostrarMenu(!mostrarMenu)}
                         title="Adjuntar"
@@ -58,15 +59,15 @@ const ChatInput = ({ onEnviarMensaje, deshabilitado, mensajeDeshabilitado }) => 
                     )}
                 </div>
 
-                <input 
-                    type="text" 
-                    placeholder={deshabilitado ? mensajeDeshabilitado : "Escribe un mensaje aquí..."} 
+                <input
+                    type="text"
+                    placeholder={deshabilitado ? mensajeDeshabilitado : "Escribe un mensaje aquí..."}
                     value={texto}
                     onChange={(e) => setTexto(e.target.value)}
-                    onClick={() => setMostrarMenu(false)} 
+                    onClick={() => setMostrarMenu(false)}
                     disabled={deshabilitado}
                 />
-                
+
                 <button type="submit" className="btn-icon btn-enviar" title="Enviar" disabled={deshabilitado}>
                     <span className="material-symbols-outlined">send</span>
                 </button>

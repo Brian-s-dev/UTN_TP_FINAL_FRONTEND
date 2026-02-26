@@ -1,0 +1,60 @@
+.filters-container {
+    display: flex;
+    gap: 8px;
+    padding: 5px 0 10px 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.filters-container::-webkit-scrollbar {
+    display: none;
+}
+
+.filter-pill {
+    background-color: #e4e6e9;
+    color: #54656f;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 16px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.filter-pill:hover {
+    background-color: #d1d7db;
+}
+
+.filter-pill.active {
+    background-color: #dcf8c6;
+    color: #008069;
+    font-weight: 500;
+}
+
+.filter-pill.icon-pill {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 10px;
+}
+
+.filter-pill.icon-pill span {
+    font-size: 18px;
+}
+
+body.dark-mode .filter-pill {
+    background-color: #202c33;
+    color: #8696a0;
+}
+
+body.dark-mode .filter-pill:hover {
+    background-color: #2a3942;
+}
+
+body.dark-mode .filter-pill.active {
+    background-color: #00a884;
+    color: #111b21;
+    font-weight: bold;
+}
