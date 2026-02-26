@@ -1,0 +1,114 @@
+.sidebar-footer {
+    padding: 15px;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.mi-perfil {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.mi-nombre {
+    font-weight: bold;
+    color: #111b21;
+    white-space: nowrap;
+}
+
+.mi-perfil.clickable {
+    cursor: pointer;
+    padding: 5px 10px;
+    margin-left: -10px;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+.mi-perfil.clickable:hover {
+    background-color: #e4e6e9;
+}
+
+.config-container {
+    position: relative;
+}
+
+.btn-ajustes {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: 0.2s;
+    color: #54656f;
+}
+
+.btn-ajustes:hover {
+    opacity: 1;
+    color: #111b21;
+}
+
+.menu-flotante {
+    position: absolute;
+    bottom: 40px;
+    right: 0;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 8px;
+    z-index: 100;
+    white-space: nowrap;
+}
+
+.menu-flotante button {
+    width: 100%;
+    padding: 10px 15px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    color: #111b21;
+}
+
+.menu-flotante button:hover {
+    background-color: #f0f2f5;
+}
+
+/* Modo oscuro */
+body.dark-mode .sidebar-footer {
+    background-color: transparent;
+}
+
+body.dark-mode .mi-nombre {
+    color: #e9edef;
+}
+
+body.dark-mode .mi-perfil.clickable:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .btn-ajustes {
+    color: #e9edef;
+    opacity: 1;
+}
+
+body.dark-mode .btn-ajustes:hover {
+    color: #ffffff;
+}
+
+body.dark-mode .menu-flotante {
+    background-color: #233138;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .menu-flotante button {
+    color: #e9edef;
+}
+
+body.dark-mode .menu-flotante button:hover {
+    background-color: #111b21;
+}
