@@ -5,8 +5,8 @@
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .filters-container::-webkit-scrollbar {
