@@ -6,25 +6,31 @@
     scrollbar-width: none;
     -ms-overflow-style: none;
     align-items: center;
-    /* Centra verticalmente los botones */
+    margin-left: 10px;
+    margin-right: 10pxs;
 }
 
 .filters-container::-webkit-scrollbar {
     display: none;
 }
 
+/* ✨ REGLA DE ORO: Si el sidebar padre está colapsado, ocultamos las píldoras */
+.sidebar-container.colapsado .filters-container {
+    display: none !important;
+}
+
 .filter-pill {
     background-color: #e4e6e9;
     color: #54656f;
     border: none;
-    /* ✨ Texto más chico y padding más compacto */
-    padding: 5px 12px;
-    border-radius: 20px;
+    /* ✨ Texto más pequeño y compacto */
+    padding: 6px 12px;
+    border-radius: 24px;
     font-size: 0.8rem;
+    font-weight: 500;
     cursor: pointer;
     white-space: nowrap;
     transition: all 0.2s ease;
-    font-weight: 500;
 }
 
 .filter-pill:hover {
@@ -35,36 +41,34 @@
     background-color: #dcf8c6;
     color: #008069;
     font-weight: 600;
-    /* Un poco más grueso al estar activo */
 }
 
-/* Botón del Dropdown (+) */
+/* Botón del ícono (Dropdown) */
 .filter-pill.icon-pill {
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 4px 8px;
-    /* Más pequeño */
     position: relative;
-    /* Para posicionar el menú */
+    /* Necesario para ubicar el menú desplegable */
 }
 
 .filter-pill.icon-pill span {
     font-size: 18px;
 }
 
-/* ✨ MENÚ DESPLEGABLE DE FILTROS */
+/* ✨ MENÚ DESPLEGABLE (Dropdown) */
 .filters-dropdown {
     position: absolute;
     top: 35px;
-    /* Aparece debajo del botón */
+    /* Debajo del botón */
     left: 0;
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
     padding: 8px 0;
     z-index: 100;
-    min-width: 150px;
+    min-width: 140px;
     display: flex;
     flex-direction: column;
     animation: fadeInDrop 0.2s ease-out;
@@ -91,9 +95,7 @@
     font-size: 0.85rem;
     color: #111b21;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    font-weight: 400;
 }
 
 .filters-dropdown button:hover {
@@ -103,7 +105,7 @@
 .filters-dropdown button.active {
     background-color: #f0f2f5;
     color: #008069;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 /* Modo Oscuro */

@@ -25,18 +25,38 @@ const Layout = () => {
     const [perfilAbierto, setPerfilAbierto] = useState(false);
     const [sidebarColapsado, setSidebarColapsado] = useState(window.innerWidth <= 900);
 
+    // ✨ LÓGICA DE FILTRADO ACTUALIZADA
     const chatsFiltrados = chats.filter(chat => {
         const coincideBusqueda = chat.nombre.toLowerCase().includes(busqueda.toLowerCase());
+
         let coincideFiltro = true;
-        if (filtroActivo === "Grupos") coincideFiltro = chat.tipo === EMISOR.GRUPO;
-        else if (filtroActivo === "Mensajes no leídos") coincideFiltro = false;
+
+        switch (filtroActivo) {
+            case "Grupos":
+                coincideFiltro = chat.tipo === EMISOR.GRUPO;
+                break;
+            case "No leídos": // Nuevo nombre corto
+                // Aquí iría tu lógica real (ej: chat.unread > 0). Por ahora lo dejamos false o true para probar.
+                coincideFiltro = false;
+                break;
+            case "Favoritos": // Nuevo filtro del dropdown
+                // Aquí iría tu lógica real (ej: chat.isFavorite).
+                coincideFiltro = false;
+                break;
+            case "Archivados":
+                coincideFiltro = false;
+                break;
+            default: // "Todos"
+                coincideFiltro = true;
+        }
+
         return coincideBusqueda && coincideFiltro;
     });
 
     const misGrupos = chats.filter(chat => chat.tipo === EMISOR.GRUPO);
 
     const handleAbrirContactos = () => {
-        setSidebarColapsado(false); // Expande el sidebar para ver los contactos
+        setSidebarColapsado(false);
         setSidebarContactosAbierto(true);
     };
 
@@ -50,21 +70,20 @@ const Layout = () => {
         else setSidebarColapsado(true);
     };
 
-    // ✨ EFECTO MÁGICO: Clics fuera de los menús
+    // EFECTO MAGICO: Detectar clics fuera de los menús
     useEffect(() => {
         const handleClickFuera = (event) => {
-            // 1. Cerrar Panel de Perfil si clic afuera
+            // 1. Ocultar Panel de Perfil si se hace clic afuera
             if (perfilAbierto && profileSidebarRef.current && !profileSidebarRef.current.contains(event.target)) {
-                // Evitamos cerrar si el clic fue en el botón que lo abre
                 if (!event.target.closest('.mi-perfil') && !event.target.closest('.mobile-header-avatar')) {
                     setPerfilAbierto(false);
                 }
             }
 
-            // 2. Colapsar Sidebar Principal (y cerrar Contactos) si clic afuera
+            // 2. Colapsar el Sidebar Principal
             if (window.innerWidth <= 900 && !sidebarColapsado && sidebarRef.current && !sidebarRef.current.contains(event.target)) {
                 setSidebarColapsado(true);
-                setSidebarContactosAbierto(false); // ✨ Esto cierra el panel de contactos al mismo tiempo
+                setSidebarContactosAbierto(false);
             }
         };
 
@@ -72,12 +91,14 @@ const Layout = () => {
         return () => document.removeEventListener("mousedown", handleClickFuera);
     }, [perfilAbierto, sidebarColapsado]);
 
+    // Reseteos automáticos al cambiar de ruta
     useEffect(() => {
         setPerfilAbierto(false);
         setSidebarContactosAbierto(false);
         ajustarLayout();
     }, [location.pathname]);
 
+    // Escucha de resize de ventana
     useEffect(() => {
         const handleResize = () => ajustarLayout();
         window.addEventListener('resize', handleResize);
@@ -96,6 +117,7 @@ const Layout = () => {
                     setPerfilAbierto={setPerfilAbierto} usuarioActual={usuarioActual}
                     busqueda={busqueda} setBusqueda={setBusqueda}
                 />
+
                 <FilterPills filtroActivo={filtroActivo} setFiltroActivo={setFiltroActivo} />
 
                 <nav className="sidebar-nav">

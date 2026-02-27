@@ -5,11 +5,11 @@ const FilterPills = ({ filtroActivo, setFiltroActivo }) => {
     const [menuAbierto, setMenuAbierto] = useState(false);
     const menuRef = useRef(null);
 
-    // Filtros visibles principales
+    // Filtros visibles directos
     const filtrosPrincipales = ["Todos", "No leídos", "Grupos"];
 
-    // Filtros que van dentro del dropdown
-    const filtrosExtra = ["Favoritos", "Archivados", "Bloqueados"];
+    // Filtros ocultos en el dropdown
+    const filtrosExtra = ["Favoritos", "Archivados"];
 
     // Cerrar menú al hacer clic afuera
     useEffect(() => {
@@ -24,11 +24,12 @@ const FilterPills = ({ filtroActivo, setFiltroActivo }) => {
 
     const handleSelectFiltro = (filtro) => {
         setFiltroActivo(filtro);
-        setMenuAbierto(false); // Cerramos el menú al seleccionar
+        setMenuAbierto(false);
     };
 
     return (
         <div className="filters-container">
+            {/* Píldoras principales */}
             {filtrosPrincipales.map((filtro) => (
                 <button
                     key={filtro}
@@ -39,14 +40,13 @@ const FilterPills = ({ filtroActivo, setFiltroActivo }) => {
                 </button>
             ))}
 
-            {/* Botón Dropdown */}
+            {/* Botón Dropdown (Flecha) */}
             <div style={{ position: 'relative' }} ref={menuRef}>
                 <button
                     className={`filter-pill icon-pill ${filtrosExtra.includes(filtroActivo) ? "active" : ""}`}
                     title="Más filtros"
                     onClick={() => setMenuAbierto(!menuAbierto)}
                 >
-                    {/* Cambiamos el + por una flecha hacia abajo */}
                     <span className="material-symbols-outlined">expand_more</span>
                 </button>
 
