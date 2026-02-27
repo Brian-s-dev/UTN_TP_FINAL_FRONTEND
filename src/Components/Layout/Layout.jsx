@@ -31,6 +31,11 @@ const Layout = () => {
 
     const misGrupos = chats.filter(chat => chat.tipo === EMISOR.GRUPO);
 
+    const handleAbrirContactos = () => {
+        setSidebarColapsado(false);
+        setSidebarContactosAbierto(true);
+    };
+
     const handleNavegarAGrupo = (chatId) => {
         setPerfilAbierto(false);
         navigate(`/chat/${chatId}`);
@@ -57,10 +62,13 @@ const Layout = () => {
         <div className="layout-container">
             <aside className={`sidebar-container ${sidebarColapsado ? 'colapsado' : ''} ${location.pathname.includes("/chat/") ? 'chat-abierto' : ''}`}>
                 <SidebarHeader
-                    sidebarColapsado={sidebarColapsado} setSidebarColapsado={setSidebarColapsado}
-                    handleAbrirContactos={() => setSidebarContactosAbierto(true)}
-                    setPerfilAbierto={setPerfilAbierto} usuarioActual={usuarioActual}
-                    busqueda={busqueda} setBusqueda={setBusqueda}
+                    sidebarColapsado={sidebarColapsado}
+                    setSidebarColapsado={setSidebarColapsado}
+                    handleAbrirContactos={handleAbrirContactos}
+                    setPerfilAbierto={setPerfilAbierto}
+                    usuarioActual={usuarioActual}
+                    busqueda={busqueda}
+                    setBusqueda={setBusqueda}
                 />
                 <FilterPills filtroActivo={filtroActivo} setFiltroActivo={setFiltroActivo} />
 

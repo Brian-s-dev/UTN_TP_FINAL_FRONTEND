@@ -78,7 +78,44 @@
     background-color: #f0f2f5;
 }
 
-/* Modo oscuro */
+
+/* =========================================
+   ✨ SIDEBAR COLAPSADO (900px hacia abajo)
+   ========================================= */
+.sidebar-container.colapsado .sidebar-footer {
+    flex-direction: column;
+    /* Apila el perfil y los ajustes verticalmente */
+    padding: 20px 0;
+    gap: 25px;
+}
+
+.sidebar-container.colapsado .mi-nombre {
+    display: none !important;
+    /* Oculta tu nombre */
+}
+
+.sidebar-container.colapsado .mi-perfil.clickable {
+    margin: 0;
+    padding: 5px;
+}
+
+/* Evitamos que el menú flotante se corte si el sidebar es angosto */
+.sidebar-container.colapsado .menu-flotante {
+    left: 60px;
+    bottom: 0;
+    right: auto;
+}
+
+/* En teléfonos muy pequeños (<=550px), el footer no va en el Navbar superior */
+@media (max-width: 550px) {
+    .sidebar-container.colapsado .sidebar-footer {
+        display: none !important;
+    }
+}
+
+/* =========================================
+   🌙 MODO OSCURO
+   ========================================= */
 body.dark-mode .sidebar-footer {
     background-color: transparent;
 }

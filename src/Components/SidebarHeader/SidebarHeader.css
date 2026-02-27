@@ -83,7 +83,78 @@
     box-sizing: border-box;
 }
 
-/* Modo oscuro */
+/* =========================================
+   ✨ SIDEBAR COLAPSADO (900px hacia abajo)
+   ========================================= */
+.sidebar-container.colapsado .sidebar-header {
+    padding: 15px 10px;
+}
+
+/* Apilamos los botones verticalmente */
+.sidebar-container.colapsado .sidebar-header-top {
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.sidebar-container.colapsado .header-buttons {
+    flex-direction: column-reverse;
+    /* Icono de menú abajo, chat arriba */
+    gap: 15px;
+    width: 100%;
+    justify-content: center;
+}
+
+/* Ocultamos el título "Mensajes" y el buscador */
+.sidebar-container.colapsado .sidebar-header-top h2,
+.sidebar-container.colapsado .search-container {
+    display: none !important;
+}
+
+/* =========================================
+   📱 MODO CELULAR (<= 550px) - NAVBAR TOP
+   ========================================= */
+@media (max-width: 550px) {
+    .sidebar-container.colapsado .sidebar-header {
+        padding: 0 !important;
+        height: 100% !important;
+        width: 100% !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        background: transparent;
+    }
+
+    .sidebar-container.colapsado .sidebar-header-top {
+        flex-direction: row !important;
+        width: 100% !important;
+    }
+
+    .sidebar-container.colapsado .header-buttons {
+        flex-direction: row !important;
+        width: 100% !important;
+        justify-content: space-between !important;
+    }
+
+    .sidebar-container.colapsado .btn-nuevo-chat {
+        display: none !important;
+    }
+
+    .sidebar-container.colapsado .mobile-header-avatar {
+        display: block !important;
+    }
+
+    .sidebar-container.colapsado .mobile-header-avatar .avatar-circle {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+}
+
+/* =========================================
+   🌙 MODO OSCURO
+   ========================================= */
 body.dark-mode .sidebar-header {
     background-color: transparent;
 }
