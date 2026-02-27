@@ -9,7 +9,7 @@
     scrollbar-width: none;
     -ms-overflow-style: none;
     -webkit-overflow-scrolling: touch;
-    align-items: space-between;
+    justify-content: space-between;
 }
 
 .filters-container::-webkit-scrollbar {
