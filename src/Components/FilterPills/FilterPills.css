@@ -1,7 +1,7 @@
 .filters-container {
     display: flex;
     gap: 5px;
-    padding: 5px 0 10px 0;
+    padding: 2.5px 0 5px 0;
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
