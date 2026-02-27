@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom"; // ✨ Importamos el Portal
 import { useChat } from "../../Context/ChatContext";
 import "./OpcionesChatsMenu.css";
 
@@ -10,15 +11,15 @@ const OpcionesChatsMenu = ({ chat }) => {
     const menuRef = useRef(null);
 
     const handleToggle = (e) => {
-        e.preventDefault(); // Evita navegar al chat
-        e.stopPropagation(); // Evita navegar al chat
+        e.preventDefault();
+        e.stopPropagation();
 
         if (!isOpen && buttonRef.current) {
             const rect = buttonRef.current.getBoundingClientRect();
-            // Calculamos posición para que aparezca junto al botón
+            // Calculamos la posición exacta en la pantalla
             setPosition({
                 top: rect.bottom + 5,
-                left: rect.right - 150 // 150px es el ancho aprox del menú
+                left: rect.right - 160 // Alineado a la derecha del botón
             });
         }
         setIsOpen(!isOpen);
@@ -35,23 +36,48 @@ const OpcionesChatsMenu = ({ chat }) => {
         setIsOpen(false);
     };
 
-    // Cerrar al hacer clic fuera
     useEffect(() => {
         const handleClickOutside = (e) => {
-            if (isOpen && menuRef.current && !menuRef.current.contains(e.target) && buttonRef.current && !buttonRef.current.contains(e.target)) {
+            // Verificamos si el clic fue fuera del menú Y fuera del botón
+            if (isOpen &&
+                menuRef.current && !menuRef.current.contains(e.target) &&
+                buttonRef.current && !buttonRef.current.contains(e.target)) {
                 setIsOpen(false);
             }
         };
-        // Cerrar al scrollear
+
         const handleScroll = () => { if (isOpen) setIsOpen(false); };
 
         window.addEventListener("mousedown", handleClickOutside);
         window.addEventListener("scroll", handleScroll, true);
+        window.addEventListener("resize", handleScroll); // Cerrar si cambian el tamaño
+
         return () => {
             window.removeEventListener("mousedown", handleClickOutside);
             window.removeEventListener("scroll", handleScroll, true);
+            window.removeEventListener("resize", handleScroll);
         };
     }, [isOpen]);
+
+    // ✨ EL CONTENIDO DEL MENÚ (Lo sacamos a una variable para el Portal)
+    const menuContent = (
+        <div
+            className="options-dropdown"
+            ref={menuRef}
+            style={{ top: position.top, left: position.left }}
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+        >
+            <button onClick={(e) => handleAction("favorito", e)}>
+                {chat.esFavorito ? "Quitar de favoritos" : "Agregar a favoritos"}
+            </button>
+            <button onClick={(e) => handleAction("archivar", e)}>
+                {chat.archivado ? "Desarchivar" : "Archivar chat"}
+            </button>
+            <button onClick={(e) => handleAction("eliminar", e)} className="text-danger">
+                Eliminar chat
+            </button>
+        </div>
+    );
 
     return (
         <div className="chat-options-container">
@@ -64,24 +90,8 @@ const OpcionesChatsMenu = ({ chat }) => {
                 <span className="material-symbols-outlined">more_vert</span>
             </button>
 
-            {isOpen && (
-                <div
-                    className="options-dropdown"
-                    ref={menuRef}
-                    style={{ top: position.top, left: position.left }}
-                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); }} // Stop propagation del menú mismo
-                >
-                    <button onClick={(e) => handleAction("favorito", e)}>
-                        {chat.esFavorito ? "Quitar de favoritos" : "Agregar a favoritos"}
-                    </button>
-                    <button onClick={(e) => handleAction("archivar", e)}>
-                        {chat.archivado ? "Desarchivar" : "Archivar chat"}
-                    </button>
-                    <button onClick={(e) => handleAction("eliminar", e)} className="text-danger">
-                        Eliminar chat
-                    </button>
-                </div>
-            )}
+            {/* ✨ USAMOS EL PORTAL PARA RENDERIZAR EN EL BODY */}
+            {isOpen && createPortal(menuContent, document.body)}
         </div>
     );
 };
