@@ -25,7 +25,7 @@ const Layout = () => {
     const [perfilAbierto, setPerfilAbierto] = useState(false);
     const [sidebarColapsado, setSidebarColapsado] = useState(window.innerWidth <= 900);
 
-    // ✨ LÓGICA DE FILTRADO ACTUALIZADA
+    // ✨ Lógica de filtrado completa
     const chatsFiltrados = chats.filter(chat => {
         const coincideBusqueda = chat.nombre.toLowerCase().includes(busqueda.toLowerCase());
 
@@ -33,30 +33,33 @@ const Layout = () => {
 
         switch (filtroActivo) {
             case "Grupos":
-                coincideFiltro = chat.tipo === EMISOR.GRUPO;
+                // Muestra grupos activos (no archivados)
+                coincideFiltro = chat.tipo === EMISOR.GRUPO && !chat.archivado;
                 break;
-            case "No leídos": // Nuevo nombre corto
-                // Aquí iría tu lógica real (ej: chat.unread > 0). Por ahora lo dejamos false o true para probar.
-                coincideFiltro = false;
+            case "No leídos":
+                // Lógica de no leídos (ajusta si tienes contador real)
+                coincideFiltro = !chat.archivado && false;
                 break;
-            case "Favoritos": // Nuevo filtro del dropdown
-                // Aquí iría tu lógica real (ej: chat.isFavorite).
-                coincideFiltro = false;
+            case "Favoritos":
+                // Solo favoritos y no archivados
+                coincideFiltro = chat.esFavorito && !chat.archivado;
                 break;
             case "Archivados":
-                coincideFiltro = false;
+                // SOLO los archivados
+                coincideFiltro = chat.archivado;
                 break;
             default: // "Todos"
-                coincideFiltro = true;
+                // Muestra todos MENOS los archivados
+                coincideFiltro = !chat.archivado;
         }
 
         return coincideBusqueda && coincideFiltro;
     });
 
-    const misGrupos = chats.filter(chat => chat.tipo === EMISOR.GRUPO);
+    const misGrupos = chats.filter(chat => chat.tipo === EMISOR.GRUPO && !chat.archivado);
 
     const handleAbrirContactos = () => {
-        setSidebarColapsado(false);
+        setSidebarColapsado(false); // Expande el sidebar al tocar "Nuevo Chat"
         setSidebarContactosAbierto(true);
     };
 
@@ -70,7 +73,7 @@ const Layout = () => {
         else setSidebarColapsado(true);
     };
 
-    // EFECTO MAGICO: Detectar clics fuera de los menús
+    // ✨ EFECTO MAGICO: Detectar clics fuera de los menús
     useEffect(() => {
         const handleClickFuera = (event) => {
             // 1. Ocultar Panel de Perfil si se hace clic afuera
@@ -80,7 +83,7 @@ const Layout = () => {
                 }
             }
 
-            // 2. Colapsar el Sidebar Principal
+            // 2. Colapsar el Sidebar Principal (y cerrar Contactos)
             if (window.innerWidth <= 900 && !sidebarColapsado && sidebarRef.current && !sidebarRef.current.contains(event.target)) {
                 setSidebarColapsado(true);
                 setSidebarContactosAbierto(false);
@@ -112,17 +115,22 @@ const Layout = () => {
                 className={`sidebar-container ${sidebarColapsado ? 'colapsado' : ''} ${location.pathname.includes("/chat/") ? 'chat-abierto' : ''}`}
             >
                 <SidebarHeader
-                    sidebarColapsado={sidebarColapsado} setSidebarColapsado={setSidebarColapsado}
+                    sidebarColapsado={sidebarColapsado}
+                    setSidebarColapsado={setSidebarColapsado}
                     handleAbrirContactos={handleAbrirContactos}
-                    setPerfilAbierto={setPerfilAbierto} usuarioActual={usuarioActual}
-                    busqueda={busqueda} setBusqueda={setBusqueda}
+                    setPerfilAbierto={setPerfilAbierto}
+                    usuarioActual={usuarioActual}
+                    busqueda={busqueda}
+                    setBusqueda={setBusqueda}
                 />
 
                 <FilterPills filtroActivo={filtroActivo} setFiltroActivo={setFiltroActivo} />
 
                 <nav className="sidebar-nav">
                     {chatsFiltrados.length === 0 ? (
-                        <p className="no-results">No se encontraron chats.</p>
+                        <p className="no-results">
+                            {filtroActivo === "Archivados" ? "No tienes chats archivados." : "No se encontraron chats."}
+                        </p>
                     ) : (
                         chatsFiltrados.map((chat) => <SidebarItem key={chat.id} chat={chat} />)
                     )}
