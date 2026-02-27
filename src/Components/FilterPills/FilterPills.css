@@ -5,10 +5,9 @@
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    /* justify-content: space-between;  <-- Quitado para que no se separen demasiado */
+    justify-content: space-between;
     align-items: center;
     margin: 0 15px;
-    /* Ajustado el margen vertical */
 }
 
 .filters-container::-webkit-scrollbar {
