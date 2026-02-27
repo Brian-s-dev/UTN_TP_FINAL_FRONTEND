@@ -41,7 +41,7 @@
     padding: 6px 0;
 
     /* Z-Index altísimo para ganarle a todo */
-    z-index: 99999;
+    z-index: 500;
 
     min-width: 180px;
     display: flex;
