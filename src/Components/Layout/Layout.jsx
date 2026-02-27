@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react"; // ✨ Importamos useRef
+import React, { useState, useEffect, useRef } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router";
 import { useChat } from "../../Context/ChatContext";
 import { EMISOR } from "../../Utils/constants";
@@ -15,7 +15,7 @@ const Layout = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    // ✨ Referencias para detectar clics afuera
+    // Referencias para detectar clics afuera
     const sidebarRef = useRef(null);
     const profileSidebarRef = useRef(null);
 
@@ -55,15 +55,16 @@ const Layout = () => {
         const handleClickFuera = (event) => {
             // 1. Ocultar Panel de Perfil si se hace clic afuera
             if (perfilAbierto && profileSidebarRef.current && !profileSidebarRef.current.contains(event.target)) {
-                // Previene que se cierre si justo hiciste clic en el botón de abrir (clases del Avatar)
                 if (!event.target.closest('.mi-perfil') && !event.target.closest('.mobile-header-avatar')) {
                     setPerfilAbierto(false);
                 }
             }
 
-            // 2. Colapsar el Sidebar Principal (solo si estamos en < 900px y está desplegado)
+            // 2. Colapsar el Sidebar Principal
             if (window.innerWidth <= 900 && !sidebarColapsado && sidebarRef.current && !sidebarRef.current.contains(event.target)) {
                 setSidebarColapsado(true);
+                // ✨ SOLUCIÓN: Forzamos el cierre del panel de "Nuevo Chat" al hacer clic afuera
+                setSidebarContactosAbierto(false);
             }
         };
 
@@ -87,7 +88,6 @@ const Layout = () => {
 
     return (
         <div className="layout-container">
-            {/* ✨ Le asignamos la referencia al sidebar */}
             <aside
                 ref={sidebarRef}
                 className={`sidebar-container ${sidebarColapsado ? 'colapsado' : ''} ${location.pathname.includes("/chat/") ? 'chat-abierto' : ''}`}
@@ -123,7 +123,6 @@ const Layout = () => {
                 <Outlet />
             </main>
 
-            {/* ✨ Le asignamos la referencia al perfil para que detecte si el clic fue afuera */}
             <div ref={profileSidebarRef}>
                 <UserProfileSidebar
                     perfilAbierto={perfilAbierto} setPerfilAbierto={setPerfilAbierto}
