@@ -1,3 +1,5 @@
+/* src/Components/OpcionesChatsMenu/OpcionesChatsMenu.css */
+
 .chat-options-container {
     position: relative;
     display: flex;
@@ -8,7 +10,6 @@
     background: transparent;
     border: none;
     color: #8696a0;
-    /* Color discreto por defecto */
     cursor: pointer;
     border-radius: 50%;
     width: 30px;
@@ -17,11 +18,11 @@
     justify-content: center;
     align-items: center;
     transition: all 0.2s;
+    /* Opacidad 0 por defecto (Sidebar), pero el Header la sobreescribe */
     opacity: 0;
-    /* ✨ Oculto por defecto hasta hacer hover en el chat */
 }
 
-/* Mostramos el botón cuando hacemos hover en el chat (SidebarItem maneja esto) */
+/* Sidebar: Mostrar al hover */
 .chat-item:hover .btn-options,
 .btn-options.active {
     opacity: 1;
@@ -34,12 +35,15 @@
 
 .options-dropdown {
     position: fixed;
-    /* Fixed para salir del overflow del sidebar */
     background-color: white;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    /* Sombra más fuerte para destacar */
     border-radius: 8px;
     padding: 5px 0;
-    z-index: 9999;
+
+    /* ✨ SOLUCIÓN SUPERPOSICIÓN: Z-Index extremo */
+    z-index: 99999;
+
     min-width: 160px;
     display: flex;
     flex-direction: column;
@@ -61,12 +65,13 @@
 .options-dropdown button {
     background: none;
     border: none;
-    padding: 10px 20px;
+    padding: 12px 20px;
     text-align: left;
     font-size: 0.9rem;
     color: #111b21;
     cursor: pointer;
     width: 100%;
+    transition: background 0.1s;
 }
 
 .options-dropdown button:hover {
@@ -75,6 +80,11 @@
 
 .options-dropdown button.text-danger {
     color: #ea0038;
+}
+
+.options-dropdown button.text-danger:hover {
+    background-color: #fceceb;
+    /* Rojo muy suave al hover */
 }
 
 /* Modo oscuro */
@@ -89,7 +99,8 @@ body.dark-mode .btn-options:hover {
 
 body.dark-mode .options-dropdown {
     background-color: #233138;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 body.dark-mode .options-dropdown button {

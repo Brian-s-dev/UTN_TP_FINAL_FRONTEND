@@ -1,6 +1,5 @@
-/* =========================================
-   CONTENEDOR PRINCIPAL
-   ========================================= */
+/* src/Components/ChatHeader/ChatHeader.css */
+
 .chat-header-placeholder {
     display: flex;
     justify-content: space-between;
@@ -11,21 +10,20 @@
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
     height: 60px;
-    /* Altura estándar */
     box-sizing: border-box;
+
+    /* ✨ SOLUCIÓN Z-INDEX: */
+    position: relative;
+    z-index: 200;
+    /* Asegura que el header esté por encima del área de mensajes */
 }
 
-/* =========================================
-   INFO DEL CONTACTO (IZQUIERDA)
-   ========================================= */
 .chat-header-info {
     display: flex;
     align-items: center;
     gap: 15px;
     flex: 1;
-    /* Ocupa el espacio restante para empujar botones a la derecha */
     overflow: hidden;
-    /* Evita desbordes si el nombre es largo */
     cursor: pointer;
     padding: 5px 10px;
     border-radius: 8px;
@@ -63,22 +61,25 @@
 }
 
 /* =========================================
-   ACCIONES (DERECHA - MENÚ Y VOLVER)
+   ACCIONES (DERECHA)
    ========================================= */
 .chat-header-actions {
     display: flex;
     align-items: center;
-    gap: 8px;
-    /* Espacio entre el menú de 3 puntos y la flecha */
+    gap: 0;
+    /* Quitamos gap extra, los botones tienen su propio padding */
 }
 
-/* Forzamos que el botón de opciones (3 puntos) sea visible siempre en el header */
-/* (En el sidebar suele estar oculto hasta el hover, aquí lo queremos fijo) */
+/* ✨ SOLUCIÓN VISIBILIDAD: Forzamos opacity 1 siempre en el header */
 .chat-header-actions .btn-options {
     opacity: 1 !important;
+    visibility: visible !important;
     color: #54656f;
     width: 40px;
     height: 40px;
+    position: relative;
+    /* Para el z-index */
+    z-index: 201;
 }
 
 .chat-header-actions .btn-options:hover {
@@ -86,7 +87,6 @@
     color: #111b21;
 }
 
-/* Botón Volver (Flecha) */
 .btn-volver {
     background: none;
     border: none;
@@ -106,16 +106,9 @@
     color: #111b21;
 }
 
-.btn-volver .material-symbols-outlined {
-    font-size: 24px;
-}
-
-/* =========================================
-   🌙 MODO OSCURO
-   ========================================= */
+/* Modo Oscuro */
 body.dark-mode .chat-header-placeholder {
     background-color: rgba(32, 44, 51, 0.95);
-    /* Color sólido o semi-transparente */
     border-bottom: 1px solid rgba(49, 61, 69, 0.5);
     backdrop-filter: blur(10px);
 }
@@ -128,26 +121,25 @@ body.dark-mode .chat-status {
     color: #8696a0;
 }
 
-/* Hover en la info del contacto */
+body.dark-mode .btn-volver {
+    color: #8696a0;
+}
+
+body.dark-mode .btn-volver:hover {
+    color: #e9edef;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
 body.dark-mode .chat-header-info:hover {
     background-color: rgba(255, 255, 255, 0.05);
 }
 
-/* Botones (Menú y Volver) en Dark Mode */
-body.dark-mode .btn-volver,
+/* Ajuste dark mode para el botón de opciones */
 body.dark-mode .chat-header-actions .btn-options {
-    color: #aebac1;
+    color: #8696a0;
 }
 
-body.dark-mode .btn-volver:hover,
 body.dark-mode .chat-header-actions .btn-options:hover {
-    background-color: rgba(255, 255, 255, 0.1);
     color: #e9edef;
-}
-
-/* Responsive ajustes menores */
-@media (max-width: 900px) {
-    .chat-header-placeholder {
-        padding: 10px;
-    }
+    background-color: rgba(255, 255, 255, 0.1);
 }
