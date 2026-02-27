@@ -164,7 +164,11 @@ html {
 }
 
 .sidebar-container.colapsado .chat-info,
-.sidebar-container.colapsado .chat-item::after .chat-options-wrapper {
+.sidebar-container.colapsado .chat-item::after {
+    display: none !important;
+}
+
+.sidebar-container.colapsado .chat-options-wrapper {
     display: none !important;
 }
 
