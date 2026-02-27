@@ -7,7 +7,7 @@
     -ms-overflow-style: none;
     justify-content: space-between;
     align-items: center;
-    margin: 10px;
+    margin: 15px;
 }
 
 .filters-container::-webkit-scrollbar {
@@ -54,7 +54,7 @@
 }
 
 .filter-pill.icon-pill span {
-    font-size: 18px;
+    font-size: 24px;
 }
 
 /* ✨ MENÚ DESPLEGABLE (Dropdown) */
