@@ -1,5 +1,6 @@
 import React from "react";
 import Avatar from "../Avatar/Avatar";
+import OpcionesChatsMenu from "../OpcionesChatsMenu/OpcionesChatsMenu"; // ✨ Importamos el menú
 import "./ChatHeader.css";
 
 const ChatHeader = ({ chatActivo, estadoConexion, setInfoAbierta, navigate }) => {
@@ -13,9 +14,16 @@ const ChatHeader = ({ chatActivo, estadoConexion, setInfoAbierta, navigate }) =>
                 </div>
             </div>
 
-            <button className="btn-volver" onClick={() => navigate("/")} title="Cerrar chat">
-                <span className="material-symbols-outlined">arrow_back</span>
-            </button>
+            {/* ✨ Contenedor de acciones a la derecha */}
+            <div className="chat-header-actions">
+                {/* Menú de opciones (Archivar, eliminar, etc) */}
+                <OpcionesChatsMenu chat={chatActivo} />
+
+                {/* Botón volver */}
+                <button className="btn-volver" onClick={() => navigate("/")} title="Cerrar chat">
+                    <span className="material-symbols-outlined">arrow_back</span>
+                </button>
+            </div>
         </div>
     );
 };

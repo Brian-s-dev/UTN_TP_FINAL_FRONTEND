@@ -1,28 +1,38 @@
+/* =========================================
+   CONTENEDOR PRINCIPAL
+   ========================================= */
 .chat-header-placeholder {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 20px;
+    padding: 10px 16px;
     background-color: #f0f2f5;
     border-bottom: 1px solid #d1d7db;
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
+    height: 60px;
+    /* Altura estándar */
+    box-sizing: border-box;
 }
 
+/* =========================================
+   INFO DEL CONTACTO (IZQUIERDA)
+   ========================================= */
 .chat-header-info {
     display: flex;
     align-items: center;
     gap: 15px;
-}
-
-.chat-header-info.clickable {
+    flex: 1;
+    /* Ocupa el espacio restante para empujar botones a la derecha */
+    overflow: hidden;
+    /* Evita desbordes si el nombre es largo */
     cursor: pointer;
-    padding: 5px;
+    padding: 5px 10px;
     border-radius: 8px;
     transition: background-color 0.2s;
 }
 
-.chat-header-info.clickable:hover {
+.chat-header-info:hover {
     background-color: rgba(0, 0, 0, 0.05);
 }
 
@@ -30,42 +40,82 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    overflow: hidden;
 }
 
 .chat-header-texto h2 {
     margin: 0;
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: #111b21;
     line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .chat-status {
     font-size: 0.8rem;
     color: #667781;
     margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
+/* =========================================
+   ACCIONES (DERECHA - MENÚ Y VOLVER)
+   ========================================= */
+.chat-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    /* Espacio entre el menú de 3 puntos y la flecha */
+}
+
+/* Forzamos que el botón de opciones (3 puntos) sea visible siempre en el header */
+/* (En el sidebar suele estar oculto hasta el hover, aquí lo queremos fijo) */
+.chat-header-actions .btn-options {
+    opacity: 1 !important;
+    color: #54656f;
+    width: 40px;
+    height: 40px;
+}
+
+.chat-header-actions .btn-options:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #111b21;
+}
+
+/* Botón Volver (Flecha) */
 .btn-volver {
     background: none;
     border: none;
-    font-size: 1.5rem;
     color: #54656f;
     cursor: pointer;
-    transition: color 0.2s, transform 0.2s;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 60;
+    transition: background-color 0.2s, color 0.2s;
 }
 
 .btn-volver:hover {
+    background-color: rgba(0, 0, 0, 0.05);
     color: #111b21;
-    transform: translateX(3px);
 }
 
-/* Modo Oscuro */
+.btn-volver .material-symbols-outlined {
+    font-size: 24px;
+}
+
+/* =========================================
+   🌙 MODO OSCURO
+   ========================================= */
 body.dark-mode .chat-header-placeholder {
-    background-color: rgba(32, 44, 51, 0.8);
+    background-color: rgba(32, 44, 51, 0.95);
+    /* Color sólido o semi-transparente */
     border-bottom: 1px solid rgba(49, 61, 69, 0.5);
     backdrop-filter: blur(10px);
 }
@@ -78,14 +128,26 @@ body.dark-mode .chat-status {
     color: #8696a0;
 }
 
-body.dark-mode .btn-volver {
-    color: #8696a0;
+/* Hover en la info del contacto */
+body.dark-mode .chat-header-info:hover {
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
-body.dark-mode .btn-volver:hover {
+/* Botones (Menú y Volver) en Dark Mode */
+body.dark-mode .btn-volver,
+body.dark-mode .chat-header-actions .btn-options {
+    color: #aebac1;
+}
+
+body.dark-mode .btn-volver:hover,
+body.dark-mode .chat-header-actions .btn-options:hover {
+    background-color: rgba(255, 255, 255, 0.1);
     color: #e9edef;
 }
 
-body.dark-mode .chat-header-info.clickable:hover {
-    background-color: rgba(255, 255, 255, 0.05);
+/* Responsive ajustes menores */
+@media (max-width: 900px) {
+    .chat-header-placeholder {
+        padding: 10px;
+    }
 }

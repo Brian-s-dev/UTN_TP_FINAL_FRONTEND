@@ -164,7 +164,7 @@ html {
 }
 
 .sidebar-container.colapsado .chat-info,
-.sidebar-container.colapsado .chat-item::after {
+.sidebar-container.colapsado .chat-item::after .chat-options-wrapper {
     display: none !important;
 }
 
