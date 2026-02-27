@@ -3,7 +3,6 @@ import { NavLink } from "react-router";
 import { EMISOR } from "../../Utils/constants";
 import Avatar from "../Avatar/Avatar";
 import OpcionesChatsMenu from "../OpcionesChatsMenu/OpcionesChatsMenu";
-import "./SidebarItem.css"; // (Asegúrate de que exista o usa el CSS global si prefieres)
 
 const SidebarItem = ({ chat }) => {
     const { id, nombre, avatar, tipo, mensajes, esFavorito } = chat;
