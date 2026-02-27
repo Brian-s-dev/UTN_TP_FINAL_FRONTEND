@@ -9,16 +9,18 @@
     display: flex;
     flex-direction: column;
     transform: translateX(-100%);
-    /* ✨ SOLUCIÓN AL TEXTO FANTASMA: Se oculta por completo si no está abierto */
+    /* ✨ SOLUCIÓN: Ocultamos el panel completamente cuando está cerrado */
     visibility: hidden;
     transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.3s;
 }
 
 .contacts-sidebar-container.open {
     transform: translateX(0);
+    /* ✨ Al abrirse, lo hacemos visible de nuevo */
     visibility: visible;
-    /* ✨ Vuelve a aparecer */
 }
+
+/* ... (El resto del CSS sigue igual) ... */
 
 .contacts-header {
     background-color: #00a884;

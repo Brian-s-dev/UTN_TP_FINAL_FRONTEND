@@ -36,7 +36,7 @@ const Layout = () => {
     const misGrupos = chats.filter(chat => chat.tipo === EMISOR.GRUPO);
 
     const handleAbrirContactos = () => {
-        setSidebarColapsado(false);
+        setSidebarColapsado(false); // Expande el sidebar para ver los contactos
         setSidebarContactosAbierto(true);
     };
 
@@ -50,21 +50,21 @@ const Layout = () => {
         else setSidebarColapsado(true);
     };
 
-    // ✨ EFECTO MAGICO: Detectar clics fuera de los menús
+    // ✨ EFECTO MÁGICO: Clics fuera de los menús
     useEffect(() => {
         const handleClickFuera = (event) => {
-            // 1. Ocultar Panel de Perfil si se hace clic afuera
+            // 1. Cerrar Panel de Perfil si clic afuera
             if (perfilAbierto && profileSidebarRef.current && !profileSidebarRef.current.contains(event.target)) {
+                // Evitamos cerrar si el clic fue en el botón que lo abre
                 if (!event.target.closest('.mi-perfil') && !event.target.closest('.mobile-header-avatar')) {
                     setPerfilAbierto(false);
                 }
             }
 
-            // 2. Colapsar el Sidebar Principal
+            // 2. Colapsar Sidebar Principal (y cerrar Contactos) si clic afuera
             if (window.innerWidth <= 900 && !sidebarColapsado && sidebarRef.current && !sidebarRef.current.contains(event.target)) {
                 setSidebarColapsado(true);
-                // ✨ SOLUCIÓN: Forzamos el cierre del panel de "Nuevo Chat" al hacer clic afuera
-                setSidebarContactosAbierto(false);
+                setSidebarContactosAbierto(false); // ✨ Esto cierra el panel de contactos al mismo tiempo
             }
         };
 
@@ -72,14 +72,12 @@ const Layout = () => {
         return () => document.removeEventListener("mousedown", handleClickFuera);
     }, [perfilAbierto, sidebarColapsado]);
 
-    // Reseteos automáticos al cambiar de ruta
     useEffect(() => {
         setPerfilAbierto(false);
         setSidebarContactosAbierto(false);
         ajustarLayout();
     }, [location.pathname]);
 
-    // Escucha de resize de ventana
     useEffect(() => {
         const handleResize = () => ajustarLayout();
         window.addEventListener('resize', handleResize);
@@ -93,13 +91,10 @@ const Layout = () => {
                 className={`sidebar-container ${sidebarColapsado ? 'colapsado' : ''} ${location.pathname.includes("/chat/") ? 'chat-abierto' : ''}`}
             >
                 <SidebarHeader
-                    sidebarColapsado={sidebarColapsado}
-                    setSidebarColapsado={setSidebarColapsado}
+                    sidebarColapsado={sidebarColapsado} setSidebarColapsado={setSidebarColapsado}
                     handleAbrirContactos={handleAbrirContactos}
-                    setPerfilAbierto={setPerfilAbierto}
-                    usuarioActual={usuarioActual}
-                    busqueda={busqueda}
-                    setBusqueda={setBusqueda}
+                    setPerfilAbierto={setPerfilAbierto} usuarioActual={usuarioActual}
+                    busqueda={busqueda} setBusqueda={setBusqueda}
                 />
                 <FilterPills filtroActivo={filtroActivo} setFiltroActivo={setFiltroActivo} />
 
