@@ -5,7 +5,6 @@
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    justify-content: space-between;
     align-items: center;
     margin: 0 15px;
 }
@@ -22,16 +21,13 @@
     background-color: #e4e6e9;
     color: #54656f;
     border: none;
-    padding: 0 20px;
-    /* ✨ Padding lateral solo, la altura la define height */
+    padding: 0 16px;
     border-radius: 24px;
     font-size: 0.8rem;
     font-weight: 500;
     cursor: pointer;
     white-space: nowrap;
     transition: all 0.2s ease;
-
-    /* ✨ CLAVE PARA MISMA ALTURA */
     height: 32px;
     display: flex;
     align-items: center;
@@ -49,38 +45,30 @@
     font-weight: 600;
 }
 
-/* ✨ Botón del Dropdown más pequeño */
 .filter-pill.icon-pill {
     padding: 0;
-    /* Sin padding extra */
     width: 32px;
-    /* ✨ Lo hacemos cuadrado (redondo) o casi cuadrado */
     height: 32px;
-    /* Misma altura que los demás */
     position: relative;
     border-radius: 50%;
-    /* Opcional: Si quieres que sea un círculo perfecto */
 }
 
 .filter-pill.icon-pill span {
     font-size: 20px;
-    /* ✨ Icono un poco más chico para que encaje bien */
 }
 
-/* ✨ MENÚ DESPLEGABLE (Dropdown) */
+/* ✨ MENÚ FLOTANTE MEJORADO */
 .filters-dropdown {
-    position: absolute;
-    top: 38px;
-    /* Un poquito más separado */
-    right: 0;
-    /* Alineado a la derecha del botón */
+    /* Clave para que no lo tape la lista de chats ni el overflow */
+    position: fixed;
+
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
     padding: 8px 0;
 
-    /* ✨ Z-INDEX SUPERIOR: 1000 asegura que tape a los chats */
-    z-index: 1000;
+    /* Z-Index altísimo para estar sobre todo */
+    z-index: 9999;
 
     min-width: 150px;
     display: flex;
@@ -111,7 +99,6 @@
     cursor: pointer;
     font-weight: 400;
     display: flex;
-    /* Asegura alineación si agregas iconos futuros */
     align-items: center;
 }
 
