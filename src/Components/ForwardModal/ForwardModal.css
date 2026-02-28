@@ -1,17 +1,17 @@
-/* Contenedor del Modal (Fondo oscuro) */
+/* Contenedor del Modal */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px);
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Fondo un poco más transparente (Sutil) */
+    backdrop-filter: blur(2px);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 99999;
-    /* Z-Index máximo para tapar todo */
     animation: fadeInModal 0.2s ease-out forwards;
 }
 
@@ -19,32 +19,41 @@
 .modal-content.forward-modal {
     background-color: #ffffff;
     width: 90%;
-    max-width: 400px;
-    height: 80vh;
-    /* Altura fija para que tenga scroll interno */
-    max-height: 600px;
-    border-radius: 12px;
+
+    /* ✨ MÁS CHICO Y COMPACTO */
+    max-width: 340px;
+    /* Antes 400px */
+    height: auto;
+    /* Altura automática según contenido */
+    max-height: 65vh;
+    /* Límite de altura para que no cubra toda la pantalla */
+
+    border-radius: 16px;
+    /* Bordes más redondeados */
     display: flex;
     flex-direction: column;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    /* Sombra más suave */
     overflow: hidden;
+    margin-right: 20px;
+    margin-left: 20px;
 }
 
-/* ✨ ENCABEZADO: Aquí posicionamos la X a la derecha */
+/* Encabezado compacto */
 .modal-header {
     background-color: #00a884;
-    /* Verde WhatsApp */
     color: white;
-    padding: 15px 20px;
+    /* ✨ Menos padding para que sea más sutil */
+    padding: 12px 15px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    /* ✨ Separa el Título a la izq y la X a la der */
 }
 
 .modal-header h3 {
     margin: 0;
-    font-size: 1.1rem;
+    font-size: 1rem;
+    /* Texto un poco más chico */
     font-weight: 500;
 }
 
@@ -57,26 +66,33 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    /* Botón más chico */
+    height: 28px;
     border-radius: 50%;
     transition: background-color 0.2s;
+}
+
+.btn-close .material-symbols-outlined {
+    font-size: 20px;
+    /* Icono más chico */
 }
 
 .btn-close:hover {
     background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Buscador */
+/* Buscador sutil */
 .search-forward {
-    margin: 10px 15px;
-    padding: 10px 15px;
-    width: calc(100% - 30px);
+    margin: 8px 12px;
+    padding: 8px 12px;
+    width: calc(100% - 24px);
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     outline: none;
     background-color: #f0f2f5;
     box-sizing: border-box;
+    font-size: 0.9rem;
 }
 
 .contacts-list-forward {
@@ -84,42 +100,55 @@
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    padding-bottom: 5px;
 }
 
-/* Ítem de contacto */
+/* Ítem de contacto compacto */
 .contact-item {
     display: flex;
     align-items: center;
-    padding: 10px 15px;
-    gap: 15px;
+    padding: 8px 15px;
+    /* Menos padding vertical */
+    gap: 12px;
     cursor: pointer;
     transition: background 0.1s;
-    border-bottom: 1px solid #f0f2f5;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.contact-item:last-child {
+    border-bottom: none;
 }
 
 .contact-item:hover {
     background-color: #f5f6f6;
 }
 
+/* ✨ FORZAMOS EL AVATAR MÁS CHICO DENTRO DE ESTE MODAL */
+.contact-item .avatar-circle {
+    width: 34px !important;
+    height: 34px !important;
+    font-size: 0.85rem !important;
+}
+
 .contact-name {
     flex: 1;
-    /* Ocupa el espacio central */
-    font-size: 1rem;
+    font-size: 0.95rem;
+    /* Nombre un poco más chico */
     color: #111b21;
 }
 
-/* ✨ ICONO DE ENVIAR (MODO CLARO) */
-/* Por defecto oscuro */
+/* Icono de enviar */
 .send-icon {
-    color: #54656f;
-    font-size: 24px;
-    transition: transform 0.2s;
+    color: #8696a0;
+    /* Gris sutil por defecto */
+    font-size: 20px;
+    /* Icono más chico */
+    transition: transform 0.2s, color 0.2s;
 }
 
 .contact-item:hover .send-icon {
     color: #00a884;
-    /* Se pone verde al hacer hover */
-    transform: translateX(3px);
+    transform: translateX(2px);
 }
 
 /* =========================================
@@ -127,13 +156,14 @@
    ========================================= */
 body.dark-mode .modal-content.forward-modal {
     background-color: #233138;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
 body.dark-mode .modal-header {
     background-color: #202c33;
-    /* Header más oscuro */
     color: #e9edef;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 body.dark-mode .btn-close {
@@ -163,16 +193,12 @@ body.dark-mode .contact-name {
     color: #e9edef;
 }
 
-/* ✨ ICONO DE ENVIAR (MODO OSCURO) */
-/* Ahora es claro */
 body.dark-mode .send-icon {
-    color: #8696a0;
-    /* Gris claro */
+    color: #667781;
 }
 
 body.dark-mode .contact-item:hover .send-icon {
     color: #00a884;
-    /* Verde al hover */
 }
 
 @keyframes fadeInModal {
