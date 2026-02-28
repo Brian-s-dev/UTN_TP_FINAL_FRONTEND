@@ -177,19 +177,51 @@ html {
     justify-content: center;
 }
 
+/* ... resto del archivo ... */
+
+/* =========================================
+   COMPORTAMIENTO COLAPSADO & RESPONSIVE
+   ========================================= */
+.sidebar-container.colapsado {
+    width: 85px !important;
+    min-width: 85px !important;
+    max-width: 85px !important;
+}
+
+.sidebar-container.colapsado .chat-info,
+.sidebar-container.colapsado .chat-item::after {
+    display: none !important;
+}
+
+.sidebar-container.colapsado .chat-item {
+    padding: 15px 0;
+    justify-content: center;
+}
+
+/* ✨ AQUÍ ESTÁ LA CORRECCIÓN */
 @media (max-width: 900px) {
     .component-wrapper {
         margin: 0;
         border-radius: 0;
         height: 100dvh;
-        width: calc(100vw - 85px);
-        min-width: calc(100vw - 85px);
+
+        /* BORRAMOS LOS WIDTH: CALC() QUE CAUSABAN EL ERROR */
+        /* width: calc(100vw - 85px);  <-- ESTO SE VA */
+        /* min-width: calc(100vw - 85px); <-- ESTO SE VA */
+
+        /* Dejamos que Flexbox ocupe todo el espacio disponible automáticamente */
+        flex: 1;
+        width: auto;
+        min-width: 0;
+        /* Permite que se encoja si es necesario */
     }
 
     .component-wrapper::before {
         display: none;
     }
 }
+
+/* ... resto del archivo (media query 550px) ... */
 
 @media (max-width: 550px) {
     .layout-container {
