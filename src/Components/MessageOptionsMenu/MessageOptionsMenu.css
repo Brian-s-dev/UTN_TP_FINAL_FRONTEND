@@ -1,0 +1,88 @@
+.btn-msg-options {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: linear-gradient(to left, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
+    /* Difuminado sutil */
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: #54656f;
+    opacity: 0;
+    /* Oculto por defecto */
+    transition: opacity 0.2s, background-color 0.2s;
+    z-index: 10;
+}
+
+/* Mostramos el botón al hacer hover en la burbuja o si el menú está abierto */
+.mensaje-burbuja:hover .btn-msg-options,
+.btn-msg-options.visible {
+    opacity: 1;
+    background-color: rgba(255, 255, 255, 0.8);
+    /* Fondo para que se lea sobre el texto */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode .btn-msg-options {
+    color: #aebac1;
+    background-color: rgba(32, 44, 51, 0.8);
+}
+
+.msg-options-dropdown {
+    position: fixed;
+    background-color: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 5px 0;
+    z-index: 99999;
+    min-width: 140px;
+    display: flex;
+    flex-direction: column;
+    animation: fadeInMsgMenu 0.1s ease-out;
+}
+
+@keyframes fadeInMsgMenu {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.msg-options-dropdown button {
+    background: none;
+    border: none;
+    padding: 10px 20px;
+    text-align: left;
+    font-size: 0.9rem;
+    color: #111b21;
+    cursor: pointer;
+    width: 100%;
+}
+
+.msg-options-dropdown button:hover {
+    background-color: #f0f2f5;
+}
+
+/* Dark Mode */
+body.dark-mode .msg-options-dropdown {
+    background-color: #233138;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+}
+
+body.dark-mode .msg-options-dropdown button {
+    color: #e9edef;
+}
+
+body.dark-mode .msg-options-dropdown button:hover {
+    background-color: #111b21;
+}

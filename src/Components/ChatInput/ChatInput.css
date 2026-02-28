@@ -223,3 +223,76 @@ body.dark-mode .menu-adjuntos button:hover {
 body.dark-mode .input-deshabilitado .input-pill-container {
     background-color: rgba(32, 44, 51, 0.5);
 }
+
+/* Envolvemos el input y el preview en una columna */
+.chat-footer-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    z-index: 60;
+}
+
+/* Caja de previsualización de respuesta */
+.reply-preview-container {
+    background-color: #f0f2f5;
+    /* Color grisáceo tipo WhatsApp */
+    padding: 8px 15px;
+    margin: 0 15px 5px 15px;
+    border-radius: 8px;
+    border-left: 5px solid #00a884;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: slideUpReply 0.2s ease-out;
+}
+
+@keyframes slideUpReply {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.reply-content {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.reply-title {
+    color: #00a884;
+    font-weight: bold;
+    font-size: 0.85rem;
+}
+
+.reply-text {
+    margin: 0;
+    color: #54656f;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.btn-close-reply {
+    background: none;
+    border: none;
+    color: #54656f;
+    cursor: pointer;
+    padding: 5px;
+}
+
+/* Dark Mode */
+body.dark-mode .reply-preview-container {
+    background-color: #1e2931;
+}
+
+body.dark-mode .reply-text,
+body.dark-mode .btn-close-reply {
+    color: #aebac1;
+}
