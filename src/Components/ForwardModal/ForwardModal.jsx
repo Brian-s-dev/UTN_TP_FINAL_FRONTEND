@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useChat } from "../../Context/ChatContext";
 import { useNavigate } from "react-router";
 import Avatar from "../Avatar/Avatar";
-import "./ForwardModal.css"; // Usa los mismos estilos que NewChatModal o crea uno simple
+import "./ForwardModal.css"; // Asegúrate de importar el nuevo CSS
 
 const ForwardModal = () => {
     const { mensajeAReenviar, setMensajeAReenviar, contactos, confirmarReenvio } = useChat();
@@ -21,8 +21,9 @@ const ForwardModal = () => {
     return (
         <div className="modal-overlay">
             <div className="modal-content forward-modal">
+                {/* ✨ Header con Flexbox Space-Between en el CSS */}
                 <div className="modal-header">
-                    <h3>Reenviar mensaje a...</h3>
+                    <h3>Reenviar mensaje</h3>
                     <button className="btn-close" onClick={() => setMensajeAReenviar(null)}>
                         <span className="material-symbols-outlined">close</span>
                     </button>
@@ -42,6 +43,7 @@ const ForwardModal = () => {
                         <div key={contacto.id} className="contact-item" onClick={() => handleEnviar(contacto)}>
                             <Avatar imagen={contacto.avatar} nombre={contacto.nombre} />
                             <span className="contact-name">{contacto.nombre}</span>
+                            {/* ✨ La clase .send-icon maneja el color según el tema */}
                             <span className="material-symbols-outlined send-icon">send</span>
                         </div>
                     ))}

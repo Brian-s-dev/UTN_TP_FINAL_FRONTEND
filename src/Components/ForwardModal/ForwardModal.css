@@ -1,3 +1,4 @@
+/* Contenedor del Modal (Fondo oscuro) */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -5,153 +6,183 @@
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(4px);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9000;
+    z-index: 99999;
+    /* Z-Index máximo para tapar todo */
     animation: fadeInModal 0.2s ease-out forwards;
 }
 
-.modal-content {
+/* La tarjeta del modal */
+.modal-content.forward-modal {
     background-color: #ffffff;
-    padding: 30px;
-    border-radius: 18px;
     width: 90%;
-    max-width: 350px;
+    max-width: 400px;
+    height: 80vh;
+    /* Altura fija para que tenga scroll interno */
+    max-height: 600px;
+    border-radius: 12px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    text-align: center;
-
-    box-shadow:
-        inset 0 3px 8px rgba(255, 255, 255, 0.95),
-        0 20px 45px rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
 }
 
-.modal-content h3 {
-    margin: 0;
-    color: #111b21;
-    font-size: 1.5rem;
-}
-
-.modal-content p {
-    margin: 0;
-    color: #667781;
-    font-size: 0.95rem;
-}
-
-.modal-content input {
-    width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #d1d7db;
-    border-radius: 8px;
-    font-size: 1rem;
-    outline: none;
-    box-sizing: border-box;
-    transition: 0.2s;
-    background-color: #f8f9fa;
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-.modal-content input:focus {
-    border-color: #00a884;
-    background-color: #fff;
-    box-shadow: 0 0 0 3px rgba(0, 168, 132, 0.15);
-}
-
-.modal-buttons {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.btn-cancelar {
-    background: none;
-    border: none;
-    padding: 10px 15px;
-    color: #54656f;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 8px;
-    transition: background 0.2s;
-}
-
-.btn-cancelar:hover {
-    background-color: #f0f2f5;
-}
-
-.btn-crear {
+/* ✨ ENCABEZADO: Aquí posicionamos la X a la derecha */
+.modal-header {
     background-color: #00a884;
+    /* Verde WhatsApp */
     color: white;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* ✨ Separa el Título a la izq y la X a la der */
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+/* Botón de cerrar (X) */
+.btn-close {
+    background: transparent;
     border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: bold;
+    color: white;
     cursor: pointer;
-    transition: background 0.2s;
-    box-shadow: 0 4px 10px rgba(0, 168, 132, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    transition: background-color 0.2s;
 }
 
-.btn-crear:hover {
-    background-color: #008f6f;
-    box-shadow: 0 6px 15px rgba(0, 168, 132, 0.4);
+.btn-close:hover {
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
-.btn-crear:disabled {
-    background-color: #8696a0;
-    cursor: not-allowed;
-    opacity: 0.6;
-    box-shadow: none;
+/* Buscador */
+.search-forward {
+    margin: 10px 15px;
+    padding: 10px 15px;
+    width: calc(100% - 30px);
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    outline: none;
+    background-color: #f0f2f5;
+    box-sizing: border-box;
+}
+
+.contacts-list-forward {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Ítem de contacto */
+.contact-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    gap: 15px;
+    cursor: pointer;
+    transition: background 0.1s;
+    border-bottom: 1px solid #f0f2f5;
+}
+
+.contact-item:hover {
+    background-color: #f5f6f6;
+}
+
+.contact-name {
+    flex: 1;
+    /* Ocupa el espacio central */
+    font-size: 1rem;
+    color: #111b21;
+}
+
+/* ✨ ICONO DE ENVIAR (MODO CLARO) */
+/* Por defecto oscuro */
+.send-icon {
+    color: #54656f;
+    font-size: 24px;
+    transition: transform 0.2s;
+}
+
+.contact-item:hover .send-icon {
+    color: #00a884;
+    /* Se pone verde al hacer hover */
+    transform: translateX(3px);
+}
+
+/* =========================================
+   🌙 MODO OSCURO
+   ========================================= */
+body.dark-mode .modal-content.forward-modal {
+    background-color: #233138;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .modal-header {
+    background-color: #202c33;
+    /* Header más oscuro */
+    color: #e9edef;
+}
+
+body.dark-mode .btn-close {
+    color: #8696a0;
+}
+
+body.dark-mode .btn-close:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #e9edef;
+}
+
+body.dark-mode .search-forward {
+    background-color: #111b21;
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #e9edef;
+}
+
+body.dark-mode .contact-item {
+    border-bottom-color: rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .contact-item:hover {
+    background-color: #111b21;
+}
+
+body.dark-mode .contact-name {
+    color: #e9edef;
+}
+
+/* ✨ ICONO DE ENVIAR (MODO OSCURO) */
+/* Ahora es claro */
+body.dark-mode .send-icon {
+    color: #8696a0;
+    /* Gris claro */
+}
+
+body.dark-mode .contact-item:hover .send-icon {
+    color: #00a884;
+    /* Verde al hover */
 }
 
 @keyframes fadeInModal {
     from {
         opacity: 0;
-        transform: scale(0.92);
+        transform: scale(0.95);
     }
 
     to {
         opacity: 1;
         transform: scale(1);
     }
-}
-
-body.dark-mode .modal-content {
-    background-color: #161f26;
-    border: none;
-    box-shadow:
-        inset 0 1px 3px rgba(255, 255, 255, 0.15),
-        0 25px 50px rgba(0, 0, 0, 0.6);
-}
-
-body.dark-mode .modal-content h3 {
-    color: #e9edef;
-}
-
-body.dark-mode .modal-content p {
-    color: #8696a0;
-}
-
-body.dark-mode .modal-content input {
-    background-color: #1e2931;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    color: #e9edef;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-body.dark-mode .modal-content input:focus {
-    border-color: #00a884;
-    box-shadow: 0 0 0 3px rgba(0, 168, 132, 0.2);
-}
-
-body.dark-mode .btn-cancelar {
-    color: #8696a0;
-}
-
-body.dark-mode .btn-cancelar:hover {
-    background-color: #233138;
-    color: #e9edef;
 }
