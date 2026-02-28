@@ -13,15 +13,15 @@ export const chatsIniciales = [
         ]
     },
     {
-        id: 2, 
-        nombre: "Chat UTN Front-End", 
-        tipo: EMISOR.GRUPO, 
-        avatar: "https://ui-avatars.com/api/?name=UTN+Front&background=00a884&color=fff", 
+        id: 2,
+        nombre: "Chat UTN Front-End",
+        tipo: EMISOR.GRUPO,
+        avatar: "https://ui-avatars.com/api/?name=UTN+Front&background=00a884&color=fff",
         mensajes: [
             { id: "msg-2-1", texto: "Hoy cené empanadas de nuevo...", emisor: EMISOR.CONTACTO, hora: "21:30", remitenteNombre: "Matias", remitenteAvatar: "https://i.pravatar.cc/150?u=matias" },
             { id: "msg-2-2", texto: "Jajaja yo pedí una pizza, no tenía ganas de cocinar.", emisor: EMISOR.USUARIO, hora: "21:32" },
             { id: "msg-2-3", texto: "¡Qué rico! Guarden un poco para el grupo.", emisor: EMISOR.CONTACTO, hora: "21:35", remitenteNombre: "Sofía", remitenteAvatar: "https://i.pravatar.cc/150?u=sofia" },
-            { id: "msg-2-4", texto: "Mañana a primera hora subo las notas del TP.", emisor: EMISOR.CONTACTO, hora: "21:40", remitenteNombre: "Profe Carlos", remitenteAvatar: "https://i.pravatar.cc/150?u=profe" }
+            { id: "msg-2-4", texto: "Mañana a primera hora subo las notas del TP.", emisor: EMISOR.CONTACTO, hora: "21:40", remitenteNombre: "Profesor", remitenteAvatar: "https://i.pravatar.cc/150?u=profe" }
         ]
     },
     {
@@ -48,10 +48,10 @@ export const chatsIniciales = [
         ]
     },
     {
-        id: 5, 
-        nombre: "Equipo de Diseño", 
-        tipo: EMISOR.GRUPO, 
-        avatar: "https://ui-avatars.com/api/?name=Equipo+Diseño&background=6a1b9a&color=fff", 
+        id: 5,
+        nombre: "Equipo de Diseño",
+        tipo: EMISOR.GRUPO,
+        avatar: "https://ui-avatars.com/api/?name=Equipo+Diseño&background=6a1b9a&color=fff",
         mensajes: [
             { id: "msg-5-1", texto: "Chicos, la reunión semanal se pasa a las 15hs.", emisor: EMISOR.CONTACTO, hora: "14:00", remitenteNombre: "Valeria", remitenteAvatar: "https://i.pravatar.cc/150?u=valeria" },
             { id: "msg-5-2", texto: "Dale, agendado. Nos vemos ahí.", emisor: EMISOR.USUARIO, hora: "14:05" },
@@ -108,39 +108,39 @@ export const chatsIniciales = [
 
 export const contactosIniciales = [
     {
-        id: "c1", 
-        nombre: "Juan Pérez", 
-        avatar: "https://i.pravatar.cc/432?u=juan", 
-        tipo: EMISOR.CONTACTO 
-    },
-    { 
-        id: "c2", 
-        nombre: "María Gómez UX", 
-        avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-        tipo: EMISOR.CONTACTO 
-    },
-    { 
-        id: "c3", 
-        nombre: "Carlos Dev", 
-        avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-        tipo: EMISOR.CONTACTO 
+        id: "c1",
+        nombre: "Juan Pérez",
+        avatar: "https://i.pravatar.cc/432?u=juan",
+        tipo: EMISOR.CONTACTO
     },
     {
-        id: "c4", 
-        nombre: "Ana Proyecto Final", 
+        id: "c2",
+        nombre: "María Gómez UX",
+        avatar: "https://randomuser.me/api/portraits/women/44.jpg",
+        tipo: EMISOR.CONTACTO
+    },
+    {
+        id: "c3",
+        nombre: "Carlos Dev",
+        avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+        tipo: EMISOR.CONTACTO
+    },
+    {
+        id: "c4",
+        nombre: "Ana Proyecto Final",
         avatar: "https://randomuser.me/api/portraits/women/68.jpg",
-        tipo: EMISOR.CONTACTO 
+        tipo: EMISOR.CONTACTO
     },
-    { 
-        id: "c6", 
-        nombre: "Laura QA", 
+    {
+        id: "c6",
+        nombre: "Laura QA",
         avatar: "https://randomuser.me/api/portraits/women/12.jpg",
-        tipo: EMISOR.CONTACTO 
+        tipo: EMISOR.CONTACTO
     },
-    { 
-        id: "c7", 
-        nombre: "Marcos Backend", 
-        avatar: "https://i.pravatar.cc/150?u=marcos", 
-        tipo: EMISOR.CONTACTO 
+    {
+        id: "c7",
+        nombre: "Marcos Backend",
+        avatar: "https://i.pravatar.cc/150?u=marcos",
+        tipo: EMISOR.CONTACTO
     },
 ];
