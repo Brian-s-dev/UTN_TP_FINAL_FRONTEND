@@ -5,41 +5,51 @@ import { chatsIniciales, contactosIniciales } from "../Data/ChatData";
 const ChatContext = createContext();
 
 export const ChatProvider = ({ children }) => {
-    const [chats, setChats] = useState(chatsIniciales);
+    // ✨ CORRECCIÓN: Inicializamos los chats asegurando que las propiedades booleanas existan.
+    // Esto evita errores la primera vez que se intenta cambiar el estado.
+    const [chats, setChats] = useState(chatsIniciales.map(chat => ({
+        ...chat,
+        esFavorito: chat.esFavorito || false,
+        archivado: chat.archivado || false,
+        bloqueado: chat.bloqueado || false
+    })));
+
     const [contactos, setContactos] = useState(contactosIniciales);
     const [usuarioActual, setUsuarioActual] = useState("Yo");
 
-    // ✨ ESTADO PARA RESPONDER (CITAR)
+    // Estados para funciones avanzadas (Citar y Reenviar)
     const [mensajeCitado, setMensajeCitado] = useState(null);
-
-    // ✨ ESTADO PARA REENVIAR
     const [mensajeAReenviar, setMensajeAReenviar] = useState(null);
+
+    // ========================================================================
+    // FUNCIONES PRINCIPALES DE CHAT
+    // ========================================================================
 
     const enviarMensaje = useCallback((chatId, texto) => {
         setChats(prevChats => prevChats.map(chat => {
-            if (chat.id === Number(chatId) || chat.id === chatId) {
+            // Comparamos con == para que sirva tanto '1' (string) como 1 (number)
+            if (chat.id == chatId) {
                 const nuevoMensaje = {
                     id: crypto.randomUUID(),
                     texto,
                     emisor: EMISOR.USUARIO,
-                    // ✨ Si hay mensaje citado, lo guardamos en el nuevo mensaje
                     cita: mensajeCitado ? { ...mensajeCitado } : null
                 };
 
                 return {
                     ...chat,
-                    archivado: false,
+                    archivado: false, // Si envías mensaje, se desarchiva
                     mensajes: [...chat.mensajes, nuevoMensaje]
                 };
             }
             return chat;
         }));
-        setMensajeCitado(null); // Limpiamos la cita después de enviar
-    }, [mensajeCitado]); // Dependencia agregada
+        setMensajeCitado(null);
+    }, [mensajeCitado]);
 
     const eliminarMensaje = useCallback((chatId, mensajeId) => {
         setChats(prev => prev.map(chat => {
-            if (chat.id === Number(chatId) || chat.id === chatId) {
+            if (chat.id == chatId) {
                 return {
                     ...chat,
                     mensajes: chat.mensajes.filter(m => m.id !== mensajeId)
@@ -49,17 +59,86 @@ export const ChatProvider = ({ children }) => {
         }));
     }, []);
 
-    // Función para procesar el reenvío a un contacto específico
+    // ========================================================================
+    // GESTIÓN DE CONTACTOS Y CHATS
+    // ========================================================================
+
+    const iniciarChatConContacto = useCallback((contacto) => {
+        const chatExistente = chats.find(c => c.nombre === contacto.nombre);
+        if (chatExistente) return chatExistente.id;
+
+        const nuevoChat = {
+            id: crypto.randomUUID(),
+            nombre: contacto.nombre,
+            tipo: contacto.tipo,
+            avatar: contacto.avatar,
+            mensajes: [],
+            bloqueado: false,
+            esFavorito: false,
+            archivado: false
+        };
+        setChats(prev => [nuevoChat, ...prev]);
+        return nuevoChat.id;
+    }, [chats]);
+
+    const agregarNuevoContacto = useCallback((nombre) => {
+        const nuevo = {
+            id: crypto.randomUUID(),
+            nombre,
+            tipo: EMISOR.CONTACTO,
+            avatar: "" // Sin avatar por defecto
+        };
+        setContactos(prev => [...prev, nuevo]);
+        return nuevo;
+    }, []);
+
+    // ========================================================================
+    // ACCIONES DE MENÚ (FAVORITO, ARCHIVAR, ELIMINAR, BLOQUEAR)
+    // ========================================================================
+
+    const toggleFavorito = useCallback((id) => {
+        setChats(prev => prev.map(chat => {
+            if (chat.id == id) {
+                return { ...chat, esFavorito: !chat.esFavorito };
+            }
+            return chat;
+        }));
+    }, []);
+
+    const toggleArchivado = useCallback((id) => {
+        setChats(prev => prev.map(chat => {
+            if (chat.id == id) {
+                return { ...chat, archivado: !chat.archivado };
+            }
+            return chat;
+        }));
+    }, []);
+
+    const eliminarChat = useCallback((id) => {
+        setChats(prev => prev.filter(chat => chat.id != id));
+    }, []);
+
+    const bloquearContacto = useCallback((id) => {
+        setChats(prev => prev.map(c => c.id == id ? { ...c, bloqueado: true } : c));
+    }, []);
+
+    const desbloquearContacto = useCallback((id) => {
+        setChats(prev => prev.map(c => c.id == id ? { ...c, bloqueado: false } : c));
+    }, []);
+
+    // ========================================================================
+    // LÓGICA DE REENVÍO
+    // ========================================================================
+
     const confirmarReenvio = useCallback((contactoDestino) => {
         if (!mensajeAReenviar) return;
 
-        // 1. Buscamos o creamos el chat
-        let chatIdDestino = iniciarChatConContacto(contactoDestino); // Usamos la función existente
+        let chatIdDestino = iniciarChatConContacto(contactoDestino);
 
-        // 2. Enviamos el mensaje (usamos setTimeout para asegurar que el estado se actualice si es chat nuevo)
+        // setTimeout para asegurar que el estado se actualice si el chat era nuevo
         setTimeout(() => {
             setChats(prevChats => prevChats.map(chat => {
-                if (chat.id === chatIdDestino) {
+                if (chat.id == chatIdDestino) {
                     return {
                         ...chat,
                         archivado: false,
@@ -67,7 +146,7 @@ export const ChatProvider = ({ children }) => {
                             id: crypto.randomUUID(),
                             texto: mensajeAReenviar.texto,
                             emisor: EMISOR.USUARIO,
-                            esReenvio: true // Flag opcional
+                            esReenvio: true
                         }]
                     };
                 }
@@ -75,41 +154,27 @@ export const ChatProvider = ({ children }) => {
             }));
         }, 0);
 
-        setMensajeAReenviar(null); // Cerramos modal
+        setMensajeAReenviar(null);
         return chatIdDestino;
-    }, [mensajeAReenviar]); // Ojo: iniciarChatConContacto debe estar definido antes o usar refs, pero por simplicidad aquí asumimos hoisting o orden correcto en el return
+    }, [mensajeAReenviar, iniciarChatConContacto]);
 
-    // ... (Mantén iniciarChatConContacto, agregarNuevoContacto, bloquear, desbloquear, eliminarChat, toggleFavorito, toggleArchivado IGUALES) ...
-    // COPIA AQUÍ EL RESTO DE TUS FUNCIONES EXISTENTES DEL MENSAJE ANTERIOR
-
-    // (Para que el código no sea eterno, asumo que las tienes del paso anterior. 
-    // Solo asegúrate de incluirlas en el valorContexto abajo)
-
-    /* --- REPETIR TU LÓGICA EXISTENTE AQUÍ --- */
-    const iniciarChatConContacto = useCallback((contacto) => { /* ...tu código... */
-        const chatExistente = chats.find(c => c.nombre === contacto.nombre);
-        if (chatExistente) return chatExistente.id;
-        const nuevoChat = { id: crypto.randomUUID(), nombre: contacto.nombre, tipo: contacto.tipo, avatar: contacto.avatar, mensajes: [], bloqueado: false, esFavorito: false, archivado: false };
-        setChats(prev => [nuevoChat, ...prev]);
-        return nuevoChat.id;
-    }, [chats]);
-    const agregarNuevoContacto = useCallback((nombre) => { /* ... */ }, []);
-    const bloquearContacto = useCallback((id) => { /* ... */ }, []);
-    const desbloquearContacto = useCallback((id) => { /* ... */ }, []);
-    const eliminarChat = useCallback((id) => { /* ... */ }, []);
-    const toggleFavorito = useCallback((id) => { /* ... */ }, []);
-    const toggleArchivado = useCallback((id) => { /* ... */ }, []);
-
+    // ========================================================================
+    // PROVIDER VALUE
+    // ========================================================================
 
     const valorContexto = useMemo(() => ({
-        chats, contactos, enviarMensaje, iniciarChatConContacto,
-        agregarNuevoContacto, bloquearContacto, desbloquearContacto,
-        eliminarChat, toggleFavorito, toggleArchivado, usuarioActual, setUsuarioActual,
-        // ✨ NUEVAS EXPORTACIONES
+        chats, contactos, usuarioActual, setUsuarioActual,
+        enviarMensaje, eliminarMensaje,
+        iniciarChatConContacto, agregarNuevoContacto,
+        bloquearContacto, desbloquearContacto,
+        eliminarChat, toggleFavorito, toggleArchivado,
         mensajeCitado, setMensajeCitado,
-        mensajeAReenviar, setMensajeAReenviar, confirmarReenvio,
-        eliminarMensaje
-    }), [chats, contactos, usuarioActual, mensajeCitado, mensajeAReenviar, enviarMensaje, iniciarChatConContacto, agregarNuevoContacto, bloquearContacto, desbloquearContacto, eliminarChat, toggleFavorito, toggleArchivado, eliminarMensaje, confirmarReenvio]);
+        mensajeAReenviar, setMensajeAReenviar, confirmarReenvio
+    }), [
+        chats, contactos, usuarioActual, mensajeCitado, mensajeAReenviar,
+        enviarMensaje, eliminarMensaje, iniciarChatConContacto, agregarNuevoContacto,
+        bloquearContacto, desbloquearContacto, eliminarChat, toggleFavorito, toggleArchivado, confirmarReenvio
+    ]);
 
     return (
         <ChatContext.Provider value={valorContexto}>

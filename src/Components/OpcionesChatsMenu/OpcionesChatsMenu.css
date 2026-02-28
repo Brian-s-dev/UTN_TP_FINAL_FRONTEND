@@ -40,8 +40,8 @@
     border-radius: 8px;
     padding: 6px 0;
 
-    /* Z-Index altísimo para ganarle a todo */
-    z-index: 500;
+    /* ✨ Z-INDEX ALTÍSIMO: Vital para que capture el clic antes que nada */
+    z-index: 9999;
 
     min-width: 180px;
     display: flex;
