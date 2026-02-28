@@ -7,41 +7,36 @@
     height: 100%;
     width: 100%;
     position: relative;
-    /* Ancla para el sidebar de info (absolute) */
-    background-color: #efeae2;
-    /* Color base WhatsApp Light */
+    /* Quitamos el color de fondo aquí para evitar el efecto de "corte" */
+    background-color: transparent;
     overflow: hidden;
-    /* Evita doble scroll */
 }
 
 /* =========================================
-   ÁREA DE MENSAJES (SCROLLABLE)
+   ÁREA DE MENSAJES (FONDO UNIFICADO)
    ========================================= */
 .chat-messages-area {
     flex: 1;
-    /* Ocupa todo el espacio entre header e input */
+    /* Ocupa todo el espacio disponible */
     padding: 20px 5%;
-    /* Espacio lateral responsive */
     overflow-y: auto;
-    /* Scroll vertical */
     display: flex;
     flex-direction: column;
     gap: 2px;
-    /* Separación mínima entre burbujas consecutivas */
 
-    /* IMAGEN DE FONDO (DOODLE) */
-    /* Usamos un patrón sutil. Si no tienes la imagen local, puedes usar un color sólido o esta URL pública común */
+    /* --- FONDO MODO CLARO (Default) --- */
+    background-color: #efeae2;
+    /* Beige WhatsApp */
     background-image: url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png");
     background-repeat: repeat;
     background-position: center;
     background-size: 400px;
-    /* Ajuste del tamaño del patrón */
 
-    /* Suavizado del scroll en móviles */
+    /* Suavizado scroll */
     -webkit-overflow-scrolling: touch;
 }
 
-/* Estilización del Scrollbar (Chrome/Safari/Edge) */
+/* Scrollbar Personalizado */
 .chat-messages-area::-webkit-scrollbar {
     width: 6px;
 }
@@ -55,9 +50,7 @@
     background: transparent;
 }
 
-/* =========================================
-   FEEDBACK DE BÚSQUEDA VACÍA
-   ========================================= */
+/* Feedback de búsqueda */
 .no-results-search {
     display: flex;
     justify-content: center;
@@ -75,29 +68,34 @@
     border-radius: 24px;
     font-size: 0.9rem;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    text-align: center;
 }
 
 /* =========================================
-   🌙 MODO OSCURO
+   🌙 MODO OSCURO (CORREGIDO)
    ========================================= */
 body.dark-mode .chat-view-container {
     background-color: #0b141a;
-    /* Fondo base oscuro */
-    /* Tinte sobre la imagen de fondo para oscurecerla */
-    background-image: linear-gradient(rgba(11, 20, 26, 0.9), rgba(11, 20, 26, 0.9));
+    /* Fondo de seguridad */
 }
 
 body.dark-mode .chat-messages-area {
-    /* Mantenemos la imagen pero se ve más oscura por el background-color del contenedor */
-    background-blend-mode: overlay;
+    /* ✨ SOLUCIÓN AL FONDO BLANCO: */
+    background-color: #0b141a;
+    /* Fondo base oscuro */
+
+    /* ✨ TRUCO: Ponemos una capa oscura semitransparente ENCIMA de la imagen */
+    background-image:
+        linear-gradient(rgba(11, 20, 26, 0.94), rgba(11, 20, 26, 0.94)),
+        url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png");
+
+    background-blend-mode: normal;
+    /* Normal para que el gradiente tape la imagen */
 }
 
 body.dark-mode .chat-messages-area::-webkit-scrollbar-thumb {
     background-color: rgba(255, 255, 255, 0.15);
 }
 
-/* Feedback de búsqueda en Dark Mode */
 body.dark-mode .no-results-search p {
     background-color: #1f2c34;
     color: #8696a0;
@@ -110,6 +108,5 @@ body.dark-mode .no-results-search p {
 @media (max-width: 900px) {
     .chat-messages-area {
         padding: 15px 10px;
-        /* Menos padding lateral en móviles */
     }
 }
