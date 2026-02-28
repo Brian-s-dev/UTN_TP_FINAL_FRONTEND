@@ -1,5 +1,6 @@
-/* src/Components/ChatHeader/ChatHeader.css */
-
+/* =========================================
+   CONTENEDOR PRINCIPAL
+   ========================================= */
 .chat-header-placeholder {
     display: flex;
     justify-content: space-between;
@@ -7,17 +8,19 @@
     padding: 10px 16px;
     background-color: #f0f2f5;
     border-bottom: 1px solid #d1d7db;
-    border-top-left-radius: 16px;
-    border-top-right-radius: 16px;
-    height: 60px;
-    box-sizing: border-box;
-
-    /* ✨ SOLUCIÓN Z-INDEX: */
+    /* Importante para el posicionamiento absoluto de la barra en móviles */
     position: relative;
     z-index: 200;
-    /* Asegura que el header esté por encima del área de mensajes */
+    height: 60px;
+    box-sizing: border-box;
+    /* Bordes redondeados solo arriba si no es móvil */
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
 }
 
+/* =========================================
+   INFO DEL CONTACTO (IZQUIERDA)
+   ========================================= */
 .chat-header-info {
     display: flex;
     align-items: center;
@@ -66,11 +69,30 @@
 .chat-header-actions {
     display: flex;
     align-items: center;
-    gap: 0;
-    /* Quitamos gap extra, los botones tienen su propio padding */
+    gap: 5px;
 }
 
-/* ✨ SOLUCIÓN VISIBILIDAD: Forzamos opacity 1 siempre en el header */
+/* Botón Lupa y otros iconos simples */
+.btn-action-icon {
+    background: none;
+    border: none;
+    color: #54656f;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.btn-action-icon:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #111b21;
+}
+
+/* Botón menú 3 puntos (Siempre visible aquí) */
 .chat-header-actions .btn-options {
     opacity: 1 !important;
     visibility: visible !important;
@@ -78,7 +100,6 @@
     width: 40px;
     height: 40px;
     position: relative;
-    /* Para el z-index */
     z-index: 201;
 }
 
@@ -87,6 +108,7 @@
     color: #111b21;
 }
 
+/* Botón Volver */
 .btn-volver {
     background: none;
     border: none;
@@ -106,11 +128,73 @@
     color: #111b21;
 }
 
-/* Modo Oscuro */
+/* =========================================
+   ✨ BARRA DE BÚSQUEDA (SEARCH BAR)
+   ========================================= */
+.chat-header-search-bar {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: #f0f2f5;
+    /* Mismo fondo que el header */
+    border-radius: 16px;
+    /* Coincide con el header */
+    padding: 0 5px;
+    box-sizing: border-box;
+    /* Animación de entrada */
+    animation: slideInSearch 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@keyframes slideInSearch {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.header-search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    padding: 0 10px;
+    background-color: transparent;
+    color: #111b21;
+    height: 100%;
+}
+
+.btn-icon-search-back,
+.btn-icon-clear {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #54656f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.btn-icon-search-back:hover,
+.btn-icon-clear:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #111b21;
+}
+
+/* =========================================
+   🌙 MODO OSCURO
+   ========================================= */
 body.dark-mode .chat-header-placeholder {
-    background-color: rgba(32, 44, 51, 0.95);
-    border-bottom: 1px solid rgba(49, 61, 69, 0.5);
-    backdrop-filter: blur(10px);
+    background-color: #202c33;
+    border-bottom: 1px solid rgba(134, 150, 160, 0.15);
 }
 
 body.dark-mode .chat-header-texto h2 {
@@ -121,25 +205,66 @@ body.dark-mode .chat-status {
     color: #8696a0;
 }
 
-body.dark-mode .btn-volver {
-    color: #8696a0;
-}
-
-body.dark-mode .btn-volver:hover {
-    color: #e9edef;
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
 body.dark-mode .chat-header-info:hover {
     background-color: rgba(255, 255, 255, 0.05);
 }
 
-/* Ajuste dark mode para el botón de opciones */
-body.dark-mode .chat-header-actions .btn-options {
+body.dark-mode .btn-action-icon,
+body.dark-mode .btn-volver,
+body.dark-mode .chat-header-actions .btn-options,
+body.dark-mode .btn-icon-search-back,
+body.dark-mode .btn-icon-clear {
+    color: #aebac1;
+}
+
+body.dark-mode .btn-action-icon:hover,
+body.dark-mode .btn-volver:hover,
+body.dark-mode .chat-header-actions .btn-options:hover,
+body.dark-mode .btn-icon-search-back:hover,
+body.dark-mode .btn-icon-clear:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #e9edef;
+}
+
+/* Barra de búsqueda Dark */
+body.dark-mode .chat-header-search-bar {
+    background-color: #202c33;
+}
+
+body.dark-mode .header-search-input {
+    color: #e9edef;
+}
+
+body.dark-mode .header-search-input::placeholder {
     color: #8696a0;
 }
 
-body.dark-mode .chat-header-actions .btn-options:hover {
-    color: #e9edef;
-    background-color: rgba(255, 255, 255, 0.1);
+/* =========================================
+   📱 RESPONSIVE (Móvil < 900px)
+   ========================================= */
+@media (max-width: 900px) {
+    .chat-header-placeholder {
+        border-radius: 0;
+        /* Sin bordes redondeados en móvil */
+        padding: 5px 10px;
+    }
+
+    /* ✨ Barra de búsqueda ocupa todo el header en móvil */
+    .chat-header-search-bar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+        z-index: 210;
+        /* Z-Index superior al contenido normal */
+        background-color: #ffffff;
+        /* Fondo sólido para tapar info */
+        padding: 0 10px;
+    }
+
+    body.dark-mode .chat-header-search-bar {
+        background-color: #202c33;
+    }
 }

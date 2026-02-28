@@ -1,108 +1,105 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router";
 import { useChat } from "../../Context/ChatContext";
-import { EMISOR } from "../../Utils/constants";
-import MessageBubble from "../../Components/MessageBubble/MessageBubble";
-import ChatInput from "../../Components/ChatInput/ChatInput";
-import ChatHeader from "../../Components/ChatHeader/ChatHeader";
-import ContactInfoSidebar from "../../Components/ContactInfoSidebar/ContactInfoSidebar";
-import "./ChatView.css";
 
-const generarEstadoConexion = (id, tipo) => {
-    if (tipo === EMISOR.IA) return null;
-    if (tipo === EMISOR.GRUPO) return "Haz clic aquí para info. del grupo";
-    const numFijo = String(id).charCodeAt(0) || 1;
-    if (numFijo % 3 === 0) return "En línea";
-    if (numFijo % 2 === 0) return `última conexión hoy a las ${numFijo % 12 + 8}:30`;
-    const dias = (numFijo % 5) + 1;
-    return `última conexión hace ${dias} día${dias > 1 ? 's' : ''}`;
-};
+// Componentes
+import ChatHeader from "../ChatHeader/ChatHeader";
+import MessageBubble from "../MessageBubble/MessageBubble";
+import ChatInput from "../ChatInput/ChatInput";
+import ContactInfoSidebar from "../ContactInfoSidebar/ContactInfoSidebar";
+
+import "./ChatView.css"; // (Asumo que tienes estilos básicos para el contenedor aquí)
 
 const ChatView = () => {
     const { chatId } = useParams();
     const navigate = useNavigate();
-    const { chats, contactos, usuarioActual, enviarMensaje, bloquearContacto, desbloquearContacto, eliminarChat } = useChat();
+    const { chats, enviarMensaje, usuarioActual } = useChat();
 
+    // Estado para el sidebar de información derecho
     const [infoAbierta, setInfoAbierta] = useState(false);
-    const [menuEditarAbierto, setMenuEditarAbierto] = useState(false);
-    const menuEditarRef = useRef(null);
-    const mensajesFinRef = useRef(null);
 
-    const chatActivo = chats.find((chat) => chat.id === Number(chatId) || chat.id === chatId);
+    // ✨ Estado para el buscador de mensajes
+    const [busquedaMensajes, setBusquedaMensajes] = useState("");
 
+    // Referencia para el scroll automático
+    const messagesEndRef = useRef(null);
+
+    // 1. Encontrar el chat activo
+    // (Buscamos por ID numérico o string para mayor seguridad)
+    const chatActivo = chats.find(c => c.id === Number(chatId) || c.id === chatId);
+
+    // Scroll al fondo cuando llegan mensajes nuevos
     useEffect(() => {
-        const handleClickFuera = (event) => {
-            if (menuEditarRef.current && !menuEditarRef.current.contains(event.target)) {
-                setMenuEditarAbierto(false);
-            }
-        };
-        document.addEventListener("mousedown", handleClickFuera);
-        return () => document.removeEventListener("mousedown", handleClickFuera);
-    }, []);
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [chatActivo?.mensajes, busquedaMensajes]); // También scrollear si cambia el filtro
 
-    useEffect(() => setInfoAbierta(false), [chatId]);
-    useEffect(() => mensajesFinRef.current?.scrollIntoView({ behavior: "smooth" }), [chatActivo?.mensajes]);
+    // Si no existe el chat, redirigir o mostrar error
+    if (!chatActivo) {
+        return <div className="chat-placeholder">Chat no encontrado</div>;
+    }
 
-    if (!chatActivo) return <div className="chat-view-container centered">Chat no encontrado</div>;
+    // 2. ✨ Filtrar mensajes según la búsqueda
+    const mensajesFiltrados = busquedaMensajes.trim() === ""
+        ? chatActivo.mensajes
+        : chatActivo.mensajes.filter(msg =>
+            msg.texto.toLowerCase().includes(busquedaMensajes.toLowerCase())
+        );
 
-    const esGrupo = chatActivo.tipo === EMISOR.GRUPO;
-    const estadoConexion = generarEstadoConexion(chatActivo.id, chatActivo.tipo);
-
-    const handleBloquearToggle = () => {
-        chatActivo.bloqueado ? desbloquearContacto(chatId) : bloquearContacto(chatId);
-        setInfoAbierta(false);
+    const handleEnviarMensaje = (texto) => {
+        enviarMensaje(chatId, texto);
     };
-
-    const handleEliminar = () => {
-        eliminarChat(chatId);
-        navigate("/");
-    };
-
-    const txtMensajeSistema = esGrupo ? "Saliste del grupo" : "Se bloqueó el contacto";
-    const txtInputApagado = esGrupo ? "Ya no eres participante de este grupo" : "No puedes enviar mensajes a un contacto bloqueado";
-    const txtBotonBloquear = esGrupo
-        ? (chatActivo.bloqueado ? "Volver al grupo (Solo Admins)" : "Salir del grupo")
-        : (chatActivo.bloqueado ? "Desbloquear contacto" : "Bloquear contacto");
 
     return (
-        <div className="chat-view-container" key={chatId}>
+        <div className="chat-view-container">
+            {/* HEADER CON BUSCADOR */}
             <ChatHeader
-                chatActivo={chatActivo} estadoConexion={estadoConexion}
-                setInfoAbierta={setInfoAbierta} navigate={navigate}
+                chatActivo={chatActivo}
+                estadoConexion={chatActivo.bloqueado ? "" : "en línea"}
+                setInfoAbierta={setInfoAbierta}
+                navigate={navigate}
+                setBusquedaMensajes={setBusquedaMensajes} // ✨ Pasamos la función al header
             />
 
-            <div className="chat-messages-placeholder">
-                {chatActivo.bloqueado ? (
-                    <div className="mensaje-sistema-wrapper">
-                        <span className="mensaje-sistema-burbuja">{txtMensajeSistema}</span>
+            {/* ÁREA DE MENSAJES */}
+            <div className="chat-messages-area">
+                {mensajesFiltrados.length === 0 && busquedaMensajes !== "" ? (
+                    <div className="no-results-search">
+                        <p>No se encontraron mensajes con "{busquedaMensajes}"</p>
                     </div>
                 ) : (
-                    chatActivo.mensajes.map((mensaje) => (
+                    mensajesFiltrados.map((mensaje) => (
                         <MessageBubble
-                            key={mensaje.id} texto={mensaje.texto} emisor={mensaje.emisor} hora={mensaje.hora}
-                            avatarContacto={mensaje.remitenteAvatar || chatActivo.avatar}
-                            nombreContacto={mensaje.remitenteNombre || chatActivo.nombre}
-                            mostrarAvatar={esGrupo} esGrupo={esGrupo}
+                            key={mensaje.id}
+                            id={mensaje.id}
+                            texto={mensaje.texto}
+                            emisor={mensaje.emisor}
+                            hora={mensaje.hora} // Asegúrate de tener esta prop en tus datos
+                            avatarContacto={chatActivo.avatar}
+                            nombreContacto={chatActivo.nombre}
+                            mostrarAvatar={chatActivo.tipo === "grupo"} // Solo mostrar avatar en grupos
+                            esGrupo={chatActivo.tipo === "grupo"}
+                            cita={mensaje.cita} // Soporte para responder
                         />
                     ))
                 )}
-                <div ref={mensajesFinRef} />
+                <div ref={messagesEndRef} />
             </div>
 
+            {/* INPUT */}
             <ChatInput
-                onEnviarMensaje={(texto) => enviarMensaje(chatId, texto)}
-                deshabilitado={chatActivo.bloqueado} mensajeDeshabilitado={txtInputApagado}
+                onEnviarMensaje={handleEnviarMensaje}
+                deshabilitado={chatActivo.bloqueado}
+                mensajeDeshabilitado="No puedes enviar mensajes a este contacto bloqueado."
             />
 
+            {/* SIDEBAR DERECHO DE INFORMACIÓN */}
             <ContactInfoSidebar
-                infoAbierta={infoAbierta} setInfoAbierta={setInfoAbierta}
-                chatActivo={chatActivo} esGrupo={esGrupo} estadoConexion={estadoConexion}
-                contactos={contactos} usuarioActual={usuarioActual}
-                handleBloquearToggle={handleBloquearToggle} handleEliminar={handleEliminar}
-                txtBotonBloquear={txtBotonBloquear}
-                menuEditarRef={menuEditarRef} menuEditarAbierto={menuEditarAbierto} setMenuEditarAbierto={setMenuEditarAbierto}
+                chat={chatActivo}
+                isOpen={infoAbierta}
+                onClose={() => setInfoAbierta(false)}
             />
         </div>
     );
 };
+
 export default ChatView;
