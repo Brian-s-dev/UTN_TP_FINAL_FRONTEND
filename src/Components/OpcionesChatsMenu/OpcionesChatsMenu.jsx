@@ -12,7 +12,7 @@ const OpcionesChatsMenu = ({ chat }) => {
 
     const handleToggle = (e) => {
         e.preventDefault();
-        e.stopPropagation(); // Evita que se disparen clics en el SidebarItem o Header
+        e.stopPropagation();
 
         if (!isOpen && buttonRef.current) {
             const rect = buttonRef.current.getBoundingClientRect();
@@ -25,35 +25,37 @@ const OpcionesChatsMenu = ({ chat }) => {
     };
 
     const handleAction = (action, e) => {
-        // Importante: Detener propagación para que no navegue al chat si estamos en el sidebar
+        // Detenemos propagación del CLICK para que no navegue al chat (SidebarItem)
         e.preventDefault();
         e.stopPropagation();
 
+        // Ejecutamos la acción
         if (action === "favorito") toggleFavorito(chat.id);
         if (action === "archivar") toggleArchivado(chat.id);
         if (action === "eliminar") eliminarChat(chat.id);
 
+        // Cerramos el menú
         setIsOpen(false);
     };
 
     // Cerrar al hacer clic fuera
     useEffect(() => {
         const handleClickOutside = (e) => {
-            // Si el menú está abierto...
             if (isOpen) {
-                // Y el clic NO fue en el botón que lo abre...
-                if (buttonRef.current && !buttonRef.current.contains(e.target)) {
-                    // Y el clic NO fue dentro del menú (aunque el stopPropagation de abajo debería prevenir esto, es doble seguridad)
-                    if (menuRef.current && !menuRef.current.contains(e.target)) {
-                        setIsOpen(false);
-                    }
+                // Verificamos que el clic NO sea en el botón de abrir
+                const clickedButton = buttonRef.current && buttonRef.current.contains(e.target);
+                // Verificamos que el clic NO sea dentro del menú desplegable
+                const clickedMenu = menuRef.current && menuRef.current.contains(e.target);
+
+                // Si el clic fue afuera de ambos, cerramos
+                if (!clickedButton && !clickedMenu) {
+                    setIsOpen(false);
                 }
             }
         };
 
         const handleScroll = () => { if (isOpen) setIsOpen(false); };
 
-        // Usamos mousedown porque es el evento que usa el resto de la app para cerrar cosas
         window.addEventListener("mousedown", handleClickOutside);
         window.addEventListener("scroll", handleScroll, true);
         window.addEventListener("resize", handleScroll);
@@ -71,12 +73,9 @@ const OpcionesChatsMenu = ({ chat }) => {
             className="options-dropdown"
             ref={menuRef}
             style={{ top: position.top, left: position.left }}
-            // ✨ SOLUCIÓN CLAVE:
-            // Al detener la propagación del MOUSE DOWN aquí, evitamos que el listener
-            // de la ventana (handleClickOutside) se entere de que hicimos clic.
-            // Esto permite que el onClick de los botones se ejecute tranquilamente.
-            onMouseDown={(e) => e.stopPropagation()}
-            onClick={(e) => { e.stopPropagation(); }}
+            // ✨ CORRECCIÓN: Quitamos onMouseDown. 
+            // Solo necesitamos detener el click para que no afecte al NavLink padre.
+            onClick={(e) => e.stopPropagation()}
         >
             <button onClick={(e) => handleAction("favorito", e)}>
                 {chat.esFavorito ? "Quitar de favoritos" : "Agregar a favoritos"}
@@ -96,8 +95,7 @@ const OpcionesChatsMenu = ({ chat }) => {
                 ref={buttonRef}
                 className={`btn-options ${isOpen ? 'active' : ''}`}
                 onClick={handleToggle}
-                // También detenemos mousedown aquí para evitar conflictos
-                onMouseDown={(e) => e.stopPropagation()}
+                // Aquí tampoco necesitamos detener mousedown, el onClick maneja la lógica
                 title="Opciones"
             >
                 <span className="material-symbols-outlined">more_vert</span>
