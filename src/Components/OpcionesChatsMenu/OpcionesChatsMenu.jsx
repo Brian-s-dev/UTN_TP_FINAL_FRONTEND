@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { createPortal } from "react-dom"; // ✨ Importamos el Portal
+import { createPortal } from "react-dom";
 import { useChat } from "../../Context/ChatContext";
 import "./OpcionesChatsMenu.css";
 
@@ -12,20 +12,20 @@ const OpcionesChatsMenu = ({ chat }) => {
 
     const handleToggle = (e) => {
         e.preventDefault();
-        e.stopPropagation();
+        e.stopPropagation(); // Evita que se disparen clics en el SidebarItem o Header
 
         if (!isOpen && buttonRef.current) {
             const rect = buttonRef.current.getBoundingClientRect();
-            // Calculamos la posición exacta en la pantalla
             setPosition({
                 top: rect.bottom + 5,
-                left: rect.right - 160 // Alineado a la derecha del botón
+                left: rect.right - 160
             });
         }
         setIsOpen(!isOpen);
     };
 
     const handleAction = (action, e) => {
+        // Importante: Detener propagación para que no navegue al chat si estamos en el sidebar
         e.preventDefault();
         e.stopPropagation();
 
@@ -36,21 +36,27 @@ const OpcionesChatsMenu = ({ chat }) => {
         setIsOpen(false);
     };
 
+    // Cerrar al hacer clic fuera
     useEffect(() => {
         const handleClickOutside = (e) => {
-            // Verificamos si el clic fue fuera del menú Y fuera del botón
-            if (isOpen &&
-                menuRef.current && !menuRef.current.contains(e.target) &&
-                buttonRef.current && !buttonRef.current.contains(e.target)) {
-                setIsOpen(false);
+            // Si el menú está abierto...
+            if (isOpen) {
+                // Y el clic NO fue en el botón que lo abre...
+                if (buttonRef.current && !buttonRef.current.contains(e.target)) {
+                    // Y el clic NO fue dentro del menú (aunque el stopPropagation de abajo debería prevenir esto, es doble seguridad)
+                    if (menuRef.current && !menuRef.current.contains(e.target)) {
+                        setIsOpen(false);
+                    }
+                }
             }
         };
 
         const handleScroll = () => { if (isOpen) setIsOpen(false); };
 
+        // Usamos mousedown porque es el evento que usa el resto de la app para cerrar cosas
         window.addEventListener("mousedown", handleClickOutside);
         window.addEventListener("scroll", handleScroll, true);
-        window.addEventListener("resize", handleScroll); // Cerrar si cambian el tamaño
+        window.addEventListener("resize", handleScroll);
 
         return () => {
             window.removeEventListener("mousedown", handleClickOutside);
@@ -59,13 +65,18 @@ const OpcionesChatsMenu = ({ chat }) => {
         };
     }, [isOpen]);
 
-    // ✨ EL CONTENIDO DEL MENÚ (Lo sacamos a una variable para el Portal)
+    // Contenido del menú (Portal)
     const menuContent = (
         <div
             className="options-dropdown"
             ref={menuRef}
             style={{ top: position.top, left: position.left }}
-            onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+            // ✨ SOLUCIÓN CLAVE:
+            // Al detener la propagación del MOUSE DOWN aquí, evitamos que el listener
+            // de la ventana (handleClickOutside) se entere de que hicimos clic.
+            // Esto permite que el onClick de los botones se ejecute tranquilamente.
+            onMouseDown={(e) => e.stopPropagation()}
+            onClick={(e) => { e.stopPropagation(); }}
         >
             <button onClick={(e) => handleAction("favorito", e)}>
                 {chat.esFavorito ? "Quitar de favoritos" : "Agregar a favoritos"}
@@ -85,12 +96,13 @@ const OpcionesChatsMenu = ({ chat }) => {
                 ref={buttonRef}
                 className={`btn-options ${isOpen ? 'active' : ''}`}
                 onClick={handleToggle}
+                // También detenemos mousedown aquí para evitar conflictos
+                onMouseDown={(e) => e.stopPropagation()}
                 title="Opciones"
             >
                 <span className="material-symbols-outlined">more_vert</span>
             </button>
 
-            {/* ✨ USAMOS EL PORTAL PARA RENDERIZAR EN EL BODY */}
             {isOpen && createPortal(menuContent, document.body)}
         </div>
     );
