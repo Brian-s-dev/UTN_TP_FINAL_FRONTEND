@@ -1,89 +1,107 @@
+/* =========================================
+   CONTENEDOR PRINCIPAL (FOOTER)
+   ========================================= */
+.chat-footer-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    z-index: 60;
+    /* Aseguramos que el footer esté pegado abajo */
+    background-color: transparent;
+}
+
+/* =========================================
+   ÁREA DEL INPUT (LA BARRA)
+   ========================================= */
 .chat-input-area {
     display: flex;
-    padding: 0 20px 20px 20px;
-    background-color: transparent;
-    border-top: none;
-    z-index: 60;
-}
-
-.input-pill-container {
-    display: flex;
-    width: 100%;
     align-items: center;
-    background-color: #ffffff;
-    border-radius: 30px;
-    padding: 6px 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    padding: 10px 16px;
     gap: 10px;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-top: 1px solid #d1d7db;
+
+    /* ✨ MODO CLARO: Color gris claro (Igual al Header) */
+    background-color: #f0f2f5;
+
+    min-height: 62px;
+    box-sizing: border-box;
+    position: relative;
 }
 
-.input-pill-container input {
+/* =========================================
+   CONTENEDOR TIPO PÍLDORA (INPUT + ICONOS)
+   ========================================= */
+.input-pill-container {
     flex: 1;
-    padding: 10px 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: transparent;
+    width: 100%;
+}
+
+/* =========================================
+   EL INPUT DE TEXTO REAL
+   ========================================= */
+.chat-input-area input {
+    flex: 1;
     border: none;
-    border-radius: 0;
+    border-radius: 8px;
+    padding: 12px 15px;
     font-size: 1rem;
     outline: none;
-    background-color: transparent;
-    transition: 0.2s;
-    min-width: 0;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+
+    /* ✨ MODO CLARO: Input blanco sobre fondo gris */
+    background-color: #ffffff;
+    color: #111b21;
 }
 
-.input-pill-container input::placeholder {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+.chat-input-area input::placeholder {
+    color: #8696a0;
 }
 
-.btn-icon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background-color 0.2s, transform 0.1s;
-}
-
-.btn-icon:active {
-    transform: scale(0.95);
-}
-
-.btn-adjuntar {
-    background: transparent;
-    color: #54656f;
-    width: 40px;
-    height: 40px;
-}
-
-.btn-adjuntar:hover {
+/* Estado Deshabilitado (Bloqueado) */
+.chat-input-area.input-deshabilitado {
     background-color: #f0f2f5;
+    cursor: not-allowed;
+    opacity: 0.8;
 }
 
-.btn-adjuntar .material-symbols-outlined {
-    font-size: 28px;
+.chat-input-area.input-deshabilitado input {
+    background-color: #e9edef;
+    color: #8696a0;
+    font-style: italic;
+    text-align: center;
 }
 
-.btn-enviar {
-    background-color: #00a884;
-    color: white;
-    width: 40px;
-    height: 40px;
+/* =========================================
+   BOTONES E ICONOS
+   ========================================= */
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #54656f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.2s;
 }
 
-.btn-enviar:hover {
-    background-color: #008f6f;
+.btn-icon:hover {
+    background-color: rgba(0, 0, 0, 0.05);
 }
 
-.btn-enviar .material-symbols-outlined {
-    font-size: 20px;
-    margin-left: 2px;
+.btn-icon:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
 }
 
+/* =========================================
+   MENU ADJUNTOS (CLIP)
+   ========================================= */
 .adjuntos-container {
     position: relative;
     display: flex;
@@ -92,158 +110,75 @@
 
 .menu-adjuntos {
     position: absolute;
-    bottom: 55px;
+    bottom: 50px;
     left: 0;
     background-color: white;
     border-radius: 16px;
-    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    padding: 10px;
     display: flex;
     flex-direction: column;
-    padding: 10px 0;
-    min-width: 220px;
+    gap: 5px;
+    min-width: 180px;
     z-index: 100;
-    animation: slideUpFade 0.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    animation: slideUpMenu 0.2s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-@keyframes slideUpFade {
-    0% {
+@keyframes slideUpMenu {
+    from {
         opacity: 0;
-        transform: translateY(15px) scale(0.95);
-        transform-origin: bottom left;
+        transform: translateY(10px) scale(0.95);
     }
 
-    100% {
+    to {
         opacity: 1;
         transform: translateY(0) scale(1);
-        transform-origin: bottom left;
     }
 }
 
 .menu-adjuntos button {
-    background: transparent;
-    border: none;
-    width: 100%;
     display: flex;
     align-items: center;
-    gap: 15px;
-    padding: 12px 20px;
-    color: #111b21;
-    font-size: 1rem;
+    gap: 12px;
+    background: none;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
     cursor: pointer;
     text-align: left;
-    transition: background-color 0.15s;
+    color: #111b21;
+    font-size: 0.95rem;
+    transition: background-color 0.1s;
 }
 
 .menu-adjuntos button:hover {
-    background-color: #f0f2f5;
-}
-
-.color-doc {
-    color: #7f66ff;
+    background-color: #f5f6f6;
 }
 
 .color-foto {
     color: #007bfc;
 }
 
-.color-camara {
-    color: #ff2e74;
+.color-doc {
+    color: #7f66ff;
 }
 
-.color-contacto {
-    color: #009de2;
-}
-
-.color-encuesta {
-    color: #ffbc38;
-}
-
-.menu-adjuntos .material-symbols-outlined {
-    font-size: 22px;
-}
-
-.input-deshabilitado {
-    opacity: 0.6;
-    pointer-events: none;
-}
-
-.input-deshabilitado .input-pill-container {
-    background-color: #f0f2f5;
-}
-
-@media (max-width: 900px) {
-    .chat-input-area {
-        padding: 0 10px 15px 10px;
-    }
-
-    .input-pill-container {
-        padding: 4px 6px;
-    }
-}
-
-/* Modo oscuro */
-body.dark-mode .chat-input-area {
-    background-color: transparent;
-    backdrop-filter: none;
-    border-top: none;
-}
-
-body.dark-mode .input-pill-container {
-    background-color: rgba(32, 44, 51, 0.9);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-}
-
-body.dark-mode .input-pill-container input {
-    color: #e9edef;
-}
-
-body.dark-mode .btn-adjuntar {
-    color: #8696a0;
-}
-
-body.dark-mode .btn-adjuntar:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-}
-
-body.dark-mode .menu-adjuntos {
-    background-color: #233138;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-}
-
-body.dark-mode .menu-adjuntos button {
-    color: #e9edef;
-}
-
-body.dark-mode .menu-adjuntos button:hover {
-    background-color: #111b21;
-}
-
-body.dark-mode .input-deshabilitado .input-pill-container {
-    background-color: rgba(32, 44, 51, 0.5);
-}
-
-/* Envolvemos el input y el preview en una columna */
-.chat-footer-wrapper {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    z-index: 60;
-}
-
-/* Caja de previsualización de respuesta */
+/* =========================================
+   PREVISUALIZACIÓN DE RESPUESTA (REPLY)
+   ========================================= */
 .reply-preview-container {
+    /* ✨ Fondo gris claro, coincidiendo con el tono del footer */
     background-color: #f0f2f5;
-    /* Color grisáceo tipo WhatsApp */
     padding: 8px 15px;
     margin: 0 15px 5px 15px;
+    /* Margen para separarlo del input */
     border-radius: 8px;
     border-left: 5px solid #00a884;
     display: flex;
     justify-content: space-between;
     align-items: center;
     animation: slideUpReply 0.2s ease-out;
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 @keyframes slideUpReply {
@@ -285,14 +220,78 @@ body.dark-mode .input-deshabilitado .input-pill-container {
     color: #54656f;
     cursor: pointer;
     padding: 5px;
+    border-radius: 50%;
 }
 
-/* Dark Mode */
+.btn-close-reply:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+
+/* =========================================
+   🌙 MODO OSCURO (CORRECCIÓN CRÍTICA)
+   ========================================= */
+body.dark-mode .chat-input-area {
+    /* ✨ Mismo color que el Header Dark (#202c33) */
+    background-color: #202c33;
+    border-top: 1px solid rgba(134, 150, 160, 0.15);
+}
+
+body.dark-mode .chat-input-area input {
+    /* ✨ Input gris oscuro (Píldora) */
+    background-color: #2a3942;
+    color: #e9edef;
+}
+
+body.dark-mode .chat-input-area input::placeholder {
+    color: #8696a0;
+}
+
+body.dark-mode .btn-icon {
+    color: #8696a0;
+}
+
+body.dark-mode .btn-icon:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #e9edef;
+}
+
+/* Menú adjuntos Dark */
+body.dark-mode .menu-adjuntos {
+    background-color: #233138;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .menu-adjuntos button {
+    color: #e9edef;
+}
+
+body.dark-mode .menu-adjuntos button:hover {
+    background-color: #111b21;
+}
+
+/* Reply Preview Dark */
 body.dark-mode .reply-preview-container {
-    background-color: #1e2931;
+    background-color: #202c33;
+    /* Coincide con el footer dark */
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 body.dark-mode .reply-text,
 body.dark-mode .btn-close-reply {
     color: #aebac1;
+}
+
+body.dark-mode .btn-close-reply:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Input Deshabilitado Dark */
+body.dark-mode .chat-input-area.input-deshabilitado {
+    background-color: #202c33;
+}
+
+body.dark-mode .chat-input-area.input-deshabilitado input {
+    background-color: #182229;
+    color: #8696a0;
 }
