@@ -1,10 +1,21 @@
 import React, { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
+import { useNavigate } from "react-router"; // ✨ Importamos useNavigate
 import { useChat } from "../../Context/ChatContext";
 import "./OpcionesChatsMenu.css";
 
 const OpcionesChatsMenu = ({ chat }) => {
-    const { toggleFavorito, toggleArchivado, eliminarChat } = useChat();
+    const navigate = useNavigate();
+
+    // ✨ Traemos las funciones de bloqueo del contexto
+    const {
+        toggleFavorito,
+        toggleArchivado,
+        eliminarChat,
+        bloquearContacto,
+        desbloquearContacto
+    } = useChat();
+
     const [isOpen, setIsOpen] = useState(false);
     const [position, setPosition] = useState({ top: 0, left: 0 });
     const buttonRef = useRef(null);
@@ -18,23 +29,39 @@ const OpcionesChatsMenu = ({ chat }) => {
             const rect = buttonRef.current.getBoundingClientRect();
             setPosition({
                 top: rect.bottom + 5,
-                left: rect.right - 160
+                left: rect.right - 180 // Ajustamos un poco para que entre el texto más largo
             });
         }
         setIsOpen(!isOpen);
     };
 
     const handleAction = (action, e) => {
-        // Detenemos propagación del CLICK para que no navegue al chat (SidebarItem)
         e.preventDefault();
         e.stopPropagation();
 
-        // Ejecutamos la acción
-        if (action === "favorito") toggleFavorito(chat.id);
-        if (action === "archivar") toggleArchivado(chat.id);
-        if (action === "eliminar") eliminarChat(chat.id);
+        switch (action) {
+            case "favorito":
+                toggleFavorito(chat.id);
+                break;
+            case "archivar":
+                toggleArchivado(chat.id);
+                break;
+            case "bloquear":
+                // ✨ Lógica de Bloqueo/Desbloqueo
+                if (chat.bloqueado) {
+                    desbloquearContacto(chat.id);
+                } else {
+                    bloquearContacto(chat.id);
+                }
+                break;
+            case "eliminar":
+                eliminarChat(chat.id);
+                navigate("/"); // ✨ Redirección al Home tras eliminar (igual que el Sidebar)
+                break;
+            default:
+                break;
+        }
 
-        // Cerramos el menú
         setIsOpen(false);
     };
 
@@ -42,12 +69,9 @@ const OpcionesChatsMenu = ({ chat }) => {
     useEffect(() => {
         const handleClickOutside = (e) => {
             if (isOpen) {
-                // Verificamos que el clic NO sea en el botón de abrir
                 const clickedButton = buttonRef.current && buttonRef.current.contains(e.target);
-                // Verificamos que el clic NO sea dentro del menú desplegable
                 const clickedMenu = menuRef.current && menuRef.current.contains(e.target);
 
-                // Si el clic fue afuera de ambos, cerramos
                 if (!clickedButton && !clickedMenu) {
                     setIsOpen(false);
                 }
@@ -67,22 +91,27 @@ const OpcionesChatsMenu = ({ chat }) => {
         };
     }, [isOpen]);
 
-    // Contenido del menú (Portal)
+    // Contenido del menú
     const menuContent = (
         <div
             className="options-dropdown"
             ref={menuRef}
             style={{ top: position.top, left: position.left }}
-            // ✨ CORRECCIÓN: Quitamos onMouseDown. 
-            // Solo necesitamos detener el click para que no afecte al NavLink padre.
             onClick={(e) => e.stopPropagation()}
         >
             <button onClick={(e) => handleAction("favorito", e)}>
                 {chat.esFavorito ? "Quitar de favoritos" : "Agregar a favoritos"}
             </button>
+
             <button onClick={(e) => handleAction("archivar", e)}>
                 {chat.archivado ? "Desarchivar" : "Archivar chat"}
             </button>
+
+            {/* ✨ Nueva opción: Bloquear/Desbloquear */}
+            <button onClick={(e) => handleAction("bloquear", e)}>
+                {chat.bloqueado ? "Desbloquear contacto" : "Bloquear contacto"}
+            </button>
+
             <button onClick={(e) => handleAction("eliminar", e)} className="text-danger">
                 Eliminar chat
             </button>
@@ -95,7 +124,6 @@ const OpcionesChatsMenu = ({ chat }) => {
                 ref={buttonRef}
                 className={`btn-options ${isOpen ? 'active' : ''}`}
                 onClick={handleToggle}
-                // Aquí tampoco necesitamos detener mousedown, el onClick maneja la lógica
                 title="Opciones"
             >
                 <span className="material-symbols-outlined">more_vert</span>
