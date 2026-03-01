@@ -5,6 +5,7 @@ import "./ContactInfoSidebar.css";
 const ContactInfoSidebar = ({
     infoAbierta, setInfoAbierta, chatActivo, esGrupo, estadoConexion,
     contactos, usuarioActual, handleBloquearToggle, handleEliminar,
+    handleToggleFavorito, // ✨ Recibimos la función
     txtBotonBloquear, menuEditarRef, menuEditarAbierto, setMenuEditarAbierto
 }) => {
     return (
@@ -38,11 +39,21 @@ const ContactInfoSidebar = ({
                     <p>{esGrupo ? `Grupo · ${contactos.slice(0, 4).length + 1} participantes` : estadoConexion}</p>
                 </div>
 
+                {/* ✨ LÓGICA DE FAVORITOS CORREGIDA */}
                 {!esGrupo && (
                     <div className="contact-actions-card">
-                        <button className="action-btn">
-                            <span className="material-symbols-outlined">star</span>
-                            <span>Añadir a favoritos</span>
+                        <button className="action-btn" onClick={handleToggleFavorito}>
+                            <span
+                                className="material-symbols-outlined"
+                                // Si es favorito, pintamos la estrella de verde
+                                style={{ color: chatActivo.esFavorito ? '#00a884' : 'inherit' }}
+                            >
+                                {/* Cambiamos entre estrella llena y borde */}
+                                {chatActivo.esFavorito ? 'star' : 'star_border'}
+                            </span>
+                            <span>
+                                {chatActivo.esFavorito ? "Quitar de favoritos" : "Añadir a favoritos"}
+                            </span>
                         </button>
                     </div>
                 )}

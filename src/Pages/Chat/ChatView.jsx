@@ -120,11 +120,12 @@ const ChatView = () => {
                 {/* Caso 1: Chat Bloqueado */}
                 {chatActivo.bloqueado ? (
                     <div className="mensaje-sistema-wrapper">
-                        {/* Al hacer clic en la burbuja de bloqueo, desbloqueamos (opcional) */}
+                        {/* ✨ Esta estructura y clases aseguran que se vea como píldora centrada */}
                         <span
                             className="mensaje-sistema-burbuja"
                             style={{ cursor: 'pointer' }}
                             onClick={() => !esGrupo && desbloquearContacto(chatId)}
+                            title="Desbloquear"
                         >
                             {txtMensajeSistema}
                         </span>
