@@ -1,81 +1,94 @@
-import React, { useState } from "react";
-import { useChat } from "../../Context/ChatContext";
-import { useNavigate } from "react-router";
+import React from "react";
 import Avatar from "../Avatar/Avatar";
-import NewChatModal from "../NewChatModal/NewChatModal";
-import "./ContactsSidebar.css";
+import "./ContactInfoSidebar.css";
 
-const ContactsSidebar = ({ isOpen, onClose }) => {
-    const { contactos, iniciarChatConContacto, agregarNuevoContacto } = useChat();
-    const navigate = useNavigate();
-    
-    const [busqueda, setBusqueda] = useState("");
-    const [modalAbierto, setModalAbierto] = useState(false);
-
-    const contactosFiltrados = contactos.filter(c => 
-        c.nombre.toLowerCase().includes(busqueda.toLowerCase())
-    );
-
-    const handleContactoClick = (contacto) => {
-        const chatId = iniciarChatConContacto(contacto);
-        onClose();
-        navigate(`/chat/${chatId}`);
-    };
-
-    const handleCrearContacto = (nombre) => {
-        const nuevoContacto = agregarNuevoContacto(nombre);
-        const chatId = iniciarChatConContacto(nuevoContacto);
-        setModalAbierto(false);
-        onClose();
-        navigate(`/chat/${chatId}`);
-    };
-
+const ContactInfoSidebar = ({
+    infoAbierta, setInfoAbierta, chatActivo, esGrupo, estadoConexion,
+    contactos, usuarioActual, handleBloquearToggle, handleEliminar,
+    handleToggleFavorito, // ✨ Recibimos la función
+    txtBotonBloquear, menuEditarRef, menuEditarAbierto, setMenuEditarAbierto
+}) => {
     return (
-        <>
-            <div className={`contacts-sidebar-container ${isOpen ? 'open' : ''}`}>
-                <div className="contacts-header">
-                    <button className="btn-back" onClick={onClose}>
-                        <span className="material-symbols-outlined">arrow_back</span>
+        <div className={`contact-info-sidebar ${infoAbierta ? 'abierto' : ''}`}>
+            <div className="contact-info-header">
+                <button className="btn-icon" onClick={() => setInfoAbierta(false)} title="Cerrar info">
+                    <span className="material-symbols-outlined">close</span>
+                </button>
+                <h3>{esGrupo ? 'Info. del grupo' : 'Info. del contacto'}</h3>
+
+                <div className="edit-menu-wrapper" ref={menuEditarRef}>
+                    <button className="btn-icon" onClick={() => setMenuEditarAbierto(!menuEditarAbierto)} title="Editar">
+                        <span className="material-symbols-outlined">edit</span>
                     </button>
-                    <h2>Nuevo Chat</h2>
-                </div>
 
-                <div className="contacts-search-container">
-                    <input 
-                        type="text" 
-                        placeholder="Buscar contactos..." 
-                        value={busqueda}
-                        onChange={(e) => setBusqueda(e.target.value)}
-                    />
-                </div>
-
-                <div className="contacts-list">
-                    <div className="contact-item add-new" onClick={() => setModalAbierto(true)}>
-                        <div className="add-icon">
-                            <span className="material-symbols-outlined">person_add</span>
+                    {menuEditarAbierto && (
+                        <div className="menu-flotante-editar">
+                            <button onClick={() => setMenuEditarAbierto(false)}>Editar {esGrupo ? 'grupo' : 'contacto'}</button>
+                            <button onClick={() => setMenuEditarAbierto(false)}>Compartir enlace</button>
                         </div>
-                        <span className="contact-name">Nuevo contacto</span>
-                    </div>
-
-                    {contactosFiltrados.map((contacto) => (
-                        <div key={contacto.id} className="contact-item" onClick={() => handleContactoClick(contacto)}>
-                            <Avatar imagen={contacto.avatar} nombre={contacto.nombre} />
-                            <div className="contact-info">
-                                <span className="contact-name">{contacto.nombre}</span>
-                                <span className="contact-status">Disponible</span>
-                            </div>
-                        </div>
-                    ))}
+                    )}
                 </div>
             </div>
 
-            <NewChatModal 
-                isOpen={modalAbierto} 
-                onClose={() => setModalAbierto(false)} 
-                onCrear={handleCrearContacto} 
-            />
-        </>
+            <div className="contact-info-body">
+                <div className="contact-profile-card">
+                    <div className="avatar-large-container">
+                        <Avatar imagen={chatActivo.avatar} nombre={chatActivo.nombre} isIA={chatActivo.tipo === "ia"} />
+                    </div>
+                    <h2>{chatActivo.nombre}</h2>
+                    <p>{esGrupo ? `Grupo · ${contactos.slice(0, 4).length + 1} participantes` : estadoConexion}</p>
+                </div>
+
+                {/* ✨ BOTÓN AÑADIR A FAVORITOS CONECTADO */}
+                {!esGrupo && (
+                    <div className="contact-actions-card">
+                        <button className="action-btn" onClick={handleToggleFavorito}>
+                            <span
+                                className="material-symbols-outlined"
+                                style={{ color: chatActivo.esFavorito ? '#00a884' : '' }} // Color verde si es favorito
+                            >
+                                {chatActivo.esFavorito ? 'star' : 'star'}
+                            </span>
+                            <span>{chatActivo.esFavorito ? "Quitar de favoritos" : "Añadir a favoritos"}</span>
+                        </button>
+                    </div>
+                )}
+
+                {esGrupo && (
+                    <div className="contact-actions-card">
+                        <h4 className="card-subtitle">{contactos.slice(0, 4).length + 1} participantes</h4>
+                        <div className="participant-list">
+                            <div className="participant-item">
+                                <Avatar nombre={usuarioActual} />
+                                <div className="participant-info">
+                                    <span className="participant-name">Tú</span>
+                                    <span className="participant-role">Admin del grupo</span>
+                                </div>
+                            </div>
+                            {contactos.slice(0, 4).map(c => (
+                                <div key={c.id} className="participant-item">
+                                    <Avatar imagen={c.avatar} nombre={c.nombre} />
+                                    <div className="participant-info">
+                                        <span className="participant-name">{c.nombre}</span>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                <div className="contact-actions-card danger-zone">
+                    <button className="action-btn text-danger" onClick={handleBloquearToggle}>
+                        <span className="material-symbols-outlined">{esGrupo ? "logout" : "block"}</span>
+                        <span>{txtBotonBloquear}</span>
+                    </button>
+                    <button className="action-btn text-danger" onClick={handleEliminar}>
+                        <span className="material-symbols-outlined">delete</span>
+                        <span>Eliminar chat</span>
+                    </button>
+                </div>
+            </div>
+        </div>
     );
 };
-
-export default ContactsSidebar;
+export default ContactInfoSidebar;

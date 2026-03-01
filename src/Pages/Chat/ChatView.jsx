@@ -34,20 +34,22 @@ const ChatView = () => {
         enviarMensaje,
         bloquearContacto,
         desbloquearContacto,
-        eliminarChat
+        eliminarChat,
+        toggleFavorito // ✨ Importamos la función para favoritos
     } = useChat();
 
     const [infoAbierta, setInfoAbierta] = useState(false);
     const [menuEditarAbierto, setMenuEditarAbierto] = useState(false);
 
-    // ✨ NUEVO: Estado para el buscador de mensajes
+    // Estado para el buscador de mensajes
     const [busquedaMensajes, setBusquedaMensajes] = useState("");
 
     const menuEditarRef = useRef(null);
     const mensajesFinRef = useRef(null);
 
     // 1. Encontrar el chat activo
-    const chatActivo = chats.find((chat) => chat.id === Number(chatId) || chat.id === chatId);
+    // Usamos == para comparar id (string vs number)
+    const chatActivo = chats.find((chat) => chat.id == chatId);
 
     // Cierra menús al hacer clic fuera
     useEffect(() => {
@@ -63,7 +65,7 @@ const ChatView = () => {
     // Reseteos al cambiar de chat
     useEffect(() => {
         setInfoAbierta(false);
-        setBusquedaMensajes(""); // Limpiar búsqueda al cambiar de chat
+        setBusquedaMensajes("");
     }, [chatId]);
 
     // Scroll al fondo al llegar mensajes o filtrar
@@ -88,13 +90,13 @@ const ChatView = () => {
     };
 
     // Textos dinámicos
-    const txtMensajeSistema = esGrupo ? "Saliste del grupo" : "Se bloqueó el contacto";
+    const txtMensajeSistema = esGrupo ? "Saliste del grupo" : "Se bloqueó al contacto. Toca para desbloquear.";
     const txtInputApagado = esGrupo ? "Ya no eres participante de este grupo" : "No puedes enviar mensajes a un contacto bloqueado";
     const txtBotonBloquear = esGrupo
         ? (chatActivo.bloqueado ? "Volver al grupo (Solo Admins)" : "Salir del grupo")
         : (chatActivo.bloqueado ? "Desbloquear contacto" : "Bloquear contacto");
 
-    // ✨ 2. FILTRADO DE MENSAJES
+    // Filtrado de mensajes
     const mensajesFiltrados = busquedaMensajes.trim() === ""
         ? chatActivo.mensajes
         : chatActivo.mensajes.filter(msg =>
@@ -109,17 +111,23 @@ const ChatView = () => {
                 estadoConexion={estadoConexion}
                 setInfoAbierta={setInfoAbierta}
                 navigate={navigate}
-                setBusquedaMensajes={setBusquedaMensajes} // ✨ Pasamos el setter para el buscador
+                setBusquedaMensajes={setBusquedaMensajes}
             />
 
             {/* ÁREA DE MENSAJES */}
-            {/* Usamos la clase 'chat-messages-area' para que coincida con el CSS nuevo */}
             <div className="chat-messages-area">
 
                 {/* Caso 1: Chat Bloqueado */}
                 {chatActivo.bloqueado ? (
                     <div className="mensaje-sistema-wrapper">
-                        <span className="mensaje-sistema-burbuja">{txtMensajeSistema}</span>
+                        {/* Al hacer clic en la burbuja de bloqueo, desbloqueamos (opcional) */}
+                        <span
+                            className="mensaje-sistema-burbuja"
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => !esGrupo && desbloquearContacto(chatId)}
+                        >
+                            {txtMensajeSistema}
+                        </span>
                     </div>
                 ) : (
                     <>
@@ -133,7 +141,7 @@ const ChatView = () => {
                             mensajesFiltrados.map((mensaje) => (
                                 <MessageBubble
                                     key={mensaje.id}
-                                    id={mensaje.id} // ✨ IMPORTANTE para eliminar/citar
+                                    id={mensaje.id}
                                     texto={mensaje.texto}
                                     emisor={mensaje.emisor}
                                     hora={mensaje.hora}
@@ -141,7 +149,7 @@ const ChatView = () => {
                                     nombreContacto={mensaje.remitenteNombre || chatActivo.nombre}
                                     mostrarAvatar={esGrupo}
                                     esGrupo={esGrupo}
-                                    cita={mensaje.cita} // ✨ IMPORTANTE para mostrar respuestas
+                                    cita={mensaje.cita}
                                 />
                             ))
                         )}
@@ -162,7 +170,10 @@ const ChatView = () => {
                 infoAbierta={infoAbierta} setInfoAbierta={setInfoAbierta}
                 chatActivo={chatActivo} esGrupo={esGrupo} estadoConexion={estadoConexion}
                 contactos={contactos} usuarioActual={usuarioActual}
+
                 handleBloquearToggle={handleBloquearToggle} handleEliminar={handleEliminar}
+                handleToggleFavorito={() => toggleFavorito(chatId)} // ✨ Pasamos la función
+
                 txtBotonBloquear={txtBotonBloquear}
                 menuEditarRef={menuEditarRef} menuEditarAbierto={menuEditarAbierto} setMenuEditarAbierto={setMenuEditarAbierto}
             />

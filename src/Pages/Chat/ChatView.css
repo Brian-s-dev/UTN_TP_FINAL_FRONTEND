@@ -110,3 +110,50 @@ body.dark-mode .no-results-search p {
         padding: 15px 10px;
     }
 }
+
+/* ... resto del archivo ... */
+
+/* =========================================
+   MENSAJES DE SISTEMA (BLOQUEO / GRUPO)
+   ========================================= */
+.mensaje-sistema-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+    width: 100%;
+    animation: fadeInMsg 0.3s ease;
+}
+
+.mensaje-sistema-burbuja {
+    background-color: #ffeecd;
+    /* Amarillo suave alerta */
+    color: #54656f;
+    font-size: 0.85rem;
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 1px 0.5px rgba(0, 0, 0, 0.13);
+    max-width: 80%;
+}
+
+@keyframes fadeInMsg {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* MODO OSCURO */
+body.dark-mode .mensaje-sistema-burbuja {
+    background-color: #182229;
+    /* Gris oscuro sistema */
+    color: #ffbc38;
+    /* Texto amarillo/dorado */
+    box-shadow: none;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
