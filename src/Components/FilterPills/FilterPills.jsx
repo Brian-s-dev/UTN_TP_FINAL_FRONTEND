@@ -3,32 +3,48 @@ import "./FilterPills.css";
 
 const FilterPills = ({ filtroActivo, setFiltroActivo }) => {
     const [menuAbierto, setMenuAbierto] = useState(false);
-    // ✨ Nuevo estado para guardar las coordenadas del botón
-    const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
+    const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
 
-    const menuRef = useRef(null); // Ref del contenedor del botón
-    const dropdownRef = useRef(null); // Ref del menú flotante
+    const menuRef = useRef(null);
+    const dropdownRef = useRef(null);
 
     const filtrosPrincipales = ["Todos", "No leídos", "Grupos"];
     const filtrosExtra = ["Favoritos", "Archivados"];
 
-    // Calcular posición y abrir/cerrar
+    // ✨ AJUSTE DE LÓGICA DE POSICIONAMIENTO
     const toggleMenu = () => {
         if (!menuAbierto && menuRef.current) {
             const rect = menuRef.current.getBoundingClientRect();
-            // Guardamos la posición: Debajo del botón y alineado a su derecha
+            const screenWidth = window.innerWidth;
+
+            // Ancho estimado del menú (definido en CSS como min-width: 160px)
+            const menuWidth = 170;
+
+            let leftPos = rect.left;
+
+            // Si es móvil (< 550px) o si el menú se saldría de la pantalla por la derecha
+            if (screenWidth <= 550 || (rect.left + menuWidth > screenWidth)) {
+                // Alineamos el borde derecho del menú con el borde derecho del botón
+                // (Posición del botón + ancho del botón - ancho del menú)
+                leftPos = (rect.left + rect.width) - menuWidth;
+
+                // Pequeño ajuste de seguridad para que no quede pegado al borde exacto si es muy angosto
+                if (leftPos + menuWidth > screenWidth - 10) {
+                    leftPos = screenWidth - menuWidth - 10;
+                }
+            }
+
             setMenuPosition({
-                top: rect.bottom + 5, // 5px de separación vertical
-                left: rect.left // Alineado a la izquierda del botón
+                top: rect.bottom + 5,
+                left: leftPos
             });
         }
         setMenuAbierto(!menuAbierto);
     };
 
-    // Cerrar al hacer clic fuera (Lógica mejorada para Fixed)
+    // Cerrar al hacer clic fuera
     useEffect(() => {
         const handleClickFuera = (event) => {
-            // Si el clic no fue en el botón (menuRef) NI en el menú flotante (dropdownRef)
             if (
                 menuAbierto &&
                 menuRef.current && !menuRef.current.contains(event.target) &&
@@ -38,7 +54,6 @@ const FilterPills = ({ filtroActivo, setFiltroActivo }) => {
             }
         };
 
-        // Escuchamos el scroll también para cerrar el menú si el usuario scrollea la app
         window.addEventListener("mousedown", handleClickFuera);
         window.addEventListener("scroll", handleClickFuera, true);
 
@@ -65,7 +80,6 @@ const FilterPills = ({ filtroActivo, setFiltroActivo }) => {
                 </button>
             ))}
 
-            {/* Referencia en el botón */}
             <div ref={menuRef}>
                 <button
                     className={`filter-pill icon-pill ${filtrosExtra.includes(filtroActivo) ? "active" : ""}`}
@@ -76,7 +90,6 @@ const FilterPills = ({ filtroActivo, setFiltroActivo }) => {
                 </button>
             </div>
 
-            {/* ✨ El menú ahora se renderiza fuera del flujo relativo usando FIXED */}
             {menuAbierto && (
                 <div
                     className="filters-dropdown"
