@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
+import { useChat } from "../../Context/ChatContext";
+import { useNavigate } from "react-router";
 import Avatar from "../Avatar/Avatar";
-import "./ContactInfoSidebar.css";
+import NewChatModal from "../NewChatModal/NewChatModal";
+import "./ContactsSidebar.css";
 
 const ContactInfoSidebar = ({
     infoAbierta, setInfoAbierta, chatActivo, esGrupo, estadoConexion,
