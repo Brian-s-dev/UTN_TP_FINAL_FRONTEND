@@ -12,7 +12,7 @@ import SidebarFooter from "../SidebarFooter/SidebarFooter";
 
 // Componentes Globales/Auxiliares
 import UserProfileSidebar from "../UserProfileSidebar/UserProfileSidebar";
-import ForwardModal from "../ForwardModal/ForwardModal"; // ✨ Modal de reenvío
+import ForwardModal from "../ForwardModal/ForwardModal";
 
 import "./Layout.css";
 
@@ -25,11 +25,16 @@ const Layout = () => {
     const sidebarRef = useRef(null);
     const profileSidebarRef = useRef(null);
 
+    // ✨ REF PARA EL ANCHO DE PANTALLA (Solución al teclado móvil)
+    const prevWidthRef = useRef(window.innerWidth);
+
     // Estados de la interfaz
     const [busqueda, setBusqueda] = useState("");
     const [filtroActivo, setFiltroActivo] = useState("Todos");
     const [sidebarContactosAbierto, setSidebarContactosAbierto] = useState(false);
     const [perfilAbierto, setPerfilAbierto] = useState(false);
+
+    // Inicializamos el estado basado en el ancho actual
     const [sidebarColapsado, setSidebarColapsado] = useState(window.innerWidth <= 900);
 
     // =========================================
@@ -42,23 +47,18 @@ const Layout = () => {
 
         switch (filtroActivo) {
             case "Grupos":
-                // Muestra grupos activos (no archivados)
                 coincideFiltro = chat.tipo === EMISOR.GRUPO && !chat.archivado;
                 break;
             case "No leídos":
-                // Lógica de no leídos (asumimos false por ahora, conectar con lógica real si existe)
                 coincideFiltro = !chat.archivado && false;
                 break;
             case "Favoritos":
-                // Solo favoritos y no archivados
                 coincideFiltro = chat.esFavorito && !chat.archivado;
                 break;
             case "Archivados":
-                // SOLO muestra los archivados
                 coincideFiltro = chat.archivado;
                 break;
             default: // "Todos"
-                // Muestra todos MENOS los archivados (comportamiento estándar)
                 coincideFiltro = !chat.archivado;
         }
 
@@ -71,7 +71,7 @@ const Layout = () => {
     // 🎮 MANEJADORES DE EVENTOS
     // =========================================
     const handleAbrirContactos = () => {
-        setSidebarColapsado(false); // Importante: Expande el sidebar para ver los contactos
+        setSidebarColapsado(false);
         setSidebarContactosAbierto(true);
     };
 
@@ -80,28 +80,57 @@ const Layout = () => {
         navigate(`/chat/${chatId}`);
     };
 
-    const ajustarLayout = () => {
-        if (window.innerWidth > 900) setSidebarColapsado(false);
-        else setSidebarColapsado(true);
-    };
+    // =========================================
+    // ✨ EFECTO DE RESIZE INTELIGENTE
+    // =========================================
+    useEffect(() => {
+        const handleResize = () => {
+            const currentWidth = window.innerWidth;
+
+            // ✨ SOLO actuamos si el ANCHO cambió. 
+            // Si solo cambia la altura (por el teclado), no entramos aquí.
+            if (currentWidth !== prevWidthRef.current) {
+                if (currentWidth > 900) {
+                    setSidebarColapsado(false);
+                } else {
+                    setSidebarColapsado(true);
+                }
+                // Actualizamos la referencia del ancho
+                prevWidthRef.current = currentWidth;
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     // =========================================
-    // ✨ EFECTOS (CLICS FUERA Y RESIZE)
+    // ✨ EFECTOS (CLICS FUERA Y NAVEGACIÓN)
     // =========================================
+
+    // Al cambiar de ruta (entrar a un chat)
+    useEffect(() => {
+        setPerfilAbierto(false);
+        setSidebarContactosAbierto(false);
+
+        // Ajustamos sidebar según resolución al navegar
+        if (window.innerWidth > 900) setSidebarColapsado(false);
+        else setSidebarColapsado(true);
+    }, [location.pathname]);
+
     useEffect(() => {
         const handleClickFuera = (event) => {
             // 1. Cerrar Panel de Perfil si se hace clic afuera
             if (perfilAbierto && profileSidebarRef.current && !profileSidebarRef.current.contains(event.target)) {
-                // Evitamos cerrar si el clic fue en el botón que lo abre
                 if (!event.target.closest('.mi-perfil') && !event.target.closest('.mobile-header-avatar')) {
                     setPerfilAbierto(false);
                 }
             }
 
-            // 2. Colapsar el Sidebar Principal (y cerrar Contactos) en pantallas chicas
+            // 2. Colapsar el Sidebar Principal en pantallas chicas al tocar afuera
             if (window.innerWidth <= 900 && !sidebarColapsado && sidebarRef.current && !sidebarRef.current.contains(event.target)) {
                 setSidebarColapsado(true);
-                setSidebarContactosAbierto(false); // Cierra el panel de contactos también
+                setSidebarContactosAbierto(false);
             }
         };
 
@@ -109,19 +138,6 @@ const Layout = () => {
         return () => document.removeEventListener("mousedown", handleClickFuera);
     }, [perfilAbierto, sidebarColapsado]);
 
-    // Reseteos automáticos al cambiar de ruta (entrar a un chat)
-    useEffect(() => {
-        setPerfilAbierto(false);
-        setSidebarContactosAbierto(false);
-        ajustarLayout();
-    }, [location.pathname]);
-
-    // Escucha de resize de ventana
-    useEffect(() => {
-        const handleResize = () => ajustarLayout();
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, [location.pathname]);
 
     // =========================================
     // 🖼️ RENDERIZADO
