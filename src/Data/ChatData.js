@@ -8,9 +8,9 @@ export const chatsIniciales = [
         avatar: "https://robohash.org/chat-ia?set=set3&bgset=bg1",
         noLeidos: 0,
         mensajes: [
-            { id: "msg-1-1", texto: "Hola, en este momento estoy usando toda mi memoria para definir cual es la clave para ser un buen programador, por lo que solamente voy a poder contarte chistes malos", emisor: EMISOR.IA, hora: "09:00" },
-            { id: "msg-1-2", texto: "No podria haber mejor uso para la ia", emisor: EMISOR.USUARIO, hora: "09:02" },
-            { id: "msg-1-3", texto: "¿Por qué el desarrollador de Java enseñó a sus hijos pequeños sobre las comillas simples? Porque construyen el carácter.", emisor: EMISOR.IA, hora: "09:03" }
+            { id: "msg-1-1", texto: "Hola, casi toda mi meroria esta siendo usada para intentar descubrir cual es la clave de un buen programador, asi que puede que funcione lento", emisor: EMISOR.IA, hora: "09:00" },
+            { id: "msg-1-2", texto: "Siempre y cuando tengas exito, no hay problema", emisor: EMISOR.USUARIO, hora: "09:02" },
+            { id: "msg-1-3", texto: "Excelente, en que puedo ayudarte hoy?", emisor: EMISOR.IA, hora: "09:03" }
         ]
     },
     {
