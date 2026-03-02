@@ -6,8 +6,7 @@
    para que el menú absoluto se posicione respecto a él */
 .chat-item {
     position: relative;
-    /* Los demás estilos de .chat-item vienen de Layout.css, 
-       aquí solo reforzamos lo necesario para el menú */
+    /* Los demás estilos vienen de Layout.css */
 }
 
 .chat-info-header {
@@ -23,8 +22,7 @@
     align-items: center;
     width: 100%;
     margin-top: 3px;
-    /* Importante para que el menú flote sobre esto */
-    position: relative;
+    /* Quitamos position relative de aquí, ya no es necesario */
 }
 
 .chat-time {
@@ -51,8 +49,8 @@
     display: flex;
     align-items: center;
     gap: 3px;
-    /* Para que el texto no se monte sobre el menú si es muy largo */
-    padding-right: 20px;
+    /* Damos espacio a la derecha para que el texto no se encime al menú */
+    padding-right: 30px;
 }
 
 .icon-star {
@@ -79,43 +77,43 @@
 }
 
 /* =========================================
-   ✨ MENÚ FLOTANTE (3 PUNTOS)
+   ✨ MENÚ FLOTANTE (3 PUNTOS) - LIMPIO
    ========================================= */
 
 .chat-options-wrapper {
     position: absolute;
-    right: 10px;
+    right: 5px;
     /* Pegado a la derecha */
-    bottom: 5px;
-    /* Alineado abajo (donde suele estar la preview) */
+    /* ✨ Centrado vertical perfecto */
+    top: 50%;
+    /* translateY(-50%) centra verticalmente. translateX(10px) es el estado inicial oculto */
+    transform: translateY(-50%) translateX(10px);
 
     /* Oculto por defecto */
     opacity: 0;
     visibility: hidden;
-    transform: translateX(10px);
-    /* Pequeña animación de entrada */
 
     transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
     z-index: 10;
 
-    /* Fondo degradado para que se lea bien sobre el texto */
-    background: linear-gradient(90deg, rgba(240, 242, 245, 0) 0%, #f0f2f5 30%);
-    padding-left: 15px;
-    /* Espacio para el degradado */
+    /* ✨ SE ELIMINÓ EL "BACKGROUND" (LA SOMBRA) Y EL PADDING */
+    /* background: linear-gradient(...) DELETE */
+    /* padding-left: 15px; DELETE */
 }
 
 /* MOSTRAR AL HACER HOVER */
 .chat-item:hover .chat-options-wrapper {
     opacity: 1;
     visibility: visible;
-    transform: translateX(0);
+    /* Mantiene el centrado vertical y lo mueve a su posición horizontal final */
+    transform: translateY(-50%) translateX(0);
 }
 
 /* Mantener visible si se está interactuando con el menú */
 .chat-options-wrapper:focus-within {
     opacity: 1;
     visibility: visible;
-    transform: translateX(0);
+    transform: translateY(-50%) translateX(0);
 }
 
 /* =========================================
@@ -135,8 +133,5 @@ body.dark-mode .icon-star {
     color: #aebac1;
 }
 
-/* Ajuste del fondo del menú en modo oscuro */
-body.dark-mode .chat-options-wrapper {
-    /* Degradado hacia el color oscuro del sidebar (#111b21) */
-    background: linear-gradient(90deg, rgba(17, 27, 33, 0) 0%, #111b21 30%);
-}
+/* ✨ SE ELIMINÓ EL AJUSTE DE FONDO OSCURO PARA EL MENÚ */
+/* body.dark-mode .chat-options-wrapper { ... } DELETE */
