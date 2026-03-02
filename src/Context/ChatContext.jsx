@@ -16,7 +16,7 @@ if (apiKey) {
 const ChatContext = createContext();
 
 export const ChatProvider = ({ children }) => {
-    // Inicializamos estado asegurando que 'noLeidos' exista
+    // Inicializamos estado
     const [chats, setChats] = useState(chatsIniciales.map(chat => ({
         ...chat,
         esFavorito: chat.esFavorito || false,
@@ -31,7 +31,6 @@ export const ChatProvider = ({ children }) => {
     const [mensajeCitado, setMensajeCitado] = useState(null);
     const [mensajeAReenviar, setMensajeAReenviar] = useState(null);
 
-    // Resetea el contador al entrar al chat
     const marcarComoLeido = useCallback((chatId) => {
         setChats(prev => prev.map(chat => {
             if (chat.id == chatId && chat.noLeidos > 0) {
@@ -42,11 +41,11 @@ export const ChatProvider = ({ children }) => {
     }, []);
 
     // ========================================================================
-    // ✨ FUNCION ENVIAR MENSAJE CON STREAMING (EFECTO ESCRITURA)
+    // ✨ FUNCIÓN ENVIAR MENSAJE
     // ========================================================================
     const enviarMensaje = useCallback(async (chatId, texto) => {
 
-        // 1. Agregar mensaje del USUARIO inmediatamente
+        // 1. Agregar mensaje del USUARIO
         setChats(prevChats => prevChats.map(chat => {
             if (chat.id == chatId) {
                 const nuevoMensaje = {
@@ -73,21 +72,22 @@ export const ChatProvider = ({ children }) => {
             if (!genAI) return;
 
             try {
-                // ✨ CORRECCIÓN: Usamos el modelo ESTÁNDAR y GRATUITO
-                const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+                // ✨ CAMBIO MARZO 2026: Usamos gemini-2.0-flash
+                // Si este falla, prueba: "gemini-2.0-flash-exp" o "gemini-1.5-flash-latest"
+                const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
-                // A. Creamos un ID y hora para el mensaje de la IA
+                // A. ID y Hora IA
                 const idMensajeIA = crypto.randomUUID();
                 const horaIA = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-                // B. Insertamos una burbuja VACÍA primero
+                // B. Burbuja VACÍA
                 setChats(prevChats => prevChats.map(chat => {
                     if (chat.id == chatId) {
                         return {
                             ...chat,
                             mensajes: [...chat.mensajes, {
                                 id: idMensajeIA,
-                                texto: "", // Empieza vacío
+                                texto: "",
                                 emisor: EMISOR.IA,
                                 hora: horaIA
                             }]
@@ -96,24 +96,23 @@ export const ChatProvider = ({ children }) => {
                     return chat;
                 }));
 
-                // C. Solicitamos el STREAM (flujo de datos)
+                // C. Streaming
                 const result = await model.generateContentStream(texto);
 
                 let textoAcumulado = "";
 
-                // D. Bucle mágico: Se ejecuta cada vez que llega un "pedacito" de texto
+                // D. Bucle de escritura
                 for await (const chunk of result.stream) {
                     const chunkText = chunk.text();
                     textoAcumulado += chunkText;
 
-                    // Actualizamos el mensaje específico en el estado
                     setChats(prevChats => prevChats.map(chat => {
                         if (chat.id == chatId) {
                             return {
                                 ...chat,
                                 mensajes: chat.mensajes.map(msg =>
                                     msg.id === idMensajeIA
-                                        ? { ...msg, texto: textoAcumulado } // Actualizamos solo el texto
+                                        ? { ...msg, texto: textoAcumulado }
                                         : msg
                                 )
                             };
@@ -125,14 +124,18 @@ export const ChatProvider = ({ children }) => {
             } catch (error) {
                 console.error("Error al obtener respuesta de Gemini:", error);
 
-                // Si falla, agregamos un mensaje de error
+                // Mensaje de error amigable
+                let errorMsg = "Tuve un problema de conexión.";
+                if (error.message.includes("404")) errorMsg = "El modelo de IA no está disponible en este momento.";
+                if (error.message.includes("429")) errorMsg = "Se alcanzó el límite de uso gratuito por hoy.";
+
                 setChats(prevChats => prevChats.map(chat => {
                     if (chat.id == chatId) {
                         return {
                             ...chat,
                             mensajes: [...chat.mensajes, {
                                 id: crypto.randomUUID(),
-                                texto: "Lo siento, tuve un problema de conexión o cuota. Intenta más tarde.",
+                                texto: errorMsg,
                                 emisor: EMISOR.IA,
                                 hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                             }]
@@ -143,6 +146,8 @@ export const ChatProvider = ({ children }) => {
             }
         }
     }, [mensajeCitado]);
+
+    // ... (El resto de funciones: eliminarMensaje, iniciarChat, etc. siguen igual) ...
 
     const eliminarMensaje = useCallback((chatId, mensajeId) => {
         setChats(prev => prev.map(chat => {
@@ -218,7 +223,6 @@ export const ChatProvider = ({ children }) => {
 
     const confirmarReenvio = useCallback((contactoDestino) => {
         if (!mensajeAReenviar) return;
-
         let chatIdDestino = iniciarChatConContacto(contactoDestino);
 
         setTimeout(() => {
