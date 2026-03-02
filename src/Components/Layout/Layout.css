@@ -29,12 +29,10 @@ html {
     background-clip: padding-box;
 }
 
-/* =========================================
-   ESTRUCTURA PRINCIPAL
-   ========================================= */
 .layout-container {
     display: flex;
     height: 100dvh;
+    min-height: -webkit-fill-available;
     width: 100%;
     overflow: hidden;
     background-color: #f0f2f5;

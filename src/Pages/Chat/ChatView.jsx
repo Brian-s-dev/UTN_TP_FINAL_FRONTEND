@@ -73,6 +73,27 @@ const ChatView = () => {
         mensajesFinRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [chatActivo?.mensajes, busquedaMensajes]);
 
+    // =========================================================================
+    // ✨ FIX TECLADO MÓVIL: Scroll al fondo al cambiar tamaño de pantalla
+    // =========================================================================
+    useEffect(() => {
+        const handleResize = () => {
+            // Esperamos un momento a que el navegador recalcule el layout tras abrir teclado
+            setTimeout(() => {
+                // Usamos 'auto' para que sea instantáneo y no "baile"
+                mensajesFinRef.current?.scrollIntoView({ behavior: "auto" });
+            }, 100);
+        };
+
+        window.addEventListener("resize", handleResize);
+        window.addEventListener("focusin", handleResize); // Adicional para inputs en iOS
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+            window.removeEventListener("focusin", handleResize);
+        };
+    }, []);
+
     if (!chatActivo) return <div className="chat-view-container centered">Chat no encontrado</div>;
 
     // Lógica visual
