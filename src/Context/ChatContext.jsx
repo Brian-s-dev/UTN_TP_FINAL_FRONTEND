@@ -89,7 +89,7 @@ export const ChatProvider = ({ children }) => {
 
                 // Usamos el modelo que viste en la doc: gemini-3-flash-preview
                 // Si falla, cámbialo a: gemini-1.5-flash
-                const MODEL_NAME = "gemini-2.0-flash-exp";
+                const MODEL_NAME = "gemini-2.5-flash";
                 const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${apiKey}`;
 
                 const payload = {
