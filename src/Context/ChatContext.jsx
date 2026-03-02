@@ -41,7 +41,7 @@ export const ChatProvider = ({ children }) => {
     }, []);
 
     // ========================================================================
-    // ✨ FUNCIÓN ENVIAR MENSAJE (CON FALLBACK DE MODELOS)
+    // ✨ FUNCIÓN ENVIAR MENSAJE (CON FALLBACK ROBUSTO)
     // ========================================================================
     const enviarMensaje = useCallback(async (chatId, texto) => {
 
@@ -71,60 +71,68 @@ export const ChatProvider = ({ children }) => {
         if (chatId == 1) {
             if (!genAI) return;
 
+            // A. ID y Hora IA
+            const idMensajeIA = crypto.randomUUID();
+            const horaIA = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            // B. Burbuja VACÍA (Indicador de carga)
+            setChats(prevChats => prevChats.map(chat => {
+                if (chat.id == chatId) {
+                    return {
+                        ...chat,
+                        mensajes: [...chat.mensajes, {
+                            id: idMensajeIA,
+                            texto: "...",
+                            emisor: EMISOR.IA,
+                            hora: horaIA
+                        }]
+                    };
+                }
+                return chat;
+            }));
+
             try {
-                // ✨ ESTRATEGIA DE RESPALDO:
-                // Intentaremos estos modelos en orden. Si uno falla (404 o 429), probamos el siguiente.
+                // ✨ ESTRATEGIA DE SUPERVIVENCIA:
+                // Probamos modelos desde el más nuevo experimental hasta el más antiguo estable
                 const modelosAProbar = [
-                    "gemini-1.5-flash", // El más rápido y estable (Free Tier)
-                    "gemini-1.5-pro",   // Alternativa potente
-                    "gemini-pro"        // El clásico (máxima compatibilidad)
+                    "gemini-2.0-flash-exp",    // Experimental (Suele tener cuota aparte)
+                    "gemini-1.5-flash-latest", // Última versión estable de flash
+                    "gemini-pro",              // El alias "Evergreen" (siempre funciona)
+                    "gemini-1.0-pro"           // El legacy (último recurso)
                 ];
 
                 let stream = null;
                 let modeloUsado = "";
+                let ultimoError = null;
 
-                // A. ID y Hora IA
-                const idMensajeIA = crypto.randomUUID();
-                const horaIA = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-                // B. Burbuja VACÍA
-                setChats(prevChats => prevChats.map(chat => {
-                    if (chat.id == chatId) {
-                        return {
-                            ...chat,
-                            mensajes: [...chat.mensajes, {
-                                id: idMensajeIA,
-                                texto: "...", // Indicador de carga
-                                emisor: EMISOR.IA,
-                                hora: horaIA
-                            }]
-                        };
-                    }
-                    return chat;
-                }));
-
-                // C. Intentar conectar con algún modelo
+                // C. Iterar modelos hasta que uno funcione
                 for (const nombreModelo of modelosAProbar) {
                     try {
+                        console.log(`Intentando conectar con modelo: ${nombreModelo}...`);
                         const model = genAI.getGenerativeModel({ model: nombreModelo });
+
+                        // Intentamos generar el stream
                         const result = await model.generateContentStream(texto);
+
+                        // Si llegamos aquí, NO falló. Guardamos el stream.
                         stream = result.stream;
                         modeloUsado = nombreModelo;
-                        console.log(`✅ Conectado exitosamente con: ${nombreModelo}`);
-                        break; // ¡Éxito! Salimos del bucle
+                        console.log(`✅ ¡Conectado con éxito a ${nombreModelo}!`);
+                        break; // Rompemos el bucle for
                     } catch (e) {
-                        console.warn(`❌ Falló modelo ${nombreModelo}:`, e.message);
-                        // Continuamos al siguiente modelo...
+                        console.warn(`❌ Falló ${nombreModelo}: ${e.message}`);
+                        ultimoError = e;
+                        // El bucle continuará con el siguiente modelo
                     }
                 }
 
                 if (!stream) {
-                    throw new Error("Ningún modelo disponible funcionó.");
+                    throw ultimoError || new Error("Todos los modelos fallaron.");
                 }
 
                 let textoAcumulado = "";
 
-                // D. Bucle de escritura (Streaming)
+                // D. Consumir el Stream (Escribir respuesta)
                 for await (const chunk of stream) {
                     const chunkText = chunk.text();
                     textoAcumulado += chunkText;
@@ -147,16 +155,16 @@ export const ChatProvider = ({ children }) => {
             } catch (error) {
                 console.error("Error fatal en IA:", error);
 
-                let errorMsg = "No pude conectar con ningún modelo de IA disponible.";
-                if (error.message.includes("429")) errorMsg = "Has excedido tu cuota gratuita de hoy.";
+                let errorMsg = "No pude conectar con la IA. Intenta más tarde.";
+                if (error.message.includes("429")) errorMsg = "Cuota excedida. Espera un momento.";
+                if (error.message.includes("404")) errorMsg = "Modelos no disponibles (404).";
 
                 setChats(prevChats => prevChats.map(chat => {
                     if (chat.id == chatId) {
                         return {
                             ...chat,
                             mensajes: chat.mensajes.map(msg =>
-                                // Reemplazamos el mensaje de carga con el error
-                                msg.emisor === EMISOR.IA && msg.texto === "..."
+                                msg.id === idMensajeIA
                                     ? { ...msg, texto: errorMsg }
                                     : msg
                             )
@@ -168,7 +176,7 @@ export const ChatProvider = ({ children }) => {
         }
     }, [mensajeCitado]);
 
-    // ... (El resto de funciones: eliminarMensaje, iniciarChat, etc. siguen igual) ...
+    // ... (RESTO DEL CÓDIGO IGUAL: eliminarMensaje, iniciarChatConContacto, etc.) ...
 
     const eliminarMensaje = useCallback((chatId, mensajeId) => {
         setChats(prev => prev.map(chat => {
