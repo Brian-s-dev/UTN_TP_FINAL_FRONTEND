@@ -9,19 +9,18 @@
     display: flex;
     flex-direction: column;
     transform: translateX(-100%);
-    /* ✨ SOLUCIÓN: Ocultamos el panel completamente cuando está cerrado */
     visibility: hidden;
     transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.3s;
 }
 
 .contacts-sidebar-container.open {
     transform: translateX(0);
-    /* ✨ Al abrirse, lo hacemos visible de nuevo */
     visibility: visible;
 }
 
-/* ... (El resto del CSS sigue igual) ... */
-
+/* =========================================
+   HEADER & SEARCH
+   ========================================= */
 .contacts-header {
     background-color: #00a884;
     color: white;
@@ -76,38 +75,66 @@
     background-color: #ffffff;
 }
 
+/* =========================================
+   ITEMS DE LA LISTA (CORREGIDO)
+   ========================================= */
 .contact-item {
     display: flex;
     align-items: center;
-    padding: 12px 15px;
+    /* ✨ Padding solo lateral. El vertical lo manejan los hijos para controlar el borde */
+    padding: 0 15px;
     gap: 15px;
     cursor: pointer;
     transition: background-color 0.1s;
+    /* Aseguramos que el contenedor padre NO tenga borde */
+    border-bottom: none !important;
 }
 
 .contact-item:hover {
     background-color: #f5f6f6;
 }
 
+/* Icono de agregar (+) */
 .add-icon {
-    width: 38px;
-    height: 38px;
+    width: 40px;
+    /* Ajustado para coincidir con el tamaño estándar de Avatar */
+    height: 40px;
     border-radius: 50%;
     background-color: #00a884;
     color: white;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-shrink: 0;
+    /* ✨ Margen vertical para compensar el padding quitado al padre */
+    margin: 10px 0;
+}
+
+/* Ajuste para el componente Avatar dentro de la lista */
+.contact-item .avatar-circle {
+    margin: 10px 0;
 }
 
 .contact-info {
     display: flex;
     flex-direction: column;
-    border-bottom: 1px solid #f2f2f2;
+    justify-content: center;
     flex: 1;
-    padding-bottom: 12px;
+
+    /* ✨ EL BORDE VA AQUÍ: Empieza donde empieza el texto */
+    border-bottom: 1px solid #e9edef;
+
+    /* ✨ Padding vertical aquí para dar aire al texto respecto a la línea */
+    padding: 12px 0;
+    height: 100%;
 }
 
+/* El ítem "Nuevo contacto" (primero de la lista) debe tener borde en contact-info */
+.contact-item.add-new .contact-info {
+    border-bottom: 1px solid #e9edef;
+}
+
+/* Quitamos el borde del último elemento de la lista para limpieza visual */
 .contact-item:last-child .contact-info {
     border-bottom: none;
 }
@@ -124,7 +151,9 @@
     margin-top: 2px;
 }
 
-/* Modo oscuro */
+/* =========================================
+   🌙 MODO OSCURO
+   ========================================= */
 body.dark-mode .contacts-sidebar-container,
 body.dark-mode .contacts-list {
     background-color: #111b21;
@@ -150,6 +179,10 @@ body.dark-mode .contact-item:hover {
 }
 
 body.dark-mode .contact-info {
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .contact-item.add-new .contact-info {
     border-color: rgba(255, 255, 255, 0.05);
 }
 
