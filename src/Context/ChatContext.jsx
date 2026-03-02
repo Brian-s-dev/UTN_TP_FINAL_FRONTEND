@@ -1,17 +1,8 @@
 import { createContext, useContext, useState, useCallback, useMemo } from "react";
 import { EMISOR } from "../Utils/constants";
 import { chatsIniciales, contactosIniciales } from "../Data/ChatData";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// ✨ Configuración de Gemini
-const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-let genAI = null;
-
-if (apiKey) {
-    genAI = new GoogleGenerativeAI(apiKey);
-} else {
-    console.warn("⚠️ VITE_GEMINI_API_KEY no encontrada. El chat con IA no responderá.");
-}
+// Ya no necesitamos importar GoogleGenerativeAI porque usaremos fetch directo
 
 const ChatContext = createContext();
 
@@ -27,7 +18,6 @@ export const ChatProvider = ({ children }) => {
 
     const [contactos, setContactos] = useState(contactosIniciales);
     const [usuarioActual, setUsuarioActual] = useState("Yo");
-
     const [mensajeCitado, setMensajeCitado] = useState(null);
     const [mensajeAReenviar, setMensajeAReenviar] = useState(null);
 
@@ -41,7 +31,7 @@ export const ChatProvider = ({ children }) => {
     }, []);
 
     // ========================================================================
-    // ✨ FUNCIÓN ENVIAR MENSAJE (CON FALLBACK ROBUSTO)
+    // ✨ FUNCIÓN ENVIAR MENSAJE (USANDO FETCH REST API DIRECTO)
     // ========================================================================
     const enviarMensaje = useCallback(async (chatId, texto) => {
 
@@ -55,7 +45,6 @@ export const ChatProvider = ({ children }) => {
                     cita: mensajeCitado ? { ...mensajeCitado } : null,
                     hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                 };
-
                 return {
                     ...chat,
                     archivado: false,
@@ -69,20 +58,24 @@ export const ChatProvider = ({ children }) => {
 
         // 2. LÓGICA IA
         if (chatId == 1) {
-            if (!genAI) return;
+            const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
-            // A. ID y Hora IA
+            if (!apiKey) {
+                console.error("Falta la API KEY");
+                return;
+            }
+
+            // A. Ponemos mensaje de "Escribiendo..." (o cargando)
             const idMensajeIA = crypto.randomUUID();
             const horaIA = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-            // B. Burbuja VACÍA (Indicador de carga)
             setChats(prevChats => prevChats.map(chat => {
                 if (chat.id == chatId) {
                     return {
                         ...chat,
                         mensajes: [...chat.mensajes, {
                             id: idMensajeIA,
-                            texto: "...",
+                            texto: "Escribiendo...", // Feedback visual
                             emisor: EMISOR.IA,
                             hora: horaIA
                         }]
@@ -92,72 +85,61 @@ export const ChatProvider = ({ children }) => {
             }));
 
             try {
-                // ✨ ESTRATEGIA DE SUPERVIVENCIA:
-                // Probamos modelos desde el más nuevo experimental hasta el más antiguo estable
-                const modelosAProbar = [
-                    "gemini-2.0-flash-exp",    // Experimental (Suele tener cuota aparte)
-                    "gemini-1.5-flash-latest", // Última versión estable de flash
-                    "gemini-pro",              // El alias "Evergreen" (siempre funciona)
-                    "gemini-1.0-pro"           // El legacy (último recurso)
-                ];
+                // ✨ APLICANDO TU CÓDIGO DE LA DOCUMENTACIÓN AQUÍ
 
-                let stream = null;
-                let modeloUsado = "";
-                let ultimoError = null;
+                // Usamos el modelo que viste en la doc: gemini-3-flash-preview
+                // Si falla, cámbialo a: gemini-1.5-flash
+                const MODEL_NAME = "gemini-1.5-flash";
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${apiKey}`;
 
-                // C. Iterar modelos hasta que uno funcione
-                for (const nombreModelo of modelosAProbar) {
-                    try {
-                        console.log(`Intentando conectar con modelo: ${nombreModelo}...`);
-                        const model = genAI.getGenerativeModel({ model: nombreModelo });
-
-                        // Intentamos generar el stream
-                        const result = await model.generateContentStream(texto);
-
-                        // Si llegamos aquí, NO falló. Guardamos el stream.
-                        stream = result.stream;
-                        modeloUsado = nombreModelo;
-                        console.log(`✅ ¡Conectado con éxito a ${nombreModelo}!`);
-                        break; // Rompemos el bucle for
-                    } catch (e) {
-                        console.warn(`❌ Falló ${nombreModelo}: ${e.message}`);
-                        ultimoError = e;
-                        // El bucle continuará con el siguiente modelo
-                    }
-                }
-
-                if (!stream) {
-                    throw ultimoError || new Error("Todos los modelos fallaron.");
-                }
-
-                let textoAcumulado = "";
-
-                // D. Consumir el Stream (Escribir respuesta)
-                for await (const chunk of stream) {
-                    const chunkText = chunk.text();
-                    textoAcumulado += chunkText;
-
-                    setChats(prevChats => prevChats.map(chat => {
-                        if (chat.id == chatId) {
-                            return {
-                                ...chat,
-                                mensajes: chat.mensajes.map(msg =>
-                                    msg.id === idMensajeIA
-                                        ? { ...msg, texto: textoAcumulado }
-                                        : msg
-                                )
-                            };
+                const payload = {
+                    contents: [
+                        {
+                            parts: [{ text: texto }]
                         }
-                        return chat;
-                    }));
+                    ]
+                };
+
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error?.message || "Error en la petición fetch");
                 }
+
+                const data = await response.json();
+
+                // Extraemos el texto según la estructura de Gemini
+                const textoIA = data.candidates?.[0]?.content?.parts?.[0]?.text || "No entendí eso.";
+
+                // B. Actualizamos el mensaje con la respuesta real
+                setChats(prevChats => prevChats.map(chat => {
+                    if (chat.id == chatId) {
+                        return {
+                            ...chat,
+                            mensajes: chat.mensajes.map(msg =>
+                                msg.id === idMensajeIA
+                                    ? { ...msg, texto: textoIA } // Reemplazamos "Escribiendo..." por la respuesta
+                                    : msg
+                            )
+                        };
+                    }
+                    return chat;
+                }));
 
             } catch (error) {
-                console.error("Error fatal en IA:", error);
+                console.error("Error Fetch API:", error);
 
-                let errorMsg = "No pude conectar con la IA. Intenta más tarde.";
-                if (error.message.includes("429")) errorMsg = "Cuota excedida. Espera un momento.";
-                if (error.message.includes("404")) errorMsg = "Modelos no disponibles (404).";
+                let errorMsg = "Error de conexión.";
+                if (error.message.includes("404")) errorMsg = "Modelo no encontrado (404).";
+                if (error.message.includes("429")) errorMsg = "Cuota excedida o modelo muy ocupado.";
+                if (error.message.includes("User location is not supported")) errorMsg = "Tu ubicación no permite usar esta IA.";
 
                 setChats(prevChats => prevChats.map(chat => {
                     if (chat.id == chatId) {
@@ -176,7 +158,7 @@ export const ChatProvider = ({ children }) => {
         }
     }, [mensajeCitado]);
 
-    // ... (RESTO DEL CÓDIGO IGUAL: eliminarMensaje, iniciarChatConContacto, etc.) ...
+    // ... (RESTO DEL ARCHIVO IGUAL: eliminarMensaje, iniciarChatConContacto, etc.) ...
 
     const eliminarMensaje = useCallback((chatId, mensajeId) => {
         setChats(prev => prev.map(chat => {
