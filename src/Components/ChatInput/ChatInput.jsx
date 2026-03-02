@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useChat } from "../../Context/ChatContext";
-import { useTheme } from "../../Context/ThemeContext"; // ✨ Importar contexto de tema
-import EmojiPickerComponent from "../EmojiPicker/EmojiPicker"; // ✨ Importar el componente nuevo
+import { useTheme } from "../../Context/ThemeContext";
+import EmojiPickerComponent from "../EmojiPicker/EmojiPicker";
 import "./ChatInput.css";
 
 const ChatInput = ({ onEnviarMensaje, deshabilitado, mensajeDeshabilitado }) => {

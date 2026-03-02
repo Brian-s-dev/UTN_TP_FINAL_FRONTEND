@@ -1,17 +1,28 @@
 import { createContext, useContext, useState, useCallback, useMemo } from "react";
 import { EMISOR } from "../Utils/constants";
 import { chatsIniciales, contactosIniciales } from "../Data/ChatData";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+// ✨ Configuración de Gemini (Intenta obtener la clave, maneja error si no existe)
+const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+let genAI = null;
+
+if (apiKey) {
+    genAI = new GoogleGenerativeAI(apiKey);
+} else {
+    console.warn("⚠️ VITE_GEMINI_API_KEY no encontrada en .env. El chat con IA no responderá.");
+}
 
 const ChatContext = createContext();
 
 export const ChatProvider = ({ children }) => {
-    // ✨ Inicializamos estado asegurando que 'noLeidos' exista
+    // Inicializamos estado asegurando que 'noLeidos' exista
     const [chats, setChats] = useState(chatsIniciales.map(chat => ({
         ...chat,
         esFavorito: chat.esFavorito || false,
         archivado: chat.archivado || false,
         bloqueado: chat.bloqueado || false,
-        noLeidos: chat.noLeidos || 0 // ✨ Default 0
+        noLeidos: chat.noLeidos || 0
     })));
 
     const [contactos, setContactos] = useState(contactosIniciales);
@@ -20,10 +31,9 @@ export const ChatProvider = ({ children }) => {
     const [mensajeCitado, setMensajeCitado] = useState(null);
     const [mensajeAReenviar, setMensajeAReenviar] = useState(null);
 
-    // ✨ NUEVA FUNCIÓN: Resetea el contador al entrar al chat
+    // Resetea el contador al entrar al chat
     const marcarComoLeido = useCallback((chatId) => {
         setChats(prev => prev.map(chat => {
-            // Comparamos con == para que sirva tanto '1' (string) como 1 (number)
             if (chat.id == chatId && chat.noLeidos > 0) {
                 return { ...chat, noLeidos: 0 };
             }
@@ -31,14 +41,20 @@ export const ChatProvider = ({ children }) => {
         }));
     }, []);
 
-    const enviarMensaje = useCallback((chatId, texto) => {
+    // ========================================================================
+    // ✨ FUNCIÓN ENVIAR MENSAJE (CON INTEGRACIÓN IA)
+    // ========================================================================
+    const enviarMensaje = useCallback(async (chatId, texto) => {
+
+        // 1. Agregar mensaje del USUARIO inmediatamente
         setChats(prevChats => prevChats.map(chat => {
             if (chat.id == chatId) {
                 const nuevoMensaje = {
                     id: crypto.randomUUID(),
                     texto,
                     emisor: EMISOR.USUARIO,
-                    cita: mensajeCitado ? { ...mensajeCitado } : null
+                    cita: mensajeCitado ? { ...mensajeCitado } : null,
+                    hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                 };
 
                 return {
@@ -49,7 +65,61 @@ export const ChatProvider = ({ children }) => {
             }
             return chat;
         }));
+
+        // Limpiamos la cita después de enviar
         setMensajeCitado(null);
+
+        // 2. LÓGICA DE INTELIGENCIA ARTIFICIAL
+        // Verificamos si el chat actual es el de la IA (ID 1)
+        if (chatId == 1) {
+            if (!genAI) return; // Si no hay API Key, no hace nada
+
+            try {
+                // Obtenemos el modelo
+                const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
+                // Generamos respuesta
+                const result = await model.generateContent(texto);
+                const response = await result.response;
+                const textIA = response.text();
+
+                // 3. Agregamos la respuesta de la IA al chat
+                setChats(prevChats => prevChats.map(chat => {
+                    if (chat.id == chatId) {
+                        const mensajeIA = {
+                            id: crypto.randomUUID(),
+                            texto: textIA,
+                            emisor: EMISOR.IA,
+                            hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                        };
+                        return {
+                            ...chat,
+                            mensajes: [...chat.mensajes, mensajeIA]
+                        };
+                    }
+                    return chat;
+                }));
+
+            } catch (error) {
+                console.error("Error al obtener respuesta de Gemini:", error);
+
+                // Opcional: Agregar mensaje de error al chat
+                setChats(prevChats => prevChats.map(chat => {
+                    if (chat.id == chatId) {
+                        return {
+                            ...chat,
+                            mensajes: [...chat.mensajes, {
+                                id: crypto.randomUUID(),
+                                texto: "Lo siento, tuve un problema de conexión. Intenta de nuevo más tarde.",
+                                emisor: EMISOR.IA,
+                                hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                            }]
+                        };
+                    }
+                    return chat;
+                }));
+            }
+        }
     }, [mensajeCitado]);
 
     const eliminarMensaje = useCallback((chatId, mensajeId) => {
@@ -139,7 +209,8 @@ export const ChatProvider = ({ children }) => {
                             id: crypto.randomUUID(),
                             texto: mensajeAReenviar.texto,
                             emisor: EMISOR.USUARIO,
-                            esReenvio: true
+                            esReenvio: true,
+                            hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                         }]
                     };
                 }
@@ -156,7 +227,7 @@ export const ChatProvider = ({ children }) => {
         enviarMensaje, eliminarMensaje, iniciarChatConContacto, agregarNuevoContacto,
         bloquearContacto, desbloquearContacto, eliminarChat, toggleFavorito, toggleArchivado,
         mensajeCitado, setMensajeCitado, mensajeAReenviar, setMensajeAReenviar, confirmarReenvio,
-        marcarComoLeido // ✨ Exportado
+        marcarComoLeido
     }), [
         chats, contactos, usuarioActual, mensajeCitado, mensajeAReenviar,
         enviarMensaje, eliminarMensaje, iniciarChatConContacto, agregarNuevoContacto,
