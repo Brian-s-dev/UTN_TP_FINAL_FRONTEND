@@ -41,7 +41,7 @@ export const ChatProvider = ({ children }) => {
     }, []);
 
     // ========================================================================
-    // ✨ FUNCIÓN ENVIAR MENSAJE
+    // ✨ FUNCIÓN ENVIAR MENSAJE (CON FALLBACK DE MODELOS)
     // ========================================================================
     const enviarMensaje = useCallback(async (chatId, texto) => {
 
@@ -72,9 +72,16 @@ export const ChatProvider = ({ children }) => {
             if (!genAI) return;
 
             try {
-                // ✨ CAMBIO MARZO 2026: Usamos gemini-2.0-flash
-                // Si este falla, prueba: "gemini-2.0-flash-exp" o "gemini-1.5-flash-latest"
-                const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+                // ✨ ESTRATEGIA DE RESPALDO:
+                // Intentaremos estos modelos en orden. Si uno falla (404 o 429), probamos el siguiente.
+                const modelosAProbar = [
+                    "gemini-1.5-flash", // El más rápido y estable (Free Tier)
+                    "gemini-1.5-pro",   // Alternativa potente
+                    "gemini-pro"        // El clásico (máxima compatibilidad)
+                ];
+
+                let stream = null;
+                let modeloUsado = "";
 
                 // A. ID y Hora IA
                 const idMensajeIA = crypto.randomUUID();
@@ -87,7 +94,7 @@ export const ChatProvider = ({ children }) => {
                             ...chat,
                             mensajes: [...chat.mensajes, {
                                 id: idMensajeIA,
-                                texto: "",
+                                texto: "...", // Indicador de carga
                                 emisor: EMISOR.IA,
                                 hora: horaIA
                             }]
@@ -96,13 +103,29 @@ export const ChatProvider = ({ children }) => {
                     return chat;
                 }));
 
-                // C. Streaming
-                const result = await model.generateContentStream(texto);
+                // C. Intentar conectar con algún modelo
+                for (const nombreModelo of modelosAProbar) {
+                    try {
+                        const model = genAI.getGenerativeModel({ model: nombreModelo });
+                        const result = await model.generateContentStream(texto);
+                        stream = result.stream;
+                        modeloUsado = nombreModelo;
+                        console.log(`✅ Conectado exitosamente con: ${nombreModelo}`);
+                        break; // ¡Éxito! Salimos del bucle
+                    } catch (e) {
+                        console.warn(`❌ Falló modelo ${nombreModelo}:`, e.message);
+                        // Continuamos al siguiente modelo...
+                    }
+                }
+
+                if (!stream) {
+                    throw new Error("Ningún modelo disponible funcionó.");
+                }
 
                 let textoAcumulado = "";
 
-                // D. Bucle de escritura
-                for await (const chunk of result.stream) {
+                // D. Bucle de escritura (Streaming)
+                for await (const chunk of stream) {
                     const chunkText = chunk.text();
                     textoAcumulado += chunkText;
 
@@ -122,23 +145,21 @@ export const ChatProvider = ({ children }) => {
                 }
 
             } catch (error) {
-                console.error("Error al obtener respuesta de Gemini:", error);
+                console.error("Error fatal en IA:", error);
 
-                // Mensaje de error amigable
-                let errorMsg = "Tuve un problema de conexión.";
-                if (error.message.includes("404")) errorMsg = "El modelo de IA no está disponible en este momento.";
-                if (error.message.includes("429")) errorMsg = "Se alcanzó el límite de uso gratuito por hoy.";
+                let errorMsg = "No pude conectar con ningún modelo de IA disponible.";
+                if (error.message.includes("429")) errorMsg = "Has excedido tu cuota gratuita de hoy.";
 
                 setChats(prevChats => prevChats.map(chat => {
                     if (chat.id == chatId) {
                         return {
                             ...chat,
-                            mensajes: [...chat.mensajes, {
-                                id: crypto.randomUUID(),
-                                texto: errorMsg,
-                                emisor: EMISOR.IA,
-                                hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                            }]
+                            mensajes: chat.mensajes.map(msg =>
+                                // Reemplazamos el mensaje de carga con el error
+                                msg.emisor === EMISOR.IA && msg.texto === "..."
+                                    ? { ...msg, texto: errorMsg }
+                                    : msg
+                            )
                         };
                     }
                     return chat;
