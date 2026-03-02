@@ -74,7 +74,7 @@ export const ChatProvider = ({ children }) => {
 
             try {
                 // Usamos el modelo rápido y estable
-                const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+                const model = genAI.getGenerativeModel({ model: "gemini-3-pro-preview" });
 
                 // A. Creamos un ID y hora para el mensaje de la IA
                 const idMensajeIA = crypto.randomUUID();
