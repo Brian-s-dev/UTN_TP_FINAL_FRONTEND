@@ -73,14 +73,14 @@ export const ChatProvider = ({ children }) => {
             if (!genAI) return;
 
             try {
-                // Usamos el modelo rápido y estable
-                const model = genAI.getGenerativeModel({ model: "gemini-3-pro-preview" });
+                // ✨ CORRECCIÓN: Usamos el modelo ESTÁNDAR y GRATUITO
+                const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
                 // A. Creamos un ID y hora para el mensaje de la IA
                 const idMensajeIA = crypto.randomUUID();
                 const horaIA = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-                // B. Insertamos una burbuja VACÍA primero (para que el usuario vea que la IA va a responder)
+                // B. Insertamos una burbuja VACÍA primero
                 setChats(prevChats => prevChats.map(chat => {
                     if (chat.id == chatId) {
                         return {
@@ -132,7 +132,7 @@ export const ChatProvider = ({ children }) => {
                             ...chat,
                             mensajes: [...chat.mensajes, {
                                 id: crypto.randomUUID(),
-                                texto: "Lo siento, tuve un problema de conexión. Verifica tu clave API o intenta más tarde.",
+                                texto: "Lo siento, tuve un problema de conexión o cuota. Intenta más tarde.",
                                 emisor: EMISOR.IA,
                                 hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                             }]
