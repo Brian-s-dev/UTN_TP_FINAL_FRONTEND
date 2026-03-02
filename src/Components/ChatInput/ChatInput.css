@@ -48,7 +48,9 @@
     border: none;
     border-radius: 8px;
     padding: 12px 15px;
-    font-size: 1rem;
+
+    /* ✨ Importante: 16px evita zoom automático en iOS al hacer focus */
+    font-size: 16px;
     outline: none;
 
     /* ✨ MODO CLARO: Input blanco sobre fondo gris */
@@ -87,7 +89,8 @@
     justify-content: center;
     padding: 8px;
     border-radius: 50%;
-    transition: background-color 0.2s;
+    /* Agregamos transición de color para el hover del emoji */
+    transition: background-color 0.2s, color 0.2s;
 }
 
 .btn-icon:hover {
@@ -97,6 +100,13 @@
 .btn-icon:disabled {
     cursor: not-allowed;
     opacity: 0.5;
+}
+
+/* ✨ ESTILOS ESPECÍFICOS PARA EL BOTÓN EMOJI */
+.btn-emoji:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #f3a731;
+    /* Color amarillento característico */
 }
 
 /* =========================================
@@ -256,6 +266,13 @@ body.dark-mode .btn-icon:hover {
     color: #e9edef;
 }
 
+/* ✨ Ajuste Dark Mode para el botón emoji */
+body.dark-mode .btn-emoji:hover {
+    color: #ffd60a;
+    /* Amarillo más brillante para fondo oscuro */
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
 /* Menú adjuntos Dark */
 body.dark-mode .menu-adjuntos {
     background-color: #233138;
@@ -294,4 +311,21 @@ body.dark-mode .chat-input-area.input-deshabilitado {
 body.dark-mode .chat-input-area.input-deshabilitado input {
     background-color: #182229;
     color: #8696a0;
+}
+
+/* =========================================
+   📱 MEDIA QUERY: AJUSTE PICKER EN MÓVILES
+   ========================================= */
+/* Si el picker queda muy pegado al borde en móviles */
+@media (max-width: 500px) {
+    .emoji-picker-wrapper {
+        left: 5px;
+        /* Un poco más al borde en pantallas chicas */
+        bottom: 65px;
+    }
+
+    /* Forzar ancho del picker en móvil usando la clase interna de la librería */
+    .EmojiPickerReact {
+        width: 90vw !important;
+    }
 }
