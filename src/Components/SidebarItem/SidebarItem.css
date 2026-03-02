@@ -1,3 +1,15 @@
+/* =========================================
+   ESTILOS GENERALES DEL ITEM
+   ========================================= */
+
+/* Aseguramos que el contenedor padre tenga posición relativa 
+   para que el menú absoluto se posicione respecto a él */
+.chat-item {
+    position: relative;
+    /* Los demás estilos de .chat-item vienen de Layout.css, 
+       aquí solo reforzamos lo necesario para el menú */
+}
+
 .chat-info-header {
     display: flex;
     justify-content: space-between;
@@ -11,6 +23,8 @@
     align-items: center;
     width: 100%;
     margin-top: 3px;
+    /* Importante para que el menú flote sobre esto */
+    position: relative;
 }
 
 .chat-time {
@@ -37,6 +51,8 @@
     display: flex;
     align-items: center;
     gap: 3px;
+    /* Para que el texto no se monte sobre el menú si es muy largo */
+    padding-right: 20px;
 }
 
 .icon-star {
@@ -62,7 +78,50 @@
     padding: 0 4px;
 }
 
-/* Ajustes Dark Mode */
+/* =========================================
+   ✨ MENÚ FLOTANTE (3 PUNTOS)
+   ========================================= */
+
+.chat-options-wrapper {
+    position: absolute;
+    right: 10px;
+    /* Pegado a la derecha */
+    bottom: 5px;
+    /* Alineado abajo (donde suele estar la preview) */
+
+    /* Oculto por defecto */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(10px);
+    /* Pequeña animación de entrada */
+
+    transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+    z-index: 10;
+
+    /* Fondo degradado para que se lea bien sobre el texto */
+    background: linear-gradient(90deg, rgba(240, 242, 245, 0) 0%, #f0f2f5 30%);
+    padding-left: 15px;
+    /* Espacio para el degradado */
+}
+
+/* MOSTRAR AL HACER HOVER */
+.chat-item:hover .chat-options-wrapper {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+/* Mantener visible si se está interactuando con el menú */
+.chat-options-wrapper:focus-within {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+/* =========================================
+   🌙 MODO OSCURO
+   ========================================= */
+
 body.dark-mode .unread-badge {
     background-color: #00a884;
     color: #111b21;
@@ -74,4 +133,10 @@ body.dark-mode .chat-time.unread-time {
 
 body.dark-mode .icon-star {
     color: #aebac1;
+}
+
+/* Ajuste del fondo del menú en modo oscuro */
+body.dark-mode .chat-options-wrapper {
+    /* Degradado hacia el color oscuro del sidebar (#111b21) */
+    background: linear-gradient(90deg, rgba(17, 27, 33, 0) 0%, #111b21 30%);
 }
