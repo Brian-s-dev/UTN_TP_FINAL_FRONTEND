@@ -1,22 +1,25 @@
 import React from "react";
-import { useNavigate, useLocation } from "react-router"; // Usamos hooks para navegar
+import { useNavigate, useLocation } from "react-router";
 import { EMISOR } from "../../Utils/constants";
 import Avatar from "../Avatar/Avatar";
 import OpcionesChatsMenu from "../OpcionesChatsMenu/OpcionesChatsMenu";
-// Asegúrate de importar el CSS si no es global, o que SidebarItem.css exista
-// import "./SidebarItem.css"; 
+import "./SidebarItem.css"; // ✨ Importante tener el CSS
 
 const SidebarItem = ({ chat }) => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const { id, nombre, avatar, tipo, mensajes, esFavorito } = chat;
+    // ✨ Desestructuramos noLeidos
+    const { id, nombre, avatar, tipo, mensajes, esFavorito, noLeidos } = chat;
 
     const ultimoMensaje = mensajes && mensajes.length > 0
         ? mensajes[mensajes.length - 1].texto
         : "No hay mensajes aún";
 
-    // Verificamos si este chat es el activo
+    // Obtenemos hora del último mensaje
+    const ultimoObj = mensajes && mensajes.length > 0 ? mensajes[mensajes.length - 1] : null;
+    const horaMensaje = ultimoObj ? ultimoObj.hora : "";
+
     const isActive = location.pathname === `/chat/${id}`;
 
     const handleClick = () => {
@@ -31,19 +34,31 @@ const SidebarItem = ({ chat }) => {
             <Avatar imagen={avatar} nombre={nombre} isIA={tipo === EMISOR.IA} />
 
             <div className="chat-info">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div className="chat-info-header">
                     <h4 className="chat-name">{nombre}</h4>
-                    {/* Icono de estrella visible si es favorito */}
-                    {esFavorito && (
-                        <span className="material-symbols-outlined" style={{ fontSize: '16px', color: '#00a884', marginLeft: '5px' }}>
-                            star
-                        </span>
+                    {/* ✨ Si hay no leídos, la hora se pone verde (clase 'unread-time') */}
+                    <span className={`chat-time ${noLeidos > 0 ? 'unread-time' : ''}`}>
+                        {horaMensaje}
+                    </span>
+                </div>
+
+                <div className="chat-info-bottom">
+                    <p className="chat-preview">
+                        {esFavorito && (
+                            <span className="material-symbols-outlined icon-star">star</span>
+                        )}
+                        {ultimoMensaje}
+                    </p>
+
+                    {/* ✨ BADGE VERDE CON CONTADOR */}
+                    {noLeidos > 0 && (
+                        <div className="unread-badge">
+                            {noLeidos}
+                        </div>
                     )}
                 </div>
-                <p className="chat-preview">{ultimoMensaje}</p>
             </div>
 
-            {/* Menú de opciones - Al hacer clic aquí, el stopPropagation dentro del menú evitará que se ejecute handleClick */}
             <div className="chat-options-wrapper">
                 <OpcionesChatsMenu chat={chat} />
             </div>

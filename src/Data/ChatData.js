@@ -6,6 +6,7 @@ export const chatsIniciales = [
         nombre: "Chat IA",
         tipo: EMISOR.IA,
         avatar: "https://robohash.org/chat-ia?set=set3&bgset=bg1",
+        noLeidos: 0,
         mensajes: [
             { id: "msg-1-1", texto: "Hola, en este momento estoy usando toda mi memoria para definir cual es la clave para ser un buen programador, por lo que solamente voy a poder contarte chistes malos", emisor: EMISOR.IA, hora: "09:00" },
             { id: "msg-1-2", texto: "No podria haber mejor uso para la ia", emisor: EMISOR.USUARIO, hora: "09:02" },
@@ -17,11 +18,18 @@ export const chatsIniciales = [
         nombre: "Chat UTN Front-End",
         tipo: EMISOR.GRUPO,
         avatar: "https://ui-avatars.com/api/?name=UTN+Front&background=00a884&color=fff",
+        noLeidos: 5, // ✨ Tiene 5 mensajes sin leer para probar
         mensajes: [
             { id: "msg-2-1", texto: "Hoy cené empanadas de nuevo...", emisor: EMISOR.CONTACTO, hora: "21:30", remitenteNombre: "Matias", remitenteAvatar: "https://i.pravatar.cc/150?u=matias" },
             { id: "msg-2-2", texto: "Jajaja yo pedí una pizza, no tenía ganas de cocinar.", emisor: EMISOR.USUARIO, hora: "21:32" },
             { id: "msg-2-3", texto: "¡Qué rico! Guarden un poco para el grupo.", emisor: EMISOR.CONTACTO, hora: "21:35", remitenteNombre: "Sofía", remitenteAvatar: "https://i.pravatar.cc/150?u=sofia" },
-            { id: "msg-2-4", texto: "Mañana a primera hora subo las notas del TP.", emisor: EMISOR.CONTACTO, hora: "21:40", remitenteNombre: "Profesor", remitenteAvatar: "https://i.pravatar.cc/150?u=profe" }
+            { id: "msg-2-4", texto: "Mañana a primera hora subo las notas del TP.", emisor: EMISOR.CONTACTO, hora: "21:40", remitenteNombre: "Profesor", remitenteAvatar: "https://i.pravatar.cc/150?u=profe" },
+            /* ✨ NUEVOS MENSAJES */
+            { id: "msg-2-5", texto: "¿Alguien tiene el link del Figma?", emisor: EMISOR.CONTACTO, hora: "21:45", remitenteNombre: "Lucas", remitenteAvatar: "https://i.pravatar.cc/150?u=lucas" },
+            { id: "msg-2-6", texto: "Está en la descripción del grupo.", emisor: EMISOR.CONTACTO, hora: "21:46", remitenteNombre: "Matias", remitenteAvatar: "https://i.pravatar.cc/150?u=matias" },
+            { id: "msg-2-7", texto: "Gracias!", emisor: EMISOR.CONTACTO, hora: "21:50", remitenteNombre: "Lucas", remitenteAvatar: "https://i.pravatar.cc/150?u=lucas" },
+            { id: "msg-2-8", texto: "Recuerden traer las laptops cargadas.", emisor: EMISOR.CONTACTO, hora: "22:00", remitenteNombre: "Profesor", remitenteAvatar: "https://i.pravatar.cc/150?u=profe" },
+            { id: "msg-2-9", texto: "👍", emisor: EMISOR.CONTACTO, hora: "22:05", remitenteNombre: "Sofía", remitenteAvatar: "https://i.pravatar.cc/150?u=sofia" }
         ]
     },
     {
@@ -29,11 +37,14 @@ export const chatsIniciales = [
         nombre: "Juan Pérez",
         tipo: EMISOR.CONTACTO,
         avatar: "https://i.pravatar.cc/432?u=juan",
+        noLeidos: 2, // ✨ Simulamos mensajes no leídos
         mensajes: [
             { id: "msg-3-1", texto: "Hola Juan, ¿pudiste revisar el código que te pasé?", emisor: EMISOR.USUARIO, hora: "10:15" },
             { id: "msg-3-2", texto: "¡Hola! Sí, recién lo termino de ver.", emisor: EMISOR.CONTACTO, hora: "10:45" },
             { id: "msg-3-3", texto: "Quedó bárbaro, buen trabajo.", emisor: EMISOR.CONTACTO, hora: "10:46" },
-            { id: "msg-3-4", texto: "¡Genial! Gracias por revisarlo.", emisor: EMISOR.USUARIO, hora: "10:50" }
+            { id: "msg-3-4", texto: "¡Genial! Gracias por revisarlo.", emisor: EMISOR.USUARIO, hora: "10:50" },
+            { id: "msg-3-5", texto: "¿Cuándo hacemos deploy?", emisor: EMISOR.CONTACTO, hora: "11:00" },
+            { id: "msg-3-6", texto: "Avísame.", emisor: EMISOR.CONTACTO, hora: "11:05" }
         ]
     },
     {
@@ -41,6 +52,7 @@ export const chatsIniciales = [
         nombre: "María Gómez UX",
         tipo: EMISOR.CONTACTO,
         avatar: "https://randomuser.me/api/portraits/women/44.jpg",
+        noLeidos: 0,
         mensajes: [
             { id: "msg-4-1", texto: "Hola, te dejé los nuevos diseños en Figma.", emisor: EMISOR.CONTACTO, hora: "11:00" },
             { id: "msg-4-2", texto: "¡Hola María! Perfecto, ahora los miro y te comento.", emisor: EMISOR.USUARIO, hora: "11:05" },
@@ -52,6 +64,7 @@ export const chatsIniciales = [
         nombre: "Equipo de Diseño",
         tipo: EMISOR.GRUPO,
         avatar: "https://ui-avatars.com/api/?name=Equipo+Diseño&background=6a1b9a&color=fff",
+        noLeidos: 0,
         mensajes: [
             { id: "msg-5-1", texto: "Chicos, la reunión semanal se pasa a las 15hs.", emisor: EMISOR.CONTACTO, hora: "14:00", remitenteNombre: "Valeria", remitenteAvatar: "https://i.pravatar.cc/150?u=valeria" },
             { id: "msg-5-2", texto: "Dale, agendado. Nos vemos ahí.", emisor: EMISOR.USUARIO, hora: "14:05" },
@@ -63,6 +76,7 @@ export const chatsIniciales = [
         nombre: "Soporte Técnico",
         tipo: EMISOR.IA,
         avatar: "https://robohash.org/soporte?set=set3",
+        noLeidos: 0,
         mensajes: [
             { id: "msg-6-1", texto: "Bienvenido al soporte automatizado. ¿Cuál es tu problema?", emisor: EMISOR.IA, hora: "16:00" },
             { id: "msg-6-2", texto: "Tengo un error 500 al hacer fetch a la API.", emisor: EMISOR.USUARIO, hora: "16:02" },
@@ -74,6 +88,7 @@ export const chatsIniciales = [
         nombre: "Carlos Dev",
         tipo: EMISOR.CONTACTO,
         avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+        noLeidos: 0,
         mensajes: [
             { id: "msg-7-1", texto: "Carlos, ¿te funciona el entorno local?", emisor: EMISOR.USUARIO, hora: "09:30" },
             { id: "msg-7-2", texto: "Sí, me anda joya. ¿A vos te tira error?", emisor: EMISOR.CONTACTO, hora: "09:35" },
@@ -85,6 +100,7 @@ export const chatsIniciales = [
         nombre: "Ana Proyecto Final",
         tipo: EMISOR.CONTACTO,
         avatar: "https://randomuser.me/api/portraits/women/68.jpg",
+        noLeidos: 0,
         mensajes: [
             { id: "msg-8-1", texto: "¿Nos juntamos hoy a avanzar con el proyecto?", emisor: EMISOR.CONTACTO, hora: "18:00" },
             { id: "msg-8-2", texto: "¡De una! Tipo 19hs me conecto al Discord.", emisor: EMISOR.USUARIO, hora: "18:15" },
@@ -96,6 +112,7 @@ export const chatsIniciales = [
         nombre: "Laura QA",
         tipo: EMISOR.CONTACTO,
         avatar: "https://randomuser.me/api/portraits/women/12.jpg",
+        noLeidos: 0,
         mensajes: [
             { id: "msg-10-1", texto: "Encontré un bug en la vista de login.", emisor: EMISOR.CONTACTO, hora: "15:40" },
             { id: "msg-10-2", texto: "Uh, ¿qué pasa?", emisor: EMISOR.USUARIO, hora: "15:42" },
@@ -103,7 +120,6 @@ export const chatsIniciales = [
             { id: "msg-10-4", texto: "Uy, buenísimo el dato. Le agrego un 'disabled' al botón mientras carga. Gracias Laura.", emisor: EMISOR.USUARIO, hora: "15:45" }
         ]
     },
-
 ];
 
 export const contactosIniciales = [

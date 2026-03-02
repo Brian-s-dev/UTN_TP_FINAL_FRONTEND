@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router";
 import { useChat } from "../../Context/ChatContext";
 import { EMISOR } from "../../Utils/constants";
 
-// Componentes
 import MessageBubble from "../../Components/MessageBubble/MessageBubble";
 import ChatInput from "../../Components/ChatInput/ChatInput";
 import ChatHeader from "../../Components/ChatHeader/ChatHeader";
@@ -11,7 +10,6 @@ import ContactInfoSidebar from "../../Components/ContactInfoSidebar/ContactInfoS
 
 import "./ChatView.css";
 
-// Función auxiliar para el estado de conexión
 const generarEstadoConexion = (id, tipo) => {
     if (tipo === EMISOR.IA) return null;
     if (tipo === EMISOR.GRUPO) return "Haz clic aquí para info. del grupo";
@@ -26,32 +24,28 @@ const ChatView = () => {
     const { chatId } = useParams();
     const navigate = useNavigate();
 
-    // Traemos todo lo necesario del Contexto
     const {
-        chats,
-        contactos,
-        usuarioActual,
-        enviarMensaje,
-        bloquearContacto,
-        desbloquearContacto,
-        eliminarChat,
-        toggleFavorito // ✨ Importamos la función para favoritos
+        chats, contactos, usuarioActual, enviarMensaje,
+        bloquearContacto, desbloquearContacto, eliminarChat, toggleFavorito,
+        marcarComoLeido // ✨ Importamos
     } = useChat();
 
     const [infoAbierta, setInfoAbierta] = useState(false);
     const [menuEditarAbierto, setMenuEditarAbierto] = useState(false);
-
-    // Estado para el buscador de mensajes
     const [busquedaMensajes, setBusquedaMensajes] = useState("");
 
     const menuEditarRef = useRef(null);
     const mensajesFinRef = useRef(null);
 
-    // 1. Encontrar el chat activo
-    // Usamos == para comparar id (string vs number)
     const chatActivo = chats.find((chat) => chat.id == chatId);
 
-    // Cierra menús al hacer clic fuera
+    // ✨ EFFECT: Marcar como leído al entrar al chat
+    useEffect(() => {
+        if (chatId) {
+            marcarComoLeido(chatId);
+        }
+    }, [chatId, marcarComoLeido]);
+
     useEffect(() => {
         const handleClickFuera = (event) => {
             if (menuEditarRef.current && !menuEditarRef.current.contains(event.target)) {
@@ -62,32 +56,23 @@ const ChatView = () => {
         return () => document.removeEventListener("mousedown", handleClickFuera);
     }, []);
 
-    // Reseteos al cambiar de chat
     useEffect(() => {
         setInfoAbierta(false);
         setBusquedaMensajes("");
     }, [chatId]);
 
-    // Scroll al fondo al llegar mensajes o filtrar
     useEffect(() => {
         mensajesFinRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [chatActivo?.mensajes, busquedaMensajes]);
 
-    // =========================================================================
-    // ✨ FIX TECLADO MÓVIL: Scroll al fondo al cambiar tamaño de pantalla
-    // =========================================================================
     useEffect(() => {
         const handleResize = () => {
-            // Esperamos un momento a que el navegador recalcule el layout tras abrir teclado
             setTimeout(() => {
-                // Usamos 'auto' para que sea instantáneo y no "baile"
                 mensajesFinRef.current?.scrollIntoView({ behavior: "auto" });
             }, 100);
         };
-
         window.addEventListener("resize", handleResize);
-        window.addEventListener("focusin", handleResize); // Adicional para inputs en iOS
-
+        window.addEventListener("focusin", handleResize);
         return () => {
             window.removeEventListener("resize", handleResize);
             window.removeEventListener("focusin", handleResize);
@@ -96,7 +81,6 @@ const ChatView = () => {
 
     if (!chatActivo) return <div className="chat-view-container centered">Chat no encontrado</div>;
 
-    // Lógica visual
     const esGrupo = chatActivo.tipo === EMISOR.GRUPO;
     const estadoConexion = generarEstadoConexion(chatActivo.id, chatActivo.tipo);
 
@@ -110,14 +94,12 @@ const ChatView = () => {
         navigate("/");
     };
 
-    // Textos dinámicos
     const txtMensajeSistema = esGrupo ? "Saliste del grupo" : "Se bloqueó al contacto. Toca para desbloquear.";
     const txtInputApagado = esGrupo ? "Ya no eres participante de este grupo" : "No puedes enviar mensajes a un contacto bloqueado";
     const txtBotonBloquear = esGrupo
         ? (chatActivo.bloqueado ? "Volver al grupo (Solo Admins)" : "Salir del grupo")
         : (chatActivo.bloqueado ? "Desbloquear contacto" : "Bloquear contacto");
 
-    // Filtrado de mensajes
     const mensajesFiltrados = busquedaMensajes.trim() === ""
         ? chatActivo.mensajes
         : chatActivo.mensajes.filter(msg =>
@@ -126,7 +108,6 @@ const ChatView = () => {
 
     return (
         <div className="chat-view-container" key={chatId}>
-            {/* HEADER */}
             <ChatHeader
                 chatActivo={chatActivo}
                 estadoConexion={estadoConexion}
@@ -135,13 +116,9 @@ const ChatView = () => {
                 setBusquedaMensajes={setBusquedaMensajes}
             />
 
-            {/* ÁREA DE MENSAJES */}
             <div className="chat-messages-area">
-
-                {/* Caso 1: Chat Bloqueado */}
                 {chatActivo.bloqueado ? (
                     <div className="mensaje-sistema-wrapper">
-                        {/* ✨ Esta estructura y clases aseguran que se vea como píldora centrada */}
                         <span
                             className="mensaje-sistema-burbuja"
                             style={{ cursor: 'pointer' }}
@@ -153,13 +130,11 @@ const ChatView = () => {
                     </div>
                 ) : (
                     <>
-                        {/* Caso 2: Búsqueda sin resultados */}
                         {mensajesFiltrados.length === 0 && busquedaMensajes !== "" ? (
                             <div className="no-results-search">
                                 <p>No se encontraron mensajes con "{busquedaMensajes}"</p>
                             </div>
                         ) : (
-                            /* Caso 3: Lista de mensajes normal */
                             mensajesFiltrados.map((mensaje) => (
                                 <MessageBubble
                                     key={mensaje.id}
@@ -180,22 +155,18 @@ const ChatView = () => {
                 <div ref={mensajesFinRef} />
             </div>
 
-            {/* INPUT */}
             <ChatInput
                 onEnviarMensaje={(texto) => enviarMensaje(chatId, texto)}
                 deshabilitado={chatActivo.bloqueado}
                 mensajeDeshabilitado={txtInputApagado}
             />
 
-            {/* SIDEBAR DERECHO DE INFO */}
             <ContactInfoSidebar
                 infoAbierta={infoAbierta} setInfoAbierta={setInfoAbierta}
                 chatActivo={chatActivo} esGrupo={esGrupo} estadoConexion={estadoConexion}
                 contactos={contactos} usuarioActual={usuarioActual}
-
                 handleBloquearToggle={handleBloquearToggle} handleEliminar={handleEliminar}
-                handleToggleFavorito={() => toggleFavorito(chatId)} // ✨ Pasamos la función
-
+                handleToggleFavorito={() => toggleFavorito(chatId)}
                 txtBotonBloquear={txtBotonBloquear}
                 menuEditarRef={menuEditarRef} menuEditarAbierto={menuEditarAbierto} setMenuEditarAbierto={setMenuEditarAbierto}
             />

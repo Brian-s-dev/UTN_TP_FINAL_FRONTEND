@@ -5,29 +5,34 @@ import { chatsIniciales, contactosIniciales } from "../Data/ChatData";
 const ChatContext = createContext();
 
 export const ChatProvider = ({ children }) => {
-    // ✨ CORRECCIÓN: Inicializamos los chats asegurando que las propiedades booleanas existan.
-    // Esto evita errores la primera vez que se intenta cambiar el estado.
+    // ✨ Inicializamos estado asegurando que 'noLeidos' exista
     const [chats, setChats] = useState(chatsIniciales.map(chat => ({
         ...chat,
         esFavorito: chat.esFavorito || false,
         archivado: chat.archivado || false,
-        bloqueado: chat.bloqueado || false
+        bloqueado: chat.bloqueado || false,
+        noLeidos: chat.noLeidos || 0 // ✨ Default 0
     })));
 
     const [contactos, setContactos] = useState(contactosIniciales);
     const [usuarioActual, setUsuarioActual] = useState("Yo");
 
-    // Estados para funciones avanzadas (Citar y Reenviar)
     const [mensajeCitado, setMensajeCitado] = useState(null);
     const [mensajeAReenviar, setMensajeAReenviar] = useState(null);
 
-    // ========================================================================
-    // FUNCIONES PRINCIPALES DE CHAT
-    // ========================================================================
+    // ✨ NUEVA FUNCIÓN: Resetea el contador al entrar al chat
+    const marcarComoLeido = useCallback((chatId) => {
+        setChats(prev => prev.map(chat => {
+            // Comparamos con == para que sirva tanto '1' (string) como 1 (number)
+            if (chat.id == chatId && chat.noLeidos > 0) {
+                return { ...chat, noLeidos: 0 };
+            }
+            return chat;
+        }));
+    }, []);
 
     const enviarMensaje = useCallback((chatId, texto) => {
         setChats(prevChats => prevChats.map(chat => {
-            // Comparamos con == para que sirva tanto '1' (string) como 1 (number)
             if (chat.id == chatId) {
                 const nuevoMensaje = {
                     id: crypto.randomUUID(),
@@ -38,7 +43,7 @@ export const ChatProvider = ({ children }) => {
 
                 return {
                     ...chat,
-                    archivado: false, // Si envías mensaje, se desarchiva
+                    archivado: false,
                     mensajes: [...chat.mensajes, nuevoMensaje]
                 };
             }
@@ -59,10 +64,6 @@ export const ChatProvider = ({ children }) => {
         }));
     }, []);
 
-    // ========================================================================
-    // GESTIÓN DE CONTACTOS Y CHATS
-    // ========================================================================
-
     const iniciarChatConContacto = useCallback((contacto) => {
         const chatExistente = chats.find(c => c.nombre === contacto.nombre);
         if (chatExistente) return chatExistente.id;
@@ -75,7 +76,8 @@ export const ChatProvider = ({ children }) => {
             mensajes: [],
             bloqueado: false,
             esFavorito: false,
-            archivado: false
+            archivado: false,
+            noLeidos: 0
         };
         setChats(prev => [nuevoChat, ...prev]);
         return nuevoChat.id;
@@ -86,15 +88,11 @@ export const ChatProvider = ({ children }) => {
             id: crypto.randomUUID(),
             nombre,
             tipo: EMISOR.CONTACTO,
-            avatar: "" // Sin avatar por defecto
+            avatar: ""
         };
         setContactos(prev => [...prev, nuevo]);
         return nuevo;
     }, []);
-
-    // ========================================================================
-    // ACCIONES DE MENÚ (FAVORITO, ARCHIVAR, ELIMINAR, BLOQUEAR)
-    // ========================================================================
 
     const toggleFavorito = useCallback((id) => {
         setChats(prev => prev.map(chat => {
@@ -126,16 +124,11 @@ export const ChatProvider = ({ children }) => {
         setChats(prev => prev.map(c => c.id == id ? { ...c, bloqueado: false } : c));
     }, []);
 
-    // ========================================================================
-    // LÓGICA DE REENVÍO
-    // ========================================================================
-
     const confirmarReenvio = useCallback((contactoDestino) => {
         if (!mensajeAReenviar) return;
 
         let chatIdDestino = iniciarChatConContacto(contactoDestino);
 
-        // setTimeout para asegurar que el estado se actualice si el chat era nuevo
         setTimeout(() => {
             setChats(prevChats => prevChats.map(chat => {
                 if (chat.id == chatIdDestino) {
@@ -158,22 +151,17 @@ export const ChatProvider = ({ children }) => {
         return chatIdDestino;
     }, [mensajeAReenviar, iniciarChatConContacto]);
 
-    // ========================================================================
-    // PROVIDER VALUE
-    // ========================================================================
-
     const valorContexto = useMemo(() => ({
         chats, contactos, usuarioActual, setUsuarioActual,
-        enviarMensaje, eliminarMensaje,
-        iniciarChatConContacto, agregarNuevoContacto,
-        bloquearContacto, desbloquearContacto,
-        eliminarChat, toggleFavorito, toggleArchivado,
-        mensajeCitado, setMensajeCitado,
-        mensajeAReenviar, setMensajeAReenviar, confirmarReenvio
+        enviarMensaje, eliminarMensaje, iniciarChatConContacto, agregarNuevoContacto,
+        bloquearContacto, desbloquearContacto, eliminarChat, toggleFavorito, toggleArchivado,
+        mensajeCitado, setMensajeCitado, mensajeAReenviar, setMensajeAReenviar, confirmarReenvio,
+        marcarComoLeido // ✨ Exportado
     }), [
         chats, contactos, usuarioActual, mensajeCitado, mensajeAReenviar,
         enviarMensaje, eliminarMensaje, iniciarChatConContacto, agregarNuevoContacto,
-        bloquearContacto, desbloquearContacto, eliminarChat, toggleFavorito, toggleArchivado, confirmarReenvio
+        bloquearContacto, desbloquearContacto, eliminarChat, toggleFavorito, toggleArchivado, confirmarReenvio,
+        marcarComoLeido
     ]);
 
     return (

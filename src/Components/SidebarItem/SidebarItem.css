@@ -1,0 +1,77 @@
+.chat-info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.chat-info-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 3px;
+}
+
+.chat-time {
+    font-size: 0.75rem;
+    color: #667781;
+    white-space: nowrap;
+    margin-left: 5px;
+}
+
+.chat-time.unread-time {
+    color: #00a884;
+    /* Verde WhatsApp */
+    font-weight: 600;
+}
+
+.chat-preview {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #667781;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.icon-star {
+    font-size: 14px !important;
+    color: #667781;
+    margin-right: 2px;
+}
+
+/* ✨ BURBUJA VERDE (BADGE) */
+.unread-badge {
+    background-color: #00a884;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    min-width: 20px;
+    /* Círculo */
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 6px;
+    padding: 0 4px;
+}
+
+/* Ajustes Dark Mode */
+body.dark-mode .unread-badge {
+    background-color: #00a884;
+    color: #111b21;
+}
+
+body.dark-mode .chat-time.unread-time {
+    color: #00a884;
+}
+
+body.dark-mode .icon-star {
+    color: #aebac1;
+}
