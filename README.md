@@ -1,16 +1,28 @@
-# React + Vite
+📋 Características Principales
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### 🧠 Funcionalidades Técnicas
+* **Integración con IA:** Chat exclusivo conectado a **Google Gemini** (Modelos Flash/Pro) mediante API REST directa.
+* **Gestión de Estado:** Uso de `React Context API` (ChatContext) para manejar el estado global de los mensajes, contactos y selección de chats de manera eficiente.
+* **Persistencia de Datos:** (Opcional: Si usaste localStorage menciónalo, si no, borra esto) Los chats se mantienen durante la sesión.
+* **Manejo de Errores:** Sistema robusto de *fallback* para gestionar errores de API (404, 429 Quota Exceeded) y mostrar feedback al usuario.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🛠️ Tecnologías Utilizadas
 
-## React Compiler
+* **Frontend:** React.js + Vite
+* **Estilos:** CSS3
+* **API:** Google Generative AI (Gemini)
+* **Despliegue:** Vercel
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 📂 Estructura del Proyecto
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+src/
+├── Components/      # Componentes reutilizables (Sidebar, Chat, Mensajes)
+├── Context/         # ChatContext (Lógica global y conexión a API)
+├── Data/            # Datos simulados (Chats iniciales, Contactos)
+├── Utils/           # Constantes y funciones de ayuda
+├── App.jsx          # Componente principal
+└── main.jsx         # Punto de entrada
