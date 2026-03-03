@@ -1,6 +1,3 @@
-/* =========================================
-   CONTENEDORES DE FILA
-   ========================================= */
 .mensaje-fila {
     display: flex;
     align-items: flex-end;
@@ -16,9 +13,6 @@
     justify-content: flex-start;
 }
 
-/* =========================================
-   AVATAR (Solo para grupos/IA)
-   ========================================= */
 .mensaje-avatar .avatar-circle {
     width: 30px;
     height: 30px;
@@ -26,46 +20,34 @@
     font-size: 0.8rem;
 }
 
-/* =========================================
-   BURBUJAS DE MENSAJE
-   ========================================= */
 .mensaje-burbuja {
     position: relative;
     max-width: 65%;
     padding: 10px 15px 22px 15px;
-    /* Espacio extra abajo para la hora */
     border-radius: 15px;
     word-wrap: break-word;
     overflow-wrap: break-word;
     word-break: break-word;
     width: fit-content;
     min-width: 85px;
-    /* Evita que la burbuja se achique más que la hora */
 }
 
 .su-mensaje {
     background-color: white;
     border: 1px solid #ddd;
     border-bottom-left-radius: 4px;
-    /* Punta del globo hacia la izquierda */
 }
 
 .mi-mensaje {
     background-color: #dcf8c6;
-    /* Verde clásico de WhatsApp */
     border-bottom-right-radius: 4px;
-    /* Punta del globo hacia la derecha */
 }
 
-/* =========================================
-   METADATOS (Hora, Autor y Tildes)
-   ========================================= */
 .mensaje-nombre-autor {
     display: block;
     font-size: 0.8rem;
     font-weight: bold;
     color: #e55375;
-    /* Color para destacar quién habla en un grupo */
     margin-bottom: 3px;
     line-height: 1;
 }
@@ -87,16 +69,11 @@
 .icono-leido {
     font-size: 16px !important;
     color: #53bdeb;
-    /* Azul de "visto" */
 }
 
-/* =========================================
-   RESPONSIVE
-   ========================================= */
 @media (max-width: 900px) {
     .mensaje-burbuja {
         max-width: 85%;
-        /* En móvil aprovechamos más el ancho */
     }
 
     .mensaje-fila {
@@ -104,9 +81,6 @@
     }
 }
 
-/* =========================================
-   MODO OSCURO
-   ========================================= */
 body.dark-mode .su-mensaje {
     background-color: #202c33;
     border-color: #202c33;
@@ -115,7 +89,6 @@ body.dark-mode .su-mensaje {
 
 body.dark-mode .mi-mensaje {
     background-color: #005c4b;
-    /* Verde oscuro para el modo dark */
     color: #e9edef;
 }
 
@@ -125,16 +98,11 @@ body.dark-mode .mensaje-hora {
 
 body.dark-mode .mensaje-nombre-autor {
     color: #ff7a9f;
-    /* Color más claro para leer mejor en fondos oscuros */
 }
 
-/* ... (Todo lo anterior se mantiene) ... */
-
-/* Estilos para el bloque de mensaje citado (Reply) */
 .mensaje-citado-bloque {
     background-color: rgba(0, 0, 0, 0.05);
     border-left: 4px solid #00a884;
-    /* Línea verde a la izquierda */
     border-radius: 4px;
     padding: 5px 10px;
     margin-bottom: 5px;
@@ -159,7 +127,6 @@ body.dark-mode .mensaje-nombre-autor {
     text-overflow: ellipsis;
 }
 
-/* Ajustes Dark Mode */
 body.dark-mode .mensaje-citado-bloque {
     background-color: rgba(0, 0, 0, 0.2);
     border-left-color: #00a884;

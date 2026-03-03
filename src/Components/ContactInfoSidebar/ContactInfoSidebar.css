@@ -205,7 +205,6 @@
     }
 }
 
-/* Modo oscuro */
 body.dark-mode .contact-info-sidebar {
     background-color: #0e161c;
     box-shadow: -5px 0 25px rgba(0, 0, 0, 0.5);

@@ -18,13 +18,12 @@ export const chatsIniciales = [
         nombre: "Chat UTN Front-End",
         tipo: EMISOR.GRUPO,
         avatar: "https://ui-avatars.com/api/?name=UTN+Front&background=00a884&color=fff",
-        noLeidos: 5, // ✨ Tiene 5 mensajes sin leer para probar
+        noLeidos: 5,
         mensajes: [
             { id: "msg-2-1", texto: "Hoy cené empanadas de nuevo...", emisor: EMISOR.CONTACTO, hora: "21:30", remitenteNombre: "Matias", remitenteAvatar: "https://i.pravatar.cc/150?u=matias" },
             { id: "msg-2-2", texto: "Jajaja yo pedí una pizza, no tenía ganas de cocinar.", emisor: EMISOR.USUARIO, hora: "21:32" },
             { id: "msg-2-3", texto: "¡Qué rico! Guarden un poco para el grupo.", emisor: EMISOR.CONTACTO, hora: "21:35", remitenteNombre: "Sofía", remitenteAvatar: "https://i.pravatar.cc/150?u=sofia" },
             { id: "msg-2-4", texto: "Mañana a primera hora subo las notas del TP.", emisor: EMISOR.CONTACTO, hora: "21:40", remitenteNombre: "Profesor", remitenteAvatar: "https://i.pravatar.cc/150?u=profe" },
-            /* ✨ NUEVOS MENSAJES */
             { id: "msg-2-5", texto: "¿Alguien tiene el link del Figma?", emisor: EMISOR.CONTACTO, hora: "21:45", remitenteNombre: "Lucas", remitenteAvatar: "https://i.pravatar.cc/150?u=lucas" },
             { id: "msg-2-6", texto: "Está en la descripción del grupo.", emisor: EMISOR.CONTACTO, hora: "21:46", remitenteNombre: "Matias", remitenteAvatar: "https://i.pravatar.cc/150?u=matias" },
             { id: "msg-2-7", texto: "Gracias!", emisor: EMISOR.CONTACTO, hora: "21:50", remitenteNombre: "Lucas", remitenteAvatar: "https://i.pravatar.cc/150?u=lucas" },
@@ -37,7 +36,7 @@ export const chatsIniciales = [
         nombre: "Juan Pérez",
         tipo: EMISOR.CONTACTO,
         avatar: "https://i.pravatar.cc/432?u=juan",
-        noLeidos: 2, // ✨ Simulamos mensajes no leídos
+        noLeidos: 2,
         mensajes: [
             { id: "msg-3-1", texto: "Hola Juan, ¿pudiste revisar el código que te pasé?", emisor: EMISOR.USUARIO, hora: "10:15" },
             { id: "msg-3-2", texto: "¡Hola! Sí, recién lo termino de ver.", emisor: EMISOR.CONTACTO, hora: "10:45" },

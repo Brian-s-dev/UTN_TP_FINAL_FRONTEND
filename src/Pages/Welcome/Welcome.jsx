@@ -1,6 +1,6 @@
 import React from "react";
 import { useChat } from "../../Context/ChatContext";
-import { useLottie } from "lottie-react"; // ✨ Volvemos al hook seguro
+import { useLottie } from "lottie-react";
 import blobAnimation from "../../assets/Animations/loading-blob.json";
 import "./Welcome.css";
 
@@ -11,9 +11,9 @@ const Welcome = () => {
         animationData: blobAnimation,
         loop: true,
         autoplay: true,
-        initialSegment: [0, 120] 
+        initialSegment: [0, 120]
     };
-    
+
     const { View } = useLottie(opciones);
 
     return (
@@ -21,7 +21,7 @@ const Welcome = () => {
             <div className="welcome-blob-wrapper">
                 {View}
             </div>
-            
+
             <div className="welcome-header">
                 <span className="welcome-greeting">Bienvenido</span>
                 <div className="welcome-name-container">

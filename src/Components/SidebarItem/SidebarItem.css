@@ -1,35 +1,19 @@
-/* =========================================
-   ESTILOS GENERALES DEL ITEM
-   ========================================= */
-
 .chat-item {
     position: relative;
     display: flex;
-    /* Alineación horizontal de avatar y textos */
     align-items: center;
     gap: 15px;
     padding: 10px 15px;
-    /* Relleno estándar */
-
-    /* ✨ CLAVE: Evita barras de scroll horizontal */
     overflow: hidden;
-
     cursor: pointer;
     transition: background-color 0.2s;
 }
-
-/* =========================================
-   CONTENEDOR DE INFORMACIÓN
-   ========================================= */
 
 .chat-info {
     display: flex;
     flex-direction: column;
     justify-content: center;
     flex: 1;
-    /* Ocupa el espacio restante */
-
-    /* ✨ TRUCO FLEXBOX: Necesario para que el texto se corte con (...) */
     min-width: 0;
 }
 
@@ -41,14 +25,11 @@
     margin-bottom: 2px;
 }
 
-/* Estilo para el nombre del contacto */
 .chat-info h4.chat-name {
     margin: 0;
     font-size: 1rem;
     color: #111b21;
     font-weight: 500;
-
-    /* Truncado de nombre si es muy largo */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -61,29 +42,19 @@
     width: 100%;
 }
 
-/* =========================================
-   ELEMENTOS DE TEXTO
-   ========================================= */
-
-/* ✨ HORA OCULTA (SOLICITADO) */
 .chat-time {
     display: none;
 }
 
-/* ✨ PREVIEW DEL MENSAJE (CORTO) */
 .chat-preview {
     margin: 0;
     font-size: 0.85rem;
     color: #667781;
-
-    /* Lógica de puntos suspensivos (...) */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-
     flex: 1;
     display: block;
-    /* Asegura que el truncado funcione */
 }
 
 .icon-star {
@@ -93,7 +64,6 @@
     vertical-align: middle;
 }
 
-/* ✨ BURBUJA VERDE (BADGE) */
 .unread-badge {
     background-color: #00a884;
     color: white;
@@ -107,49 +77,31 @@
     justify-content: center;
     margin-left: 10px;
     padding: 0 4px;
-
-    /* Evita que el badge se aplaste */
     flex-shrink: 0;
 }
-
-/* =========================================
-   ✨ MENÚ FLOTANTE (3 PUNTOS)
-   ========================================= */
 
 .chat-options-wrapper {
     position: absolute;
     right: 10px;
-    /* Margen derecho */
     top: 50%;
-    /* Centrado vertical */
-
-    /* Centrado exacto + estado inicial oculto (desplazado) */
     transform: translateY(-50%) translateX(10px);
-
     opacity: 0;
     visibility: hidden;
-
     transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
     z-index: 10;
 }
 
-/* MOSTRAR AL HACER HOVER */
 .chat-item:hover .chat-options-wrapper {
     opacity: 1;
     visibility: visible;
     transform: translateY(-50%) translateX(0);
 }
 
-/* Mantener visible si se hace foco (accesibilidad) */
 .chat-options-wrapper:focus-within {
     opacity: 1;
     visibility: visible;
     transform: translateY(-50%) translateX(0);
 }
-
-/* =========================================
-   🌙 MODO OSCURO
-   ========================================= */
 
 body.dark-mode .chat-name {
     color: #e9edef;

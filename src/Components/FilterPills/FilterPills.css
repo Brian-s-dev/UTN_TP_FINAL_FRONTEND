@@ -14,10 +14,8 @@
 
 .filters-container::-webkit-scrollbar {
     display: none;
-    /* Chrome/Safari */
 }
 
-/* Ocultar si el sidebar está colapsado */
 .sidebar-container.colapsado .filters-container {
     display: none !important;
 }
@@ -34,11 +32,8 @@
     white-space: nowrap;
     transition: all 0.2s ease;
 
-    /* ✨ Altura fija y evitar deformación */
     height: 32px;
     flex-shrink: 0;
-    /* IMPRESCINDIBLE: Evita que se aplasten si falta espacio */
-
     display: flex;
     align-items: center;
     justify-content: center;
@@ -54,23 +49,19 @@
     font-weight: 600;
 }
 
-/* Botón del Dropdown (Cuadrado/Redondo) */
 .filter-pill.icon-pill {
     padding: 0;
     width: 32px;
     height: 32px;
     position: relative;
     border-radius: 50%;
-    /* Círculo perfecto */
     flex-shrink: 0;
-    /* También evita que se aplaste */
 }
 
 .filter-pill.icon-pill span {
     font-size: 20px;
 }
 
-/* ✨ MENÚ FLOTANTE (FIXED) */
 .filters-dropdown {
     position: fixed;
     background-color: white;
@@ -78,11 +69,8 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     padding: 8px 0;
     z-index: 9999;
-
-    /* ✨ Aseguramos dimensiones estables para el cálculo de JS */
     min-width: 170px;
     max-width: 200px;
-
     display: flex;
     flex-direction: column;
     animation: fadeInDrop 0.15s ease-out;
@@ -105,7 +93,6 @@
     border: none;
     width: 100%;
     padding: 12px 20px;
-    /* Botones del menú más cómodos */
     text-align: left;
     font-size: 0.9rem;
     color: #111b21;
@@ -125,7 +112,6 @@
     font-weight: 600;
 }
 
-/* MODO OSCURO */
 body.dark-mode .filter-pill {
     background-color: #202c33;
     color: #8696a0;

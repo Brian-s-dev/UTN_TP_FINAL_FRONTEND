@@ -16,12 +16,10 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 40px;
     border-radius: 16px;
-    /* ✨ AJUSTE 1: Forzamos el margen en todas las pantallas */
     width: calc(100% - 40px);
     margin: 0 20px;
     max-width: 350px;
-    box-sizing: border-box; /* Fundamental para que el padding no lo desborde */
-    
+    box-sizing: border-box;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: column;

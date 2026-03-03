@@ -1,13 +1,9 @@
 import { createContext, useContext, useState, useCallback, useMemo } from "react";
 import { EMISOR } from "../Utils/constants";
 import { chatsIniciales, contactosIniciales } from "../Data/ChatData";
-
-// Ya no necesitamos importar GoogleGenerativeAI porque usaremos fetch directo
-
 const ChatContext = createContext();
 
 export const ChatProvider = ({ children }) => {
-    // Inicializamos estado
     const [chats, setChats] = useState(chatsIniciales.map(chat => ({
         ...chat,
         esFavorito: chat.esFavorito || false,
@@ -30,12 +26,8 @@ export const ChatProvider = ({ children }) => {
         }));
     }, []);
 
-    // ========================================================================
-    // ✨ FUNCIÓN ENVIAR MENSAJE (USANDO FETCH REST API DIRECTO)
-    // ========================================================================
     const enviarMensaje = useCallback(async (chatId, texto) => {
 
-        // 1. Agregar mensaje del USUARIO
         setChats(prevChats => prevChats.map(chat => {
             if (chat.id == chatId) {
                 const nuevoMensaje = {
@@ -56,7 +48,6 @@ export const ChatProvider = ({ children }) => {
 
         setMensajeCitado(null);
 
-        // 2. LÓGICA IA
         if (chatId == 1) {
             const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
@@ -65,7 +56,6 @@ export const ChatProvider = ({ children }) => {
                 return;
             }
 
-            // A. Ponemos mensaje de "Escribiendo..." (o cargando)
             const idMensajeIA = crypto.randomUUID();
             const horaIA = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
@@ -75,7 +65,7 @@ export const ChatProvider = ({ children }) => {
                         ...chat,
                         mensajes: [...chat.mensajes, {
                             id: idMensajeIA,
-                            texto: "Escribiendo...", // Feedback visual
+                            texto: "Escribiendo...",
                             emisor: EMISOR.IA,
                             hora: horaIA
                         }]
@@ -85,10 +75,6 @@ export const ChatProvider = ({ children }) => {
             }));
 
             try {
-                // ✨ APLICANDO TU CÓDIGO DE LA DOCUMENTACIÓN AQUÍ
-
-                // Usamos el modelo que viste en la doc: gemini-3-flash-preview
-                // Si falla, cámbialo a: gemini-1.5-flash
                 const MODEL_NAME = "gemini-2.5-flash";
                 const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${apiKey}`;
 
@@ -115,17 +101,15 @@ export const ChatProvider = ({ children }) => {
 
                 const data = await response.json();
 
-                // Extraemos el texto según la estructura de Gemini
                 const textoIA = data.candidates?.[0]?.content?.parts?.[0]?.text || "No entendí eso.";
 
-                // B. Actualizamos el mensaje con la respuesta real
                 setChats(prevChats => prevChats.map(chat => {
                     if (chat.id == chatId) {
                         return {
                             ...chat,
                             mensajes: chat.mensajes.map(msg =>
                                 msg.id === idMensajeIA
-                                    ? { ...msg, texto: textoIA } // Reemplazamos "Escribiendo..." por la respuesta
+                                    ? { ...msg, texto: textoIA }
                                     : msg
                             )
                         };
@@ -157,8 +141,6 @@ export const ChatProvider = ({ children }) => {
             }
         }
     }, [mensajeCitado]);
-
-    // ... (RESTO DEL ARCHIVO IGUAL: eliminarMensaje, iniciarChatConContacto, etc.) ...
 
     const eliminarMensaje = useCallback((chatId, mensajeId) => {
         setChats(prev => prev.map(chat => {

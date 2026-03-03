@@ -2,12 +2,10 @@ import React, { useState, useRef, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
 import { useChat } from "../../Context/ChatContext";
 import { EMISOR } from "../../Utils/constants";
-
 import MessageBubble from "../../Components/MessageBubble/MessageBubble";
 import ChatInput from "../../Components/ChatInput/ChatInput";
 import ChatHeader from "../../Components/ChatHeader/ChatHeader";
 import ContactInfoSidebar from "../../Components/ContactInfoSidebar/ContactInfoSidebar";
-
 import "./ChatView.css";
 
 const generarEstadoConexion = (id, tipo) => {
@@ -27,7 +25,7 @@ const ChatView = () => {
     const {
         chats, contactos, usuarioActual, enviarMensaje,
         bloquearContacto, desbloquearContacto, eliminarChat, toggleFavorito,
-        marcarComoLeido // ✨ Importamos
+        marcarComoLeido
     } = useChat();
 
     const [infoAbierta, setInfoAbierta] = useState(false);
@@ -39,7 +37,6 @@ const ChatView = () => {
 
     const chatActivo = chats.find((chat) => chat.id == chatId);
 
-    // ✨ EFFECT: Marcar como leído al entrar al chat
     useEffect(() => {
         if (chatId) {
             marcarComoLeido(chatId);

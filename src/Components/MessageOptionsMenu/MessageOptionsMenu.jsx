@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useChat } from "../../Context/ChatContext";
-import { useParams } from "react-router"; // Para saber en qué chat estamos
+import { useParams } from "react-router";
 import "./MessageOptionsMenu.css";
 
 const MessageOptionsMenu = ({ mensaje }) => {
@@ -18,7 +18,7 @@ const MessageOptionsMenu = ({ mensaje }) => {
             const rect = buttonRef.current.getBoundingClientRect();
             setPosition({
                 top: rect.bottom + 5,
-                left: rect.right - 150 // Alineación derecha
+                left: rect.right - 150
             });
         }
         setIsOpen(!isOpen);
@@ -30,14 +30,13 @@ const MessageOptionsMenu = ({ mensaje }) => {
         } else if (accion === "responder") {
             setMensajeCitado(mensaje);
         } else if (accion === "reenviar") {
-            setMensajeAReenviar(mensaje); // Esto abrirá el modal
+            setMensajeAReenviar(mensaje);
         } else if (accion === "eliminar") {
             eliminarMensaje(chatId, mensaje.id);
         }
         setIsOpen(false);
     };
 
-    // Cerrar al hacer clic fuera
     useEffect(() => {
         const handleClickOutside = () => setIsOpen(false);
         const handleScroll = () => { if (isOpen) setIsOpen(false); };
@@ -56,7 +55,7 @@ const MessageOptionsMenu = ({ mensaje }) => {
         <div
             className="msg-options-dropdown"
             style={{ top: position.top, left: position.left }}
-            onMouseDown={(e) => e.stopPropagation()} // Evita que el clic cierre el menú inmediatamente
+            onMouseDown={(e) => e.stopPropagation()}
         >
             <button onClick={() => handleAction("responder")}>Responder</button>
             <button onClick={() => handleAction("copiar")}>Copiar</button>

@@ -1,42 +1,28 @@
-/* =========================================
-   CONTENEDOR PRINCIPAL DEL CHAT
-   ========================================= */
 .chat-view-container {
     display: flex;
     flex-direction: column;
     height: 100%;
     width: 100%;
     position: relative;
-    /* Quitamos el color de fondo aquí para evitar el efecto de "corte" */
     background-color: transparent;
     overflow: hidden;
 }
 
-/* =========================================
-   ÁREA DE MENSAJES (FONDO UNIFICADO)
-   ========================================= */
 .chat-messages-area {
     flex: 1;
-    /* Ocupa todo el espacio disponible */
     padding: 20px 5%;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 2px;
-
-    /* --- FONDO MODO CLARO (Default) --- */
     background-color: #efeae2;
-    /* Beige WhatsApp */
     background-image: url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png");
     background-repeat: repeat;
     background-position: center;
     background-size: 400px;
-
-    /* Suavizado scroll */
     -webkit-overflow-scrolling: touch;
 }
 
-/* Scrollbar Personalizado */
 .chat-messages-area::-webkit-scrollbar {
     width: 6px;
 }
@@ -50,7 +36,6 @@
     background: transparent;
 }
 
-/* Feedback de búsqueda */
 .no-results-search {
     display: flex;
     justify-content: center;
@@ -70,26 +55,16 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* =========================================
-   🌙 MODO OSCURO (CORREGIDO)
-   ========================================= */
 body.dark-mode .chat-view-container {
     background-color: #0b141a;
-    /* Fondo de seguridad */
 }
 
 body.dark-mode .chat-messages-area {
-    /* ✨ SOLUCIÓN AL FONDO BLANCO: */
     background-color: #0b141a;
-    /* Fondo base oscuro */
-
-    /* ✨ TRUCO: Ponemos una capa oscura semitransparente ENCIMA de la imagen */
     background-image:
         linear-gradient(rgba(11, 20, 26, 0.94), rgba(11, 20, 26, 0.94)),
         url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png");
-
     background-blend-mode: normal;
-    /* Normal para que el gradiente tape la imagen */
 }
 
 body.dark-mode .chat-messages-area::-webkit-scrollbar-thumb {
@@ -102,20 +77,12 @@ body.dark-mode .no-results-search p {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-/* =========================================
-   📱 RESPONSIVE
-   ========================================= */
 @media (max-width: 900px) {
     .chat-messages-area {
         padding: 15px 10px;
     }
 }
 
-/* ... resto del archivo ... */
-
-/* =========================================
-   MENSAJES DE SISTEMA (BLOQUEO / GRUPO)
-   ========================================= */
 .mensaje-sistema-wrapper {
     display: flex;
     justify-content: center;
@@ -126,7 +93,6 @@ body.dark-mode .no-results-search p {
 
 .mensaje-sistema-burbuja {
     background-color: #ffeecd;
-    /* Amarillo suave alerta */
     color: #54656f;
     font-size: 0.85rem;
     padding: 8px 16px;
@@ -148,12 +114,9 @@ body.dark-mode .no-results-search p {
     }
 }
 
-/* MODO OSCURO */
 body.dark-mode .mensaje-sistema-burbuja {
     background-color: #182229;
-    /* Gris oscuro sistema */
     color: #ffbc38;
-    /* Texto amarillo/dorado */
     box-shadow: none;
     border: 1px solid rgba(255, 255, 255, 0.05);
 }

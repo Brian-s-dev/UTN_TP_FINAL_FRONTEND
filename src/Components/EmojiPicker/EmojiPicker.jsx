@@ -7,10 +7,10 @@ const EmojiPickerComponent = ({ onEmojiClick, theme = "light" }) => {
         <div className="emoji-picker-wrapper">
             <Picker
                 onEmojiClick={onEmojiClick}
-                theme={theme} // 'light' o 'dark'
+                theme={theme}
                 searchDisabled={false}
-                skinTonesDisabled={true} // Opcional: simplifica la interfaz
-                previewConfig={{ showPreview: false }} // Opcional: quita la barra de previsualización inferior
+                skinTonesDisabled={true}
+                previewConfig={{ showPreview: false }}
                 width="300px"
                 height="400px"
             />

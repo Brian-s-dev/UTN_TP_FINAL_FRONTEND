@@ -3,7 +3,6 @@
     top: 5px;
     right: 5px;
     background: linear-gradient(to left, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
-    /* Difuminado sutil */
     border: none;
     border-radius: 50%;
     width: 24px;
@@ -14,17 +13,14 @@
     cursor: pointer;
     color: #54656f;
     opacity: 0;
-    /* Oculto por defecto */
     transition: opacity 0.2s, background-color 0.2s;
     z-index: 10;
 }
 
-/* Mostramos el botón al hacer hover en la burbuja o si el menú está abierto */
 .mensaje-burbuja:hover .btn-msg-options,
 .btn-msg-options.visible {
     opacity: 1;
     background-color: rgba(255, 255, 255, 0.8);
-    /* Fondo para que se lea sobre el texto */
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 

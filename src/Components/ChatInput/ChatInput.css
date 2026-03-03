@@ -1,36 +1,23 @@
-/* =========================================
-   CONTENEDOR PRINCIPAL (FOOTER)
-   ========================================= */
 .chat-footer-wrapper {
     display: flex;
     flex-direction: column;
     width: 100%;
     z-index: 60;
-    /* Aseguramos que el footer esté pegado abajo */
     background-color: transparent;
 }
 
-/* =========================================
-   ÁREA DEL INPUT (LA BARRA)
-   ========================================= */
 .chat-input-area {
     display: flex;
     align-items: center;
     padding: 10px 16px;
     gap: 10px;
     border-top: 1px solid #d1d7db;
-
-    /* ✨ MODO CLARO: Color gris claro */
     background-color: #f0f2f5;
-
     min-height: 62px;
     box-sizing: border-box;
     position: relative;
 }
 
-/* =========================================
-   CONTENEDOR TIPO PÍLDORA (INPUT + ICONOS)
-   ========================================= */
 .input-pill-container {
     flex: 1;
     display: flex;
@@ -38,40 +25,28 @@
     gap: 8px;
     background-color: transparent;
     width: 100%;
-    /* Asegura que no se desborde en pantallas muy chicas */
     min-width: 0;
 }
 
-/* =========================================
-   EL INPUT DE TEXTO REAL
-   ========================================= */
 .chat-input-area input {
     flex: 1;
     border: none;
     border-radius: 8px;
     padding: 12px 15px;
-
-    /* ✨ 16px evita zoom automático en iOS al hacer focus */
     font-size: 16px;
     outline: none;
-
-    /* Permite que el input se encoja si falta espacio */
     min-width: 0;
-
-    /* ✨ MODO CLARO: Input blanco sobre fondo gris */
     background-color: #ffffff;
     color: #111b21;
 }
 
 .chat-input-area input::placeholder {
     color: #8696a0;
-    /* En pantallas muy chicas, el texto largo se corta con puntos suspensivos */
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
 }
 
-/* Estado Deshabilitado (Bloqueado) */
 .chat-input-area.input-deshabilitado {
     background-color: #f0f2f5;
     cursor: not-allowed;
@@ -85,9 +60,6 @@
     text-align: center;
 }
 
-/* =========================================
-   BOTONES E ICONOS
-   ========================================= */
 .btn-icon {
     background: none;
     border: none;
@@ -99,7 +71,6 @@
     padding: 8px;
     border-radius: 50%;
     transition: background-color 0.2s, color 0.2s;
-    /* Evita que los botones se aplasten */
     flex-shrink: 0;
 }
 
@@ -112,15 +83,11 @@
     opacity: 0.5;
 }
 
-/* Estilo botón Emoji */
 .btn-emoji:hover {
     background-color: rgba(0, 0, 0, 0.05);
     color: #f3a731;
 }
 
-/* =========================================
-   MENU ADJUNTOS (CLIP)
-   ========================================= */
 .adjuntos-container {
     position: relative;
     display: flex;
@@ -169,7 +136,6 @@
     font-size: 0.95rem;
     transition: background-color 0.1s;
     white-space: nowrap;
-    /* Evita saltos de línea en el menú */
 }
 
 .menu-adjuntos button:hover {
@@ -184,9 +150,6 @@
     color: #7f66ff;
 }
 
-/* =========================================
-   PREVISUALIZACIÓN DE RESPUESTA (REPLY)
-   ========================================= */
 .reply-preview-container {
     background-color: #f0f2f5;
     padding: 8px 15px;
@@ -217,7 +180,6 @@
     flex-direction: column;
     overflow: hidden;
     flex: 1;
-    /* Ocupa el espacio menos el botón de cerrar */
 }
 
 .reply-title {
@@ -249,10 +211,6 @@
     background-color: rgba(0, 0, 0, 0.05);
 }
 
-
-/* =========================================
-   🌙 MODO OSCURO
-   ========================================= */
 body.dark-mode .chat-input-area {
     background-color: #202c33;
     border-top: 1px solid rgba(134, 150, 160, 0.15);
@@ -276,7 +234,6 @@ body.dark-mode .btn-icon:hover {
     color: #e9edef;
 }
 
-/* Ajuste Dark Mode botón emoji */
 body.dark-mode .btn-emoji:hover {
     color: #ffd60a;
     background-color: rgba(255, 255, 255, 0.1);
@@ -318,10 +275,6 @@ body.dark-mode .chat-input-area.input-deshabilitado input {
     color: #8696a0;
 }
 
-/* =============================================================
-   📱 AJUSTES RESPONSIVE EXTREMOS (Hasta 320px)
-   ============================================================= */
-
 @media (max-width: 500px) {
     .emoji-picker-wrapper {
         left: 0;
@@ -330,23 +283,19 @@ body.dark-mode .chat-input-area.input-deshabilitado input {
 
     .EmojiPickerReact {
         width: 100vw !important;
-        /* Ocupa todo el ancho en móviles */
         border-radius: 0 !important;
         border: none !important;
     }
 }
 
-/* Ajustes para pantallas MUY pequeñas (iPhone SE, Fold, etc) */
 @media (max-width: 370px) {
     .chat-input-area {
         padding: 8px 6px;
-        /* Reducimos mucho el padding lateral */
         gap: 5px;
     }
 
     .input-pill-container {
         gap: 4px;
-        /* Pegamos más los elementos */
     }
 
     .btn-icon {
@@ -357,11 +306,9 @@ body.dark-mode .chat-input-area.input-deshabilitado input {
 
     .chat-input-area input {
         padding: 10px 8px;
-        /* Menos relleno interno en el input */
         border-radius: 6px;
     }
 
-    /* Hacemos el contenedor de respuesta más compacto */
     .reply-preview-container {
         margin: 0 5px 5px 5px;
     }

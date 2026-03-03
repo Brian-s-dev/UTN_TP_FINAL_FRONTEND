@@ -6,30 +6,26 @@ import "./ChatInput.css";
 
 const ChatInput = ({ onEnviarMensaje, deshabilitado, mensajeDeshabilitado }) => {
     const { mensajeCitado, setMensajeCitado } = useChat();
-    const { tema } = useTheme(); // ✨ Obtenemos el tema actual
+    const { tema } = useTheme();
 
     const [texto, setTexto] = useState("");
 
-    // Estados para menús
-    const [mostrarMenu, setMostrarMenu] = useState(false); // Adjuntos
-    const [mostrarPicker, setMostrarPicker] = useState(false); // ✨ Emojis
+    const [mostrarMenu, setMostrarMenu] = useState(false);
+    const [mostrarPicker, setMostrarPicker] = useState(false);
 
     const menuRef = useRef(null);
-    const pickerRef = useRef(null); // ✨ Ref para el picker
+    const pickerRef = useRef(null);
 
-    // Detectar clic fuera
     useEffect(() => {
         const handleClickFuera = (event) => {
-            // Cerrar menú adjuntos
             if (menuRef.current && !menuRef.current.contains(event.target)) {
                 setMostrarMenu(false);
             }
 
-            // ✨ Cerrar menú emojis si el clic no es en el picker ni en el botón de emoji
             if (
                 pickerRef.current &&
                 !pickerRef.current.contains(event.target) &&
-                !event.target.closest('.btn-emoji') // Clase del botón
+                !event.target.closest('.btn-emoji')
             ) {
                 setMostrarPicker(false);
             }
@@ -45,17 +41,15 @@ const ChatInput = ({ onEnviarMensaje, deshabilitado, mensajeDeshabilitado }) => 
         onEnviarMensaje(texto);
         setTexto("");
         setMostrarMenu(false);
-        setMostrarPicker(false); // ✨ Cerrar picker al enviar
+        setMostrarPicker(false);
     };
 
-    // ✨ Función al seleccionar emoji
     const handleEmojiSelect = (emojiObject) => {
         setTexto((prev) => prev + emojiObject.emoji);
     };
 
     return (
         <div className="chat-footer-wrapper">
-            {/* ✨ RENDERIZADO DEL PICKER */}
             {mostrarPicker && (
                 <div ref={pickerRef}>
                     <EmojiPickerComponent
@@ -65,7 +59,6 @@ const ChatInput = ({ onEnviarMensaje, deshabilitado, mensajeDeshabilitado }) => 
                 </div>
             )}
 
-            {/* PREVISUALIZACIÓN DE RESPUESTA */}
             {mensajeCitado && (
                 <div className="reply-preview-container">
                     <div className="reply-content">
@@ -83,7 +76,6 @@ const ChatInput = ({ onEnviarMensaje, deshabilitado, mensajeDeshabilitado }) => 
             <form className={`chat-input-area ${deshabilitado ? 'input-deshabilitado' : ''}`} onSubmit={handleSubmit}>
                 <div className="input-pill-container">
 
-                    {/* --- BOTÓN ADJUNTAR (+) --- */}
                     <div className="adjuntos-container" ref={menuRef}>
                         <button
                             type="button"
@@ -103,7 +95,6 @@ const ChatInput = ({ onEnviarMensaje, deshabilitado, mensajeDeshabilitado }) => 
                         )}
                     </div>
 
-                    {/* --- ✨ BOTÓN EMOJIS (NUEVO) --- */}
                     <button
                         type="button"
                         className="btn-icon btn-emoji"
@@ -116,13 +107,11 @@ const ChatInput = ({ onEnviarMensaje, deshabilitado, mensajeDeshabilitado }) => 
                         title="Emojis"
                         disabled={deshabilitado}
                     >
-                        {/* Cambia el icono si está abierto */}
                         <span className="material-symbols-outlined">
                             {mostrarPicker ? "keyboard" : "sentiment_satisfied"}
                         </span>
                     </button>
 
-                    {/* --- INPUT --- */}
                     <input
                         type="text"
                         placeholder={deshabilitado ? mensajeDeshabilitado : "Escribe un mensaje aquí..."}
@@ -130,7 +119,6 @@ const ChatInput = ({ onEnviarMensaje, deshabilitado, mensajeDeshabilitado }) => 
                         onChange={(e) => setTexto(e.target.value)}
                         onClick={() => {
                             setMostrarMenu(false);
-                            // Opcional: setMostrarPicker(false); // Si quieres que se cierre al escribir
                         }}
                         disabled={deshabilitado}
                         autoFocus={!!mensajeCitado}

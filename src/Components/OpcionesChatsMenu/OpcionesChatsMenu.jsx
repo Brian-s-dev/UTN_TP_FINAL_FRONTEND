@@ -1,13 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { useNavigate } from "react-router"; // ✨ Importamos useNavigate
+import { useNavigate } from "react-router";
 import { useChat } from "../../Context/ChatContext";
 import "./OpcionesChatsMenu.css";
 
 const OpcionesChatsMenu = ({ chat }) => {
     const navigate = useNavigate();
 
-    // ✨ Traemos las funciones de bloqueo del contexto
     const {
         toggleFavorito,
         toggleArchivado,
@@ -29,7 +28,7 @@ const OpcionesChatsMenu = ({ chat }) => {
             const rect = buttonRef.current.getBoundingClientRect();
             setPosition({
                 top: rect.bottom + 5,
-                left: rect.right - 180 // Ajustamos un poco para que entre el texto más largo
+                left: rect.right - 180
             });
         }
         setIsOpen(!isOpen);
@@ -47,7 +46,6 @@ const OpcionesChatsMenu = ({ chat }) => {
                 toggleArchivado(chat.id);
                 break;
             case "bloquear":
-                // ✨ Lógica de Bloqueo/Desbloqueo
                 if (chat.bloqueado) {
                     desbloquearContacto(chat.id);
                 } else {
@@ -56,7 +54,7 @@ const OpcionesChatsMenu = ({ chat }) => {
                 break;
             case "eliminar":
                 eliminarChat(chat.id);
-                navigate("/"); // ✨ Redirección al Home tras eliminar (igual que el Sidebar)
+                navigate("/");
                 break;
             default:
                 break;
@@ -65,7 +63,6 @@ const OpcionesChatsMenu = ({ chat }) => {
         setIsOpen(false);
     };
 
-    // Cerrar al hacer clic fuera
     useEffect(() => {
         const handleClickOutside = (e) => {
             if (isOpen) {
@@ -91,7 +88,6 @@ const OpcionesChatsMenu = ({ chat }) => {
         };
     }, [isOpen]);
 
-    // Contenido del menú
     const menuContent = (
         <div
             className="options-dropdown"
@@ -107,7 +103,6 @@ const OpcionesChatsMenu = ({ chat }) => {
                 {chat.archivado ? "Desarchivar" : "Archivar chat"}
             </button>
 
-            {/* ✨ Nueva opción: Bloquear/Desbloquear */}
             <button onClick={(e) => handleAction("bloquear", e)}>
                 {chat.bloqueado ? "Desbloquear contacto" : "Bloquear contacto"}
             </button>

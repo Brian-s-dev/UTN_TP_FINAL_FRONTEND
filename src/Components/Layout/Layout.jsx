@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router";
 import { useChat } from "../../Context/ChatContext";
 import { EMISOR } from "../../Utils/constants";
-
 import SidebarItem from "../SidebarItem/SidebarItem";
 import ContactsSidebar from "../ContactsSidebar/ContactsSidebar";
 import SidebarHeader from "../SidebarHeader/SidebarHeader";
@@ -10,7 +9,6 @@ import FilterPills from "../FilterPills/FilterPills";
 import SidebarFooter from "../SidebarFooter/SidebarFooter";
 import UserProfileSidebar from "../UserProfileSidebar/UserProfileSidebar";
 import ForwardModal from "../ForwardModal/ForwardModal";
-
 import "./Layout.css";
 
 const Layout = () => {
@@ -28,9 +26,6 @@ const Layout = () => {
     const [perfilAbierto, setPerfilAbierto] = useState(false);
     const [sidebarColapsado, setSidebarColapsado] = useState(window.innerWidth <= 900);
 
-    // =========================================
-    // 🔍 LÓGICA DE FILTRADO DE CHATS
-    // =========================================
     const chatsFiltrados = chats.filter(chat => {
         const coincideBusqueda = chat.nombre.toLowerCase().includes(busqueda.toLowerCase());
         let coincideFiltro = true;
@@ -40,7 +35,6 @@ const Layout = () => {
                 coincideFiltro = chat.tipo === EMISOR.GRUPO && !chat.archivado;
                 break;
             case "No leídos":
-                // ✨ FILTRO REAL: Solo si tiene contador > 0
                 coincideFiltro = chat.noLeidos > 0 && !chat.archivado;
                 break;
             case "Favoritos":

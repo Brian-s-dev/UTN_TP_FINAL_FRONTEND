@@ -1,13 +1,12 @@
 import React from "react";
 import { EMISOR } from "../../Utils/constants";
 import Avatar from "../Avatar/Avatar";
-import MessageOptionsMenu from "../MessageOptionsMenu/MessageOptionsMenu"; // ✨ Importar menú
+import MessageOptionsMenu from "../MessageOptionsMenu/MessageOptionsMenu";
 import "./MessageBubble.css";
 
 const MessageBubble = ({ texto, emisor, avatarContacto, nombreContacto, mostrarAvatar, hora, esGrupo, cita, id }) => {
     const esMio = emisor === EMISOR.USUARIO;
 
-    // Objeto mensaje completo para pasar al menú
     const objetoMensaje = { id, texto, emisor, nombreContacto, cita };
 
     return (
@@ -20,10 +19,8 @@ const MessageBubble = ({ texto, emisor, avatarContacto, nombreContacto, mostrarA
             )}
 
             <div className={`mensaje-burbuja ${esMio ? "mi-mensaje" : "su-mensaje"}`}>
-                {/* ✨ Flechita de menú desplegable */}
                 <MessageOptionsMenu mensaje={objetoMensaje} />
 
-                {/* ✨ VISUALIZACIÓN DE CITA (REPLY) */}
                 {cita && (
                     <div className="mensaje-citado-bloque">
                         <span className="citado-autor">

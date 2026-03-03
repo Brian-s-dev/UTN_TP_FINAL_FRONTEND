@@ -83,14 +83,10 @@
     box-sizing: border-box;
 }
 
-/* =========================================
-   ✨ SIDEBAR COLAPSADO (900px hacia abajo)
-   ========================================= */
 .sidebar-container.colapsado .sidebar-header {
     padding: 15px 10px;
 }
 
-/* Apilamos los botones verticalmente */
 .sidebar-container.colapsado .sidebar-header-top {
     flex-direction: column;
     gap: 15px;
@@ -101,21 +97,16 @@
 
 .sidebar-container.colapsado .header-buttons {
     flex-direction: column-reverse;
-    /* Icono de menú abajo, chat arriba */
     gap: 15px;
     width: 100%;
     justify-content: center;
 }
 
-/* Ocultamos el título "Mensajes" y el buscador */
 .sidebar-container.colapsado .sidebar-header-top h2,
 .sidebar-container.colapsado .search-container {
     display: none !important;
 }
 
-/* =========================================
-   📱 MODO CELULAR (<= 550px) - NAVBAR TOP
-   ========================================= */
 @media (max-width: 550px) {
     .sidebar-container.colapsado .sidebar-header {
         padding: 0 !important;
@@ -152,9 +143,6 @@
     }
 }
 
-/* =========================================
-   🌙 MODO OSCURO
-   ========================================= */
 body.dark-mode .sidebar-header {
     background-color: transparent;
 }

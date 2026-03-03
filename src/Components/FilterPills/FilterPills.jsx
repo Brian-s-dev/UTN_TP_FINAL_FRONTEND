@@ -11,24 +11,16 @@ const FilterPills = ({ filtroActivo, setFiltroActivo }) => {
     const filtrosPrincipales = ["Todos", "No leídos", "Grupos"];
     const filtrosExtra = ["Favoritos", "Archivados"];
 
-    // ✨ AJUSTE DE LÓGICA DE POSICIONAMIENTO
     const toggleMenu = () => {
         if (!menuAbierto && menuRef.current) {
             const rect = menuRef.current.getBoundingClientRect();
             const screenWidth = window.innerWidth;
-
-            // Ancho estimado del menú (definido en CSS como min-width: 160px)
             const menuWidth = 170;
 
             let leftPos = rect.left;
 
-            // Si es móvil (< 550px) o si el menú se saldría de la pantalla por la derecha
             if (screenWidth <= 550 || (rect.left + menuWidth > screenWidth)) {
-                // Alineamos el borde derecho del menú con el borde derecho del botón
-                // (Posición del botón + ancho del botón - ancho del menú)
                 leftPos = (rect.left + rect.width) - menuWidth;
-
-                // Pequeño ajuste de seguridad para que no quede pegado al borde exacto si es muy angosto
                 if (leftPos + menuWidth > screenWidth - 10) {
                     leftPos = screenWidth - menuWidth - 10;
                 }
@@ -42,7 +34,6 @@ const FilterPills = ({ filtroActivo, setFiltroActivo }) => {
         setMenuAbierto(!menuAbierto);
     };
 
-    // Cerrar al hacer clic fuera
     useEffect(() => {
         const handleClickFuera = (event) => {
             if (

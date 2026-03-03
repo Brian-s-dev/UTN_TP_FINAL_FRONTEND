@@ -3,20 +3,18 @@ import { useNavigate, useLocation } from "react-router";
 import { EMISOR } from "../../Utils/constants";
 import Avatar from "../Avatar/Avatar";
 import OpcionesChatsMenu from "../OpcionesChatsMenu/OpcionesChatsMenu";
-import "./SidebarItem.css"; // ✨ Importante tener el CSS
+import "./SidebarItem.css";
 
 const SidebarItem = ({ chat }) => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    // ✨ Desestructuramos noLeidos
     const { id, nombre, avatar, tipo, mensajes, esFavorito, noLeidos } = chat;
 
     const ultimoMensaje = mensajes && mensajes.length > 0
         ? mensajes[mensajes.length - 1].texto
         : "No hay mensajes aún";
 
-    // Obtenemos hora del último mensaje
     const ultimoObj = mensajes && mensajes.length > 0 ? mensajes[mensajes.length - 1] : null;
     const horaMensaje = ultimoObj ? ultimoObj.hora : "";
 
@@ -36,7 +34,6 @@ const SidebarItem = ({ chat }) => {
             <div className="chat-info">
                 <div className="chat-info-header">
                     <h4 className="chat-name">{nombre}</h4>
-                    {/* ✨ Si hay no leídos, la hora se pone verde (clase 'unread-time') */}
                     <span className={`chat-time ${noLeidos > 0 ? 'unread-time' : ''}`}>
                         {horaMensaje}
                     </span>
@@ -50,7 +47,6 @@ const SidebarItem = ({ chat }) => {
                         {ultimoMensaje}
                     </p>
 
-                    {/* ✨ BADGE VERDE CON CONTADOR */}
                     {noLeidos > 0 && (
                         <div className="unread-badge">
                             {noLeidos}
